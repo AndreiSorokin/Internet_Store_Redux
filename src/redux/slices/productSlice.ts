@@ -7,17 +7,18 @@ const initialState: InitialState = {
    products: [],
    userInput: '',
    loading: false,
+   error: false,
+   selectedProduct: []
 };
 
-const url = 'https://api.escuelajs.co/api/v1/products';
+const BASE_URL = 'https://api.escuelajs.co/api/v1/products';
 
 export const fetchProducts = createAsyncThunk(
    "fetchProducts",
    async () => {
       try {
-         const response = await axios.get(url);
-         const data: Data[] = response.data;
-         console.log('product slice data: ', data);
+         const response = await axios.get(BASE_URL);
+         const data = response.data;
          return data;
       } catch (error) {
          console.error('Error fetching products:', error);
@@ -26,12 +27,32 @@ export const fetchProducts = createAsyncThunk(
    }
 )
 
+// export const fetchSingleProduct = createAsyncThunk(
+//    "fetchSingleProduct",
+//    async (id: string) => {
+//       try {
+//          const response = await axios.get(`${BASE_URL}/${id}`);
+//          const data = response.data;
+//          return data;
+//       } catch (error) {
+//          console.error('Error fetching single product:', error);
+//          throw error;
+//       }
+//    }
+// )
+
 const productsSlice = createSlice({
    name: 'products',
    initialState,
    reducers: {
       getUserInput: (state, action) => {
          state.userInput = action.payload
+      },
+      filterByCategory: (state, action) => {
+         const category = action.payload;
+         state.products = state.products.filter(p => {
+            return p.category.name === category
+         })
       }
    },
    extraReducers(builder) {
@@ -58,11 +79,20 @@ const productsSlice = createSlice({
             }
          }
       })
+      // builder.addCase(fetchSingleProduct.pending, (state, action) => {
+      //    state.loading = true;
+      // });
+      // builder.addCase(fetchSingleProduct.fulfilled, (state, action) => {
+      //    state.loading = false;
+      //    state.selectedProduct = action.payload;
+      // });
+      // builder.addCase(fetchSingleProduct.rejected, (state, action) => {
+      //    state.loading = false;
+      //    console.error('Error fetching single product:', action.error);
+      // });
    }
 })
 
-export const { getUserInput } = productsSlice.actions
+export const { getUserInput, filterByCategory } = productsSlice.actions
 const productsReducer = productsSlice.reducer;
 export default productsReducer;
-
-

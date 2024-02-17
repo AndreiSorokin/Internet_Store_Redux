@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import productsReducer from "./slices/productSlice";
-import singleProductReducer from "./slices/singleProductSlice"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const store = configureStore({
    reducer: {
-      products: productsReducer,
-      singleProduct: singleProductReducer
+      products: productsReducer
    },
 });
 export type AppState = ReturnType<typeof store.getState>;

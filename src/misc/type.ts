@@ -29,8 +29,9 @@ export type InitialState = {
    userInput: string;
    loading: boolean;
    error: boolean;
-   selectedProduct?: Data[] | null;
+   selectedProduct?: Product | null;
    priceFilter: string;
+   product?: Product[];
 };
 
 export type UserRegister = {

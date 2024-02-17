@@ -30,6 +30,7 @@ export type InitialState = {
    loading: boolean;
    error: boolean;
    selectedProduct?: Data[] | null;
+   priceFilter: string;
 };
 
 export type UserRegister = {

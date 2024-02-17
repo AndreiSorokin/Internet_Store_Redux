@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSingleProduct } from "../../redux/slices/singleProductSlice";
 import { AppState, useAppDispatch } from "../../redux/store";
 import { Link, useParams } from "react-router-dom";
+
 import { CircularProgress, Typography, Grid, CardContent, CardMedia, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 

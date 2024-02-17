@@ -8,7 +8,8 @@ const initialState: InitialState = {
    userInput: '',
    loading: false,
    error: false,
-   selectedProduct: []
+   selectedProduct: [],
+   priceFilter: ''
 };
 
 const BASE_URL = 'https://api.escuelajs.co/api/v1/products';
@@ -53,7 +54,13 @@ const productsSlice = createSlice({
          state.products = state.products.filter(p => {
             return p.category.name === category
          })
-      }
+      },
+      setPriceFilter: (state, action) => {
+         state.priceFilter = action.payload;
+      },
+      resetPriceFilter: (state) => {
+         state.priceFilter = '';
+      },
    },
    extraReducers(builder) {
       builder.addCase(fetchProducts.fulfilled, (state, action) => {
@@ -93,6 +100,6 @@ const productsSlice = createSlice({
    }
 })
 
-export const { getUserInput, filterByCategory } = productsSlice.actions
+export const { getUserInput, filterByCategory, setPriceFilter } = productsSlice.actions
 const productsReducer = productsSlice.reducer;
 export default productsReducer;

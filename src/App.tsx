@@ -12,7 +12,7 @@ import ProductsPage from './pages/ProductsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ItemPage from './pages/ItemPage';
-// import ProductInfo from './components/ProductInfo';
+import CreateProduct from './pages/CreateProduct';
 
 function App() {
   return (
@@ -24,8 +24,8 @@ function App() {
         <Route path="/registration" element={<RegisterPage/>}/>
         <Route path="/products" element={<ProductsPage/>}/>
         <Route path="/products/:id" element={<ItemPage/>}/>
+        <Route path="/createNew" element={<CreateProduct/>}/>
         <Route path="/cart" element={<Cart/>}/>
-        {/* <Route path="/info" element={<ProductInfo/>}/> */}
       </Routes>
     </div>
   )

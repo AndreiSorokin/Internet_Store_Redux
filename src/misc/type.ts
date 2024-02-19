@@ -1,9 +1,7 @@
 export type Category = {
-   creationAt: string;
    id: string;
-   image: string;
+   image?: string;
    name: string;
-   updatedAt: string;
 }
 
 export type Data = {
@@ -15,13 +13,11 @@ export type Data = {
 }
 
 export type Product = Data & {
-   creationAt: string,
    description: string,
-   updatedAt: string,
 }
 
 export type Props = {
-   product?: Product;
+   id?: string;
 };
 
 export type InitialState = {
@@ -30,8 +26,10 @@ export type InitialState = {
    loading: boolean;
    error: boolean;
    selectedProduct?: Product | null;
+   selectedCategory?: string;
    priceFilter: string;
    product?: Product[];
+   filteredProducts: Data[];
 };
 
 export type UserRegister = {

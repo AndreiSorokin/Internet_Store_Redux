@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialState, Data } from "../../misc/type";
+import { InitialState, Data, Product } from "../../misc/type";
 
 import axios from "axios";
+import { AppState } from "../store";
 
 const initialState: InitialState = {
    products: [],
@@ -9,8 +10,10 @@ const initialState: InitialState = {
    loading: false,
    error: false,
    selectedProduct: null,
+   selectedCategory: 'All',
    priceFilter: '',
-   product: []
+   product: [],
+   filteredProducts: []
 };
 
 const BASE_URL = 'https://api.escuelajs.co/api/v1/products';
@@ -43,6 +46,19 @@ export const fetchSingleProduct = createAsyncThunk(
    }
 )
 
+export const createProduct = createAsyncThunk(
+   'createProduct',
+   async (product: Product, thunkAPI) => {
+      try {
+         const response = await axios.post(`${BASE_URL}`, product)
+         return response.data;
+      } catch (error) {
+         console.error('Error fetching single product:', error);
+         return thunkAPI.rejectWithValue(error)
+      }
+   }
+)
+
 const productsSlice = createSlice({
    name: 'products',
    initialState,
@@ -52,12 +68,37 @@ const productsSlice = createSlice({
       },
       filterByCategory: (state, action) => {
          const category = action.payload;
-         state.products = state.products.filter(p => {
-            return p.category.name === category
-         })
+         state.selectedCategory = category;
+         if (category === "All") {
+            state.filteredProducts = state.products;
+         } else {
+            state.filteredProducts = state.products.filter(p => p.category.name === category);
+         }
       },
       setPriceFilter: (state, action) => {
          state.priceFilter = action.payload;
+         state.filteredProducts = state.products.filter(product => {
+            switch (action.payload) {
+               case 'Under 20':
+               return product.price < 20;
+               case '20 to 100':
+               return product.price >= 20 && product.price <= 100;
+               case 'Over 100':
+               return product.price > 100;
+               default:
+               return true;
+            }
+         });
+      },
+      sortByPrice: (state, action) => {
+         const sortOrder = action.payload;
+         state.products.sort((a, b) => {
+            if (sortOrder === 'from low to high') {
+               return a.price - b.price;
+            } else {
+               return b.price - a.price;
+            }
+         });
       }
    },
    extraReducers(builder) {
@@ -95,9 +136,12 @@ const productsSlice = createSlice({
          state.loading = false;
          console.error('Error fetching single product:', action.error);
       });
+      builder.addCase(createProduct.fulfilled, (state, action) => {
+         state.products.push(action.payload)
+      })
    }
 })
 
-export const { getUserInput, filterByCategory, setPriceFilter } = productsSlice.actions
+export const { getUserInput, filterByCategory, setPriceFilter, sortByPrice } = productsSlice.actions
 const productsReducer = productsSlice.reducer;
 export default productsReducer;

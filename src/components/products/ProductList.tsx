@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppState, useAppDispatch } from "../../redux/store";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   BrowserRouter as Router, Link
 } from 'react-router-dom'
@@ -12,14 +11,14 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Slider } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 
 
 export default function ProductList() {
   const dispatch = useAppDispatch();
 
-  const productList = useSelector((state: AppState) => state.products.products);
-  const priceFilter = useSelector((state: AppState) => state.products.priceFilter);
+  const productList = useAppSelector(state => state.products.products);
+  const priceFilter = useAppSelector(state => state.products.priceFilter);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -63,50 +62,61 @@ export default function ProductList() {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Button onClick={() => handleSortByPrice('from low to high')} variant="outlined">Sort by Price (Low to High)</Button>
-        <Button onClick={() => handleSortByPrice('from high to low')} variant="outlined">Sort by Price (High to Low)</Button>
-        <FormControl fullWidth>
-        <InputLabel id="price-range-label">Price Range</InputLabel>
-        <Select
-          labelId="price-range-label"
-          id="price-range-select"
-          value={priceFilter}
-          label="Price Range"
-          onChange={handlePriceFilterChange}
-        >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="Under 20">Under $20</MenuItem>
-          <MenuItem value="20 to 100">$20 - $100</MenuItem>
-          <MenuItem value="Over 100">Over $100</MenuItem>
-        </Select>
-      </FormControl>
+      <Link to={'/createNew'}>
+        <Button>Create new</Button>
+      </Link>
       <TextField
         label="Search Products"
         variant="outlined"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ marginBottom: 20, width: 300 }}
+        style={{ margin: "2vh", width: "80%" }}
       />
-      <Pagination 
-        count={Math.ceil(filteredProducts.length / itemsPerPage)} 
-        variant="outlined" 
-        shape="rounded" 
+      <Pagination
+        count={Math.ceil(filteredProducts.length / itemsPerPage)}
+        variant="outlined"
+        shape="rounded"
         page={currentPage}
         onChange={handlePageChange}
+        style={{ margin: "2vh" }}
       />
-      
-      <InputLabel id="demo-simple-select-label">Category</InputLabel>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={selectedCategory}
-        label="Category"
-        onChange={handleCategoryChange}
-      >
-        {uniqueCategories.map(category => (
-          <MenuItem key={category} value={category}>{category}</MenuItem>
-        ))}
-      </Select>
+      <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
+        <FormControl style={{ margin: "1vh" }}>
+          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={selectedCategory}
+            label="Category"
+            onChange={handleCategoryChange}
+            style={{ minWidth: "100px" }}
+          >
+            {uniqueCategories.map(category => (
+              <MenuItem key={category} value={category}>{category}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl style={{ margin: "1vh" }}>
+          <InputLabel id="price-range-label">Price Range</InputLabel>
+          <Select
+            labelId="price-range-label"
+            id="price-range-select"
+            value={priceFilter}
+            label="Price Range"
+            onChange={handlePriceFilterChange}
+            style={{ minWidth: "150px" }}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="Under 20">Under $20</MenuItem>
+            <MenuItem value="20 to 100">$20 - $100</MenuItem>
+            <MenuItem value="Over 100">Over $100</MenuItem>
+          </Select>
+        </FormControl>
+        <Box style={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
+          <Button style={{ marginBottom: "1vh", width: "100%" }} onClick={() => handleSortByPrice('from low to high')} variant="outlined">Sort by Price (Low to High)</Button>
+          <Button style={{ width: "100%" }} onClick={() => handleSortByPrice('from high to low')} variant="outlined">Sort by Price (High to Low)</Button>
+        </Box>
+      </Box>
       <Grid container spacing={3}>
         {currentPageData.map(product => (
           <Grid item key={product.id} xs={12} sm={6} md={4}>
@@ -114,7 +124,7 @@ export default function ProductList() {
               <div>{product.title}</div>
               <div>Price: ${product.price}</div>
               <div>
-                <img style={{width: '150px', height: '150px'}} src={product.category.image} alt={`a picture of ${product.title}`} />
+                <img style={{ width: '100%', height: 'auto' }} src={product.category.image} alt={`a picture of ${product.title}`} />
                 <Link to={`/products/${product.id}`}>
                   <Button variant="outlined">
                     View
@@ -126,5 +136,5 @@ export default function ProductList() {
         ))}
       </Grid>
     </Box>
-  )
+  );
 }

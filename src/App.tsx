@@ -12,7 +12,7 @@ import ProductsPage from './pages/ProductsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ItemPage from './pages/ItemPage';
-import CreateProduct from './pages/CreateProduct';
+import CreateProductPage from './pages/CreateProductPage';
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
         <Route path="/registration" element={<RegisterPage/>}/>
         <Route path="/products" element={<ProductsPage/>}/>
         <Route path="/products/:id" element={<ItemPage/>}/>
-        <Route path="/createNew" element={<CreateProduct/>}/>
+        <Route path="/createNew" element={<CreateProductPage/>}/>
         <Route path="/cart" element={<Cart/>}/>
       </Routes>
     </div>

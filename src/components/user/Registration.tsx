@@ -14,36 +14,51 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { UserRegister } from '../../misc/type';
+import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { useState } from 'react'
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { User } from '../../misc/type';
+import { useAppDispatch } from '../../redux/store';
+import { userLogin } from '../../redux/slices/userSlice'
 
 const defaultTheme = createTheme();
 
 export default function Registration() {
+  const dispatch = useAppDispatch()
+
+  const [id,setId] = useState(uuidv4())
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [avatar, setAvatar] = useState<File | null>(null)
 
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newUser: User = {email, password, name, role: "customer", id, avatar: 'placeholder-url'}
+    dispatch(userLogin(newUser))
   };
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      setAvatar(selectedFile);
+    }
+  };
+
+  function Copyright(props: any) {
+    return (
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="https://mui.com/">
+          Your Website
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -57,8 +72,7 @@ export default function Registration() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          </Avatar>
+          <Avatar src={avatar ? URL.createObjectURL(avatar) : ''} sx={{ m: 1, bgcolor: 'secondary.main' }} />
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
@@ -104,6 +118,13 @@ export default function Registration() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
                 />
               </Grid>
               <Grid item xs={12}>

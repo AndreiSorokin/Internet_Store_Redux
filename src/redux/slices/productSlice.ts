@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialState, Data, Product } from "../../misc/type";
+import { InitialState, Product } from "../../misc/type";
 
 import axios from "axios";
-import { AppState } from "../store";
 
 const initialState: InitialState = {
    products: [],
@@ -48,16 +47,39 @@ export const fetchSingleProduct = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
    'createProduct',
-   async (product: Product, thunkAPI) => {
+   async (product: Product, { rejectWithValue }) => {
       try {
-         const response = await axios.post(`${BASE_URL}`, product)
+         const response = await axios.post(`https://api.escuelajs.co/api/v1/products/`, product);
          return response.data;
       } catch (error) {
-         console.error('Error fetching single product:', error);
-         return thunkAPI.rejectWithValue(error)
+         return rejectWithValue(error)
       }
    }
-)
+);
+
+export const updateProduct = createAsyncThunk(
+   'updateProduct',
+   async (updatedProduct: Product, { rejectWithValue }) => {
+      try {
+         const response = await axios.put(`${BASE_URL}/${updatedProduct.id}`, updatedProduct);
+         return response.data;
+      } catch (error) {
+         return rejectWithValue(error)
+      }
+   }
+);
+
+export const deleteProduct = createAsyncThunk(
+   'deleteProduct',
+   async (productId: string, { rejectWithValue }) => {
+      try {
+         await axios.delete(`${BASE_URL}/${productId}`);
+         return productId;
+      } catch (error) {
+         return rejectWithValue(error)
+      }
+   }
+);
 
 const productsSlice = createSlice({
    name: 'products',

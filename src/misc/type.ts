@@ -2,14 +2,19 @@ export type Category = {
    id: string;
    image?: string;
    name: string;
+   creationAt?: number;
+   updatedAt?: number;
 }
 
 export type Data = {
    category: Category,
+   categoryId?: string;
    id: string,
    images: string[],
    price: number,
    title: string,
+   creationAt?: number,
+   updatedAt?: number
 }
 
 export type Product = Data & {
@@ -32,14 +37,28 @@ export type InitialState = {
    filteredProducts: Data[];
 };
 
-export type UserRegister = {
-   name: string;
+export type User = {
+   id: string;
    email: string;
    password: string;
-   avatar: string;
-};
-
-export type User = UserRegister & {
+   name: string;
    role: "customer" | "admin";
-   id: number;
-};
+   avatar: string;
+   loading?: boolean;
+}
+
+// export type User = InitialStateUser & {
+//    role: "customer" | "admin";
+//    id: number;
+// };
+
+// export type UserRegister = {
+//    id: string;
+//    email: string;
+//    password: string;
+//    name: string;
+//    role: string;
+//    avatar: string;
+//    creationAt: string;
+//    undatedAt: string;
+// };

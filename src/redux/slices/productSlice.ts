@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialState, Product } from "../../misc/type";
+import { InitialState, Products } from "../../misc/type";
 
 import axios from "axios";
 
@@ -7,11 +7,10 @@ const initialState: InitialState = {
    products: [],
    userInput: '',
    loading: false,
-   error: false,
+   error: null,
    selectedProduct: null,
-   selectedCategory: 'All',
+   selectedCategory: '',
    priceFilter: '',
-   product: [],
    filteredProducts: []
 };
 
@@ -47,34 +46,10 @@ export const fetchSingleProduct = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
    'createProduct',
-   async (product: Product, { rejectWithValue }) => {
+   async (product: Products, { rejectWithValue }) => {
       try {
          const response = await axios.post(`https://api.escuelajs.co/api/v1/products/`, product);
          return response.data;
-      } catch (error) {
-         return rejectWithValue(error)
-      }
-   }
-);
-
-export const updateProduct = createAsyncThunk(
-   'updateProduct',
-   async (updatedProduct: Product, { rejectWithValue }) => {
-      try {
-         const response = await axios.put(`${BASE_URL}/${updatedProduct.id}`, updatedProduct);
-         return response.data;
-      } catch (error) {
-         return rejectWithValue(error)
-      }
-   }
-);
-
-export const deleteProduct = createAsyncThunk(
-   'deleteProduct',
-   async (productId: string, { rejectWithValue }) => {
-      try {
-         await axios.delete(`${BASE_URL}/${productId}`);
-         return productId;
       } catch (error) {
          return rejectWithValue(error)
       }
@@ -94,7 +69,7 @@ const productsSlice = createSlice({
          if (category === "All") {
             state.filteredProducts = state.products;
          } else {
-            state.filteredProducts = state.products.filter(p => p.category.name === category);
+            state.filteredProducts = state.products.filter(p => p.title === category);
          }
       },
       setPriceFilter: (state, action) => {
@@ -125,38 +100,44 @@ const productsSlice = createSlice({
    },
    extraReducers(builder) {
       builder.addCase(fetchProducts.fulfilled, (state, action) => {
-         if(!(action.payload instanceof Error)) {
-            return {
-               ...state,
-               products: action.payload,
-               loading: false
-            }
+         return {
+            ...state,
+            products: action.payload,
+            loading: false,
+            error: null
          }
       })
       builder.addCase(fetchProducts.pending, (state, action) => {
          return {
             ...state,
-            loading: true
+            loading: true,
+            error: null,
          };
       })
       builder.addCase(fetchProducts.rejected, (state, action) => {
-         if(action.payload instanceof Error) {
-            return {
-               ...state,
-               loading: false
-            }
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
          }
       })
       builder.addCase(fetchSingleProduct.pending, (state, action) => {
-         state.loading = true;
+         return {
+            ...state,
+            loading: true,
+            error: null
+         }
       });
       builder.addCase(fetchSingleProduct.fulfilled, (state, action) => {
-         state.loading = false;
-         state.selectedProduct = action.payload;
+         return {
+            ...state,
+            loading: false,
+            selectedProduct: action.payload
+         }
       });
       builder.addCase(fetchSingleProduct.rejected, (state, action) => {
          state.loading = false;
-         console.error('Error fetching single product:', action.error);
+         state.error = action.error.message ?? "error";
       });
       builder.addCase(createProduct.fulfilled, (state, action) => {
          state.products.push(action.payload)

@@ -1,64 +1,48 @@
 export type Category = {
-   id: string;
-   image?: string;
+   id: number;
    name: string;
-   creationAt?: number;
-   updatedAt?: number;
+   image: string;
 }
 
-export type Data = {
-   category: Category,
-   categoryId?: string;
-   id: string,
-   images: string[],
-   price: number,
-   title: string,
-   creationAt?: number,
-   updatedAt?: number
+export type Products = {
+   id: number;
+   title: string;
+   price: number;
+   description: string;
+   category: Category;
+   images: string[];
 }
 
-export type Product = Data & {
-   description: string,
+export type SingleProduct = {
+   id: number;
+   title: string;
+   price: number;
+   description: string;
+   category: Category;
+   images: string[];
 }
-
-export type Props = {
-   id?: string;
-};
 
 export type InitialState = {
-   products: Data[];
+   products: Products[];
    userInput: string;
    loading: boolean;
-   error: boolean;
-   selectedProduct?: Product | null;
-   selectedCategory?: string;
+   error: string | null;
+   selectedProduct: Products | null;
+   selectedCategory: string;
    priceFilter: string;
-   product?: Product[];
-   filteredProducts: Data[];
+   filteredProducts: Products[];
 };
 
 export type User = {
-   id: string;
    email: string;
    password: string;
    name: string;
-   role: "customer" | "admin";
    avatar: string;
-   loading?: boolean;
 }
 
-// export type User = InitialStateUser & {
-//    role: "customer" | "admin";
-//    id: number;
-// };
-
-// export type UserRegister = {
-//    id: string;
-//    email: string;
-//    password: string;
-//    name: string;
-//    role: string;
-//    avatar: string;
-//    creationAt: string;
-//    undatedAt: string;
-// };
+export type InitialStateUser = {
+   users: User[];
+   loading?: boolean;
+   error: string | null;
+   userInput: string;
+}

@@ -1,24 +1,23 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { User } from "../../misc/type";
+import { InitialStateUser, User } from "../../misc/type";
 
-const initialState: User = {
-   id: '',
-   email: '',
-   password: '',
-   name: '',
-   role: "customer",
-   avatar: '',
+const initialState: InitialStateUser = {
+   users: [],
+   error: null,
    loading: false,
+   userInput: ''
 }
 
 export const userLogin = createAsyncThunk(
    'userLogin',
-   async(user: Omit<User, 'id'>, {rejectWithValue}) => {
+   async(user: User, {rejectWithValue}) => {
       try {
          const response = await axios.post(`https://api.escuelajs.co/api/v1/users/`, user)
+         console.log('API Response:', response.data);
          return response.data
       } catch (error) {
+         console.error('API Error:', error);
          return rejectWithValue(error)
       }
    }
@@ -32,8 +31,25 @@ const userSlice = createSlice({
    },
    extraReducers(builder) {
       builder.addCase(userLogin.fulfilled, (state, action) => {
-         state.loading = false
-         return action.payload
+         return {
+            ...state,
+            loading: false,
+            user: action.payload
+         }
+      })
+      builder.addCase(userLogin.pending, (state, action) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         };
+      })
+      builder.addCase(userLogin.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
       })
    }
 })

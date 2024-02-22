@@ -26,18 +26,31 @@ const defaultTheme = createTheme();
 export default function Registration() {
   const dispatch = useAppDispatch()
 
-  const [id,setId] = useState(uuidv4())
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
   const [avatar, setAvatar] = useState<File | null>(null)
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newUser: User = {email, password, name, role: "customer", id, avatar: 'placeholder-url'}
-    dispatch(userLogin(newUser))
+    const avatarUrl = avatar ? URL.createObjectURL(avatar) : '';
+    const uuid = avatarUrl.replace('blob:http://localhost:3000/', '');
+    const newUser: User = { name, email, password, avatar: 'https://picsum.photos/800' };
+    console.log(name, email, password)
+    dispatch(userLogin(newUser));
+    console.log("newUser", JSON.stringify(newUser));
   };
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const newUser: User = {
+  //     name: 'Nicolas',
+  //     email: 'nico@gmail.com',
+  //     password: '1234',
+  //     avatar: 'https://picsum.photos/800'
+  //   };
+  //   dispatch(userLogin(newUser));
+  //   console.log('newUser', JSON.stringify(newUser));
+  // };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -78,8 +91,10 @@ export default function Registration() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
                   autoComplete="given-name"
                   name="firstName"
                   required
@@ -89,18 +104,10 @@ export default function Registration() {
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   required
                   fullWidth
                   id="email"
@@ -111,6 +118,8 @@ export default function Registration() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                   required
                   fullWidth
                   name="password"

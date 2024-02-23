@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialState, Products } from "../../misc/type";
+import { InitialState, Product } from "../../misc/type";
 
 import axios from "axios";
 
@@ -46,11 +46,13 @@ export const fetchSingleProduct = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
    'createProduct',
-   async (product: Products, { rejectWithValue }) => {
+   async (product: Product, { rejectWithValue }) => {
       try {
-         const response = await axios.post(`https://api.escuelajs.co/api/v1/products/`, product);
+         const response = await axios.post(`${BASE_URL}`, product);
+         console.log('API Response:', response.data);
          return response.data;
       } catch (error) {
+         console.error('API Error:', error);
          return rejectWithValue(error)
       }
    }
@@ -69,7 +71,7 @@ const productsSlice = createSlice({
          if (category === "All") {
             state.filteredProducts = state.products;
          } else {
-            state.filteredProducts = state.products.filter(p => p.title === category);
+            state.filteredProducts = state.products.filter(p => p.category.name === category);
          }
       },
       setPriceFilter: (state, action) => {
@@ -106,21 +108,21 @@ const productsSlice = createSlice({
             loading: false,
             error: null
          }
-      })
+      });
       builder.addCase(fetchProducts.pending, (state, action) => {
          return {
             ...state,
             loading: true,
             error: null,
          };
-      })
+      });
       builder.addCase(fetchProducts.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "error"
          }
-      })
+      });
       builder.addCase(fetchSingleProduct.pending, (state, action) => {
          return {
             ...state,
@@ -140,8 +142,26 @@ const productsSlice = createSlice({
          state.error = action.error.message ?? "error";
       });
       builder.addCase(createProduct.fulfilled, (state, action) => {
-         state.products.push(action.payload)
-      })
+         return {
+            ...state,
+            loading: false,
+            user: action.payload
+         }
+      });
+      builder.addCase(createProduct.pending, (state, action) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         };
+      });
+      builder.addCase(createProduct.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      });
    }
 })
 

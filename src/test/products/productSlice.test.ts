@@ -1,8 +1,12 @@
-
-import { Products } from "../../misc/type";
+import { Products, Product } from "../../misc/type";
 import productReducer, {
+  createProduct,
     fetchProducts,
+    filterByCategory,
+    getUserInput,
+    sortByPrice,
 } from "../../redux/slices/productSlice";
+import store from "../../redux/store";
 
 const initialState = {
   products: [],
@@ -14,8 +18,6 @@ const initialState = {
   priceFilter: '',
   filteredProducts: [],
 };
-
-
 
 describe("product reducer", () => {
 
@@ -98,4 +100,48 @@ describe("product reducer", () => {
       priceFilter: '',
     });
   });
+
+  test("should get user input", () => {
+    const state = productReducer(
+      initialState,
+      getUserInput("testInput")
+    )
+    expect(state).toEqual({
+      ...initialState,
+      userInput: "testInput"
+    })
+  })
+
+  test("should filter by category", () => {
+    const state = productReducer({
+      ...initialState,
+      products: mockProducts
+    },
+    filterByCategory("Category 1")
+    )
+    expect(state.filteredProducts.length).toBe(1)
+    expect(state.filteredProducts[0].category.name).toBe("Category 1")
+  })
+
+  test("should sort by price from low to high", () => {
+    const state = productReducer(
+      {
+        ...initialState,
+        products: mockProducts
+      },
+      sortByPrice("from low to high")
+    )
+    expect(state.products[0].price).toBeLessThan(state.products[1].price)
+  })
+
+  test("should sort by price from high to low", () => {
+    const state = productReducer(
+      {
+        ...initialState,
+        products: mockProducts
+      },
+      sortByPrice("from high to low")
+    )
+    expect(state.products[0].price).toBeGreaterThan(state.products[1].price)
+  })
 });

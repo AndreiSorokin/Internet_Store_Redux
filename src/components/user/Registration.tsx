@@ -19,7 +19,7 @@ import axios from 'axios';
 import { useState } from 'react'
 import { User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
-import { userLogin } from '../../redux/slices/userSlice'
+import { userRegistration } from '../../redux/slices/userSlice'
 
 const defaultTheme = createTheme();
 
@@ -31,26 +31,15 @@ export default function Registration() {
   const [password, setPassword] = useState('')
   const [avatar, setAvatar] = useState<File | null>(null)
 
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     const avatarUrl = avatar ? URL.createObjectURL(avatar) : '';
-    const uuid = avatarUrl.replace('blob:http://localhost:3000/', '');
-    const newUser: User = { name, email, password, avatar: 'https://picsum.photos/800' };
-    console.log(name, email, password)
-    dispatch(userLogin(newUser));
-    console.log("newUser", JSON.stringify(newUser));
+    const uuid = avatarUrl.replace('blob:http://localhost:3000/', 'https://picsum.photos/');
+    const newUser: User = { name, email, password, avatar: uuid };
+    dispatch(userRegistration(newUser));
   };
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const newUser: User = {
-  //     name: 'Nicolas',
-  //     email: 'nico@gmail.com',
-  //     password: '1234',
-  //     avatar: 'https://picsum.photos/800'
-  //   };
-  //   dispatch(userLogin(newUser));
-  //   console.log('newUser', JSON.stringify(newUser));
-  // };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {

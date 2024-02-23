@@ -6,14 +6,17 @@ const initialState: InitialStateUser = {
    users: [],
    error: null,
    loading: false,
-   userInput: ''
+   userInput: '',
+   isAuthenticated: null
 }
 
-export const userLogin = createAsyncThunk(
-   'userLogin',
+const BASE_URL = 'https://api.escuelajs.co/api/v1'
+
+export const userRegistration = createAsyncThunk(
+   'userRegistration',
    async(user: User, {rejectWithValue}) => {
       try {
-         const response = await axios.post(`https://api.escuelajs.co/api/v1/users/`, user)
+         const response = await axios.post(`${BASE_URL}/users/`, user)
          console.log('API Response:', response.data);
          return response.data
       } catch (error) {
@@ -23,6 +26,20 @@ export const userLogin = createAsyncThunk(
    }
 )
 
+export const userLogin = createAsyncThunk(
+   'userLogin',
+   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+      try {
+         const response = await axios.post(`${BASE_URL}/auth/login/`, { email, password });
+         console.log('Login Response:', response.data);
+         return response.data;
+      } catch (error) {
+         console.error('Login Error:', error);
+         return rejectWithValue(error);
+      }
+   }
+);
+
 const userSlice = createSlice({
    name: 'user',
    initialState,
@@ -30,14 +47,35 @@ const userSlice = createSlice({
       
    },
    extraReducers(builder) {
-      builder.addCase(userLogin.fulfilled, (state, action) => {
+      builder.addCase(userRegistration.fulfilled, (state, action) => {
          return {
             ...state,
             loading: false,
             user: action.payload
          }
       })
-      builder.addCase(userLogin.pending, (state, action) => {
+      builder.addCase(userRegistration.pending, (state, action) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         };
+      })
+      builder.addCase(userRegistration.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      })
+      builder.addCase(userLogin.fulfilled, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            loggedInUser: action.payload
+         };
+      })
+      builder.addCase(userLogin.pending, (state) => {
          return {
             ...state,
             loading: true,
@@ -49,8 +87,8 @@ const userSlice = createSlice({
             ...state,
             loading: false,
             error: action.error.message ?? "error"
-         }
-      })
+         };
+      });
    }
 })
 

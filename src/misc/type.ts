@@ -22,6 +22,14 @@ export type SingleProduct = {
    images: string[];
 }
 
+export type Product = {
+   title: string;
+   price: number | null;
+   description: string;
+   categoryId: number | null;
+   images: string[];
+}
+
 export type InitialState = {
    products: Products[];
    userInput: string;
@@ -45,4 +53,5 @@ export type InitialStateUser = {
    loading?: boolean;
    error: string | null;
    userInput: string;
+   isAuthenticated: User | null;
 }

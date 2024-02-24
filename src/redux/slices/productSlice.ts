@@ -14,13 +14,13 @@ const initialState: InitialState = {
    filteredProducts: []
 };
 
-const BASE_URL = 'https://api.escuelajs.co/api/v1/products';
+const BASE_URL = 'https://api.escuelajs.co/api/v1';
 
 export const fetchProducts = createAsyncThunk(
    "fetchProducts",
    async () => {
       try {
-         const response = await axios.get(BASE_URL);
+         const response = await axios.get(`${BASE_URL}/products`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -34,7 +34,7 @@ export const fetchSingleProduct = createAsyncThunk(
    "fetchSingleProduct",
    async (id: string) => {
       try {
-         const response = await axios.get(`${BASE_URL}/${id}`);
+         const response = await axios.get(`${BASE_URL}/products/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -44,11 +44,39 @@ export const fetchSingleProduct = createAsyncThunk(
    }
 )
 
+const fetchImageFile = async (imageUrl: string): Promise<File> => {
+   try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const file = new File([blob], 'image.jpg');
+      return file;
+   } catch (error) {
+      console.error('Error fetching image file:', error);
+      throw error;
+   }
+};
+
 export const createProduct = createAsyncThunk(
    'createProduct',
    async (product: Product, { rejectWithValue }) => {
       try {
-         const response = await axios.post(`${BASE_URL}`, product);
+         const { title, price, description, categoryId, images } = product;
+
+         const uploadedImageUrls: string[] = [];
+         for (const imageUrl of images) {
+            const imageFile = await fetchImageFile(imageUrl);
+            const uploadedImageUrl = await uploadImage(imageFile);
+            uploadedImageUrls.push(uploadedImageUrl);
+         }
+
+         const response = await axios.post(`${BASE_URL}/products/`, {
+            title,
+            price,
+            description,
+            categoryId,
+            images: uploadedImageUrls
+         });
+         
          console.log('API Response:', response.data);
          return response.data;
       } catch (error) {
@@ -57,6 +85,31 @@ export const createProduct = createAsyncThunk(
       }
    }
 );
+
+export const uploadImage = async (image: File): Promise<string> => {
+   try {
+      const formData = new FormData();
+      formData.append('file', image);
+
+      const response = await axios.post(`${BASE_URL}/files/upload`, formData, {
+         headers: {
+            'Content-Type': 'multipart/form-data'
+         }
+      });
+
+      const { location } = response.data;
+
+      if (!location) {
+         throw new Error('Invalid response');
+      }
+
+      return location;
+   } catch (error) {
+      console.error('Image upload error:', error);
+      throw error;
+   }
+};
+
 
 const productsSlice = createSlice({
    name: 'products',

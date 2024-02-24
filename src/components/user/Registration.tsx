@@ -12,14 +12,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 import { useState } from 'react'
 import { User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
-import { userRegistration } from '../../redux/slices/userSlice'
+import { userRegistration, uploadAvatar } from '../../redux/slices/userSlice'
 
 const defaultTheme = createTheme();
 
@@ -32,21 +28,33 @@ export default function Registration() {
   const [avatar, setAvatar] = useState<File | null>(null)
 
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    const avatarUrl = avatar ? URL.createObjectURL(avatar) : '';
-    const uuid = avatarUrl.replace('blob:http://localhost:3000/', 'https://picsum.photos/');
-    const newUser: User = { name, email, password, avatar: uuid };
-    dispatch(userRegistration(newUser));
-  };
+const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (e.target.files && e.target.files.length > 0) {
+    const selectedFile = e.target.files[0];
+    setAvatar(selectedFile);
+  }
+};
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      setAvatar(selectedFile);
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  try {
+    let avatarUrl = '';
+    if (avatar) {
+      const uploadedFileResponse = await dispatch(uploadAvatar(avatar));
+      console.log('File Upload Response:', uploadedFileResponse);
+      avatarUrl = uploadedFileResponse.payload;
     }
-  };
+
+    console.log('Avatar URL:', avatarUrl);
+
+    const newUser: User = { name, email, password, avatar: avatarUrl };
+    console.log('New User:', newUser);
+    dispatch(userRegistration(newUser));
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
   function Copyright(props: any) {
     return (

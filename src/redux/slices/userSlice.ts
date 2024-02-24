@@ -25,6 +25,33 @@ export const userRegistration = createAsyncThunk(
       }
    }
 )
+export const uploadAvatar = createAsyncThunk(
+   'uploadAvatar',
+   async (file: File, { rejectWithValue }) => {
+      try {
+         const formData = new FormData();
+         formData.append('file', file);
+         
+         const response = await axios.post(`${BASE_URL}/files/upload`, formData, {
+         headers: {
+            'Content-Type': 'multipart/form-data'
+         }
+         });
+
+         const { location } = response.data;
+
+         if (!location) {
+            throw new Error('Invalid response');
+         }
+
+         return location;
+      
+      } catch (error) {
+         console.error('API Error:', error);
+         return rejectWithValue(error)
+      }
+   }
+);
 
 export const userLogin = createAsyncThunk(
    'userLogin',
@@ -44,7 +71,9 @@ const userSlice = createSlice({
    name: 'user',
    initialState,
    reducers: {
-      
+      getUserInput: (state, action) => {
+         state.userInput = action.payload;
+      },
    },
    extraReducers(builder) {
       builder.addCase(userRegistration.fulfilled, (state, action) => {

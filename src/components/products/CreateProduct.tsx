@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useAppDispatch } from '../../redux/store'
 import { Product } from '../../misc/type'
 import { Button, TextField } from '@mui/material'
-import { createProduct } from '../../redux/slices/productSlice'
+import { createProduct, uploadImage  } from '../../redux/slices/productSlice'
 
 export default function CreateProduct() {
    const dispatch = useAppDispatch()
@@ -11,32 +11,44 @@ export default function CreateProduct() {
    const [price, setPrice] = useState<number | null>(null)
    const [description, setDescription] = useState('')
    const [categoryId, setCategoryId] = useState<number | null>(null)
-   const [images, setImages] = useState<File[] | null>(null)
+   const [images, setImages] = useState<File[]>([])
 
-   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-
-      if (!title || !price || !description || !categoryId || !images) {
-         return alert('Please make sure that you have added title, price, description, category ID and images');
+   
+      if (!title || !price || !description || !categoryId || images.length === 0) {
+         return alert('Please make sure that you have added title, price, description, category ID, and images');
       }
-
-      const uuid = images?.map(image => {
-         const imageUrl = URL.createObjectURL(image);
-         return imageUrl.replace('blob:http://localhost:3000/', 'https://picsum.photos/');
-      })
-      const newProduct: Product = { title, price, description, categoryId, images: uuid || []}
-      dispatch(createProduct(newProduct));
-      console.log("newUser", JSON.stringify(newProduct));
+   
+      try {
+         const uploadedImageUrls: string[] = [];
+         for (const image of images) {
+            const uploadedImageUrl = await uploadImage(image);
+            uploadedImageUrls.push(uploadedImageUrl);
+         }
+   
+         const newProduct: Product = {
+            title,
+            price,
+            description,
+            categoryId,
+            images: uploadedImageUrls,
+         };
+         dispatch(createProduct(newProduct));
+         console.log('New Product:', JSON.stringify(newProduct));
+      } catch (error) {
+         console.error('Error creating product:', error);
+      }
    };
-
+   
    const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files.length > 0) {
          const selectedFiles = Array.from(e.target.files);
          setImages(selectedFiles);
       }
    };
-
-
+   
+   
    return (
       <form onSubmit={handleSubmit}>
          <TextField

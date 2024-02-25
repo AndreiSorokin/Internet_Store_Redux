@@ -1,14 +1,20 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialStateUser, User } from "../../misc/type";
+import { InitialStateUser, User, Credentials } from "../../misc/type";
+
+let userState: User | null = null;
+const data = localStorage.getItem("userInformation");
+
+if (data) {
+   userState = JSON.parse(data);
+}
+
+console.log("User information from local storage:", data);
+
 
 const initialState: InitialStateUser = {
-   users: [],
-   error: null,
-   loading: false,
-   userInput: '',
-   isAuthenticated: null
-}
+   user: userState
+};
 
 const BASE_URL = 'https://api.escuelajs.co/api/v1'
 
@@ -55,11 +61,11 @@ export const uploadAvatar = createAsyncThunk(
 
 export const userLogin = createAsyncThunk(
    'userLogin',
-   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+   async (credentials: Credentials, { rejectWithValue }) => {
       try {
-         const response = await axios.post(`${BASE_URL}/auth/login/`, { email, password });
+         const response = await axios.post(`${BASE_URL}/auth/login/`, credentials);
          console.log('Login Response:', response.data);
-         return response.data;
+         return response.data.token;
       } catch (error) {
          console.error('Login Error:', error);
          return rejectWithValue(error);
@@ -67,12 +73,31 @@ export const userLogin = createAsyncThunk(
    }
 );
 
+export const userLogout = createAsyncThunk(
+   'userLogout',
+   async (_, { rejectWithValue }) => {
+      try {
+         localStorage.removeItem('userInformation');
+      } catch (error) {
+         console.error('Logout Error:', error);
+         return rejectWithValue(error);
+      }
+   }
+);
+
+
 const userSlice = createSlice({
    name: 'user',
    initialState,
    reducers: {
       getUserInput: (state, action) => {
-         state.userInput = action.payload;
+         state.user = action.payload;
+      },
+      userLogout: (state) => {
+         return {
+            ...initialState,
+            user: null
+         };
       },
    },
    extraReducers(builder) {
@@ -101,7 +126,8 @@ const userSlice = createSlice({
          return {
             ...state,
             loading: false,
-            loggedInUser: action.payload
+            error: null,
+            user: action.payload
          };
       })
       builder.addCase(userLogin.pending, (state) => {
@@ -116,6 +142,12 @@ const userSlice = createSlice({
             ...state,
             loading: false,
             error: action.error.message ?? "error"
+         };
+      });
+      builder.addCase(userLogout.fulfilled, (state) => {
+         return {
+            ...state,
+            user: null
          };
       });
    }

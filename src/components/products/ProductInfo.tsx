@@ -1,17 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSingleProduct } from "../../redux/slices/productSlice";
+import { deleteProduct, fetchSingleProduct, updateProduct } from "../../redux/slices/productSlice";
 import { AppState, useAppDispatch } from "../../redux/store";
 import { Link, useParams } from "react-router-dom";
 
-import { CircularProgress, Typography, Grid, CardContent, CardMedia, IconButton } from "@mui/material";
+import { Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ProductInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const productItem = useSelector((state: AppState) => state.products.selectedProduct);
-  console.log('product',productItem)
+
+  const [updatedTitle, setUpdatedTitle] = useState<string>(''); 
+  const [updatedPrice, setUpdatedPrice] = useState<number | null>(null);
+  
+  if(productItem) {
+    console.log('productItem',productItem.id)
+  }
+
+  const handleDelete = async () => {
+    if (productItem) {
+      const answer = window.confirm('Do you want to delete this product?')
+
+      if(answer) {
+        const productId = productItem.id.toString();
+        await dispatch(deleteProduct(productId));
+      }
+    }
+  };
+
+  const handleUpdate = async () => {
+    if (productItem && (updatedTitle || updatedPrice)) {
+      await dispatch(updateProduct({
+        id: productItem.id.toString(),
+        title: updatedTitle || productItem.title,
+        price: updatedPrice || productItem.price
+      }));
+    }
+};
 
   useEffect(() => {
     if (id) {
@@ -40,6 +67,17 @@ const ProductInfo: React.FC = () => {
             <Typography variant="body1" color="textSecondary" component="p" align="center">
               {productItem.description}
             </Typography>
+            <TextField
+              label="New Title"
+              value={updatedTitle}
+              onChange={(e) => setUpdatedTitle(e.target.value)}
+            />
+            <TextField
+              label="New Price"
+              type="text"
+              value={updatedPrice ?? ''}
+              onChange={(e) => setUpdatedPrice(Number(e.target.value))}
+            />
           </CardContent>
         </Grid>
       )}
@@ -50,6 +88,13 @@ const ProductInfo: React.FC = () => {
           </IconButton>
         </Link>
       </Grid>
+      <Grid container direction="column" alignItems="center" spacing={3}>
+      <Grid item>
+        <Button onClick={handleDelete} variant="outlined" color="error">
+          Delete Product
+        </Button>
+      </Grid>
+    </Grid>
     </Grid>
   );
 };

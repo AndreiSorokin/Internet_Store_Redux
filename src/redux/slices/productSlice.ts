@@ -110,6 +110,38 @@ export const uploadImage = async (image: File): Promise<string> => {
    }
 };
 
+export const deleteProduct = createAsyncThunk(
+   'deleteProduct',
+   async (productId: string, { rejectWithValue }) => {
+      try {
+         await axios.delete(`${BASE_URL}/products/${productId}`);
+         return productId;
+      } catch (error) {
+      console.error('API Error:', error);
+      return rejectWithValue(error)
+      }
+   }
+);
+
+export const updateProduct = createAsyncThunk(
+   'updateProduct',
+   async ({ id, title, price }: { id: string, title: string, price: number }, { rejectWithValue }) => {
+      try {
+         const response = await axios.put(`${BASE_URL}/products/${id}`, {
+            title,
+            price
+         });
+         
+         console.log('API Response:', response.data);
+         return response.data;
+      } catch (error) {
+         console.error('API Error:', error);
+         return rejectWithValue(error)
+      }
+   }
+);
+
+
 
 const productsSlice = createSlice({
    name: 'products',
@@ -155,11 +187,13 @@ const productsSlice = createSlice({
    },
    extraReducers(builder) {
       builder.addCase(fetchProducts.fulfilled, (state, action) => {
-         return {
-            ...state,
-            products: action.payload,
-            loading: false,
-            error: null
+         if(!(action.payload instanceof Error)) {
+            return {
+               ...state,
+               products: action.payload,
+               loading: false,
+               error: null
+            }
          }
       });
       builder.addCase(fetchProducts.pending, (state, action) => {
@@ -198,7 +232,7 @@ const productsSlice = createSlice({
          return {
             ...state,
             loading: false,
-            user: action.payload
+            products: [...state.products, action.payload]
          }
       });
       builder.addCase(createProduct.pending, (state, action) => {
@@ -214,6 +248,10 @@ const productsSlice = createSlice({
             loading: false,
             error: action.error.message ?? "error"
          }
+      });
+      builder.addCase(deleteProduct.fulfilled, (state, action) => {
+         const productId = Number(action.payload);
+         state.products = state.products.filter(product => product.id !== productId);
       });
    }
 })

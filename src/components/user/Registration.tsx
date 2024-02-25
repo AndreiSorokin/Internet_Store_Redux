@@ -16,11 +16,13 @@ import { useState } from 'react'
 import { User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
 import { userRegistration, uploadAvatar } from '../../redux/slices/userSlice'
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 export default function Registration() {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -38,19 +40,21 @@ const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
+  if(!name || !email || !password || !avatar) {
+    return alert('Ensure that fill out att the fields')
+  }
+
   try {
     let avatarUrl = '';
     if (avatar) {
       const uploadedFileResponse = await dispatch(uploadAvatar(avatar));
-      console.log('File Upload Response:', uploadedFileResponse);
       avatarUrl = uploadedFileResponse.payload;
     }
 
-    console.log('Avatar URL:', avatarUrl);
-
     const newUser: User = { name, email, password, avatar: avatarUrl };
-    console.log('New User:', newUser);
     dispatch(userRegistration(newUser));
+    alert('Your account has been created successfully')
+    navigate('/auth/login');
   } catch (error) {
     console.error('Error:', error);
   }
@@ -150,7 +154,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/auth/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

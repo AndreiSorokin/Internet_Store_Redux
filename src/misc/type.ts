@@ -1,3 +1,10 @@
+export type Theme = "bright" | "dark"
+
+export type ThemeContextType = {
+   theme: Theme;
+   toggleTheme: () => void;
+}
+
 export type Category = {
    id: number;
    name: string;
@@ -48,10 +55,16 @@ export type User = {
    avatar: string;
 }
 
+export type LoggedInUser = User & {
+   role: "customer" | "admin";
+   id: number;
+}
+
 export type InitialStateUser = {
-   users: User[];
-   loading?: boolean;
-   error: string | null;
-   userInput: string;
-   isAuthenticated: User | null;
+   user: User | null
+}
+
+export type Credentials = {
+   email: string;
+   password: string;
 }

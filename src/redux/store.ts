@@ -13,4 +13,11 @@ const store = configureStore({
 export type AppState = ReturnType<typeof store.getState>;
 export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
+
+store.subscribe(() => {
+   const currentState = store.getState();
+   const userInformation = currentState.userRegister.user;
+   localStorage.setItem("userInformation", JSON.stringify(userInformation));
+});
+
 export default store;

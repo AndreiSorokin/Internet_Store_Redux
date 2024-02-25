@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { deleteProduct, fetchSingleProduct, updateProduct } from "../../redux/slices/productSlice";
 import { AppState, useAppDispatch } from "../../redux/store";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import { Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -11,6 +12,7 @@ const ProductInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const productItem = useSelector((state: AppState) => state.products.selectedProduct);
+  const navigate = useNavigate()
 
   const [updatedTitle, setUpdatedTitle] = useState<string>(''); 
   const [updatedPrice, setUpdatedPrice] = useState<number | null>(null);
@@ -27,7 +29,10 @@ const ProductInfo: React.FC = () => {
         const productId = productItem.id.toString();
         await dispatch(deleteProduct(productId));
       }
+
+      alert(`Product ${productItem.title.toString()} has been deleted`)
     }
+    navigate('/products')
   };
 
   const handleUpdate = async () => {
@@ -37,8 +42,10 @@ const ProductInfo: React.FC = () => {
         title: updatedTitle || productItem.title,
         price: updatedPrice || productItem.price
       }));
+      
+      await dispatch(fetchSingleProduct(productItem.id.toString()));
     }
-};
+  };
 
   useEffect(() => {
     if (id) {
@@ -78,6 +85,9 @@ const ProductInfo: React.FC = () => {
               value={updatedPrice ?? ''}
               onChange={(e) => setUpdatedPrice(Number(e.target.value))}
             />
+            <Button onClick={handleUpdate} variant="outlined" color="primary">
+              Update
+            </Button>
           </CardContent>
         </Grid>
       )}

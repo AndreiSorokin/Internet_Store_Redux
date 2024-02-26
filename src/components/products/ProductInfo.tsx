@@ -5,8 +5,9 @@ import { AppState, useAppDispatch } from "../../redux/store";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
-import { Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField } from "@mui/material";
+import { Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { addToCart } from "../../redux/slices/cartSlice";
 
 const ProductInfo: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -16,10 +17,8 @@ const ProductInfo: React.FC = () => {
 
   const [updatedTitle, setUpdatedTitle] = useState<string>(''); 
   const [updatedPrice, setUpdatedPrice] = useState<number | null>(null);
-  
-  if(productItem) {
-    console.log('productItem',productItem.id)
-  }
+  const [quantity, setQuantity] = useState<number | null>(null);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const handleDelete = async () => {
     if (productItem) {
@@ -53,6 +52,32 @@ const ProductInfo: React.FC = () => {
     }
   }, [dispatch, id]);
 
+  const handleAddToCart = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleConfirmAddToCart = () => {
+    if (productItem && quantity) {
+      dispatch(addToCart({ product: productItem, quantity: quantity }));
+      alert(`${quantity} ${productItem.title} added to cart!`);
+      setOpenDialog(false);
+
+      const cartItems = JSON.parse(localStorage.getItem("cartItems") || "");
+      const newItem = { productId: productItem.id, quantity: quantity };
+      const existingItemIndex = cartItems.findIndex((item: { productId: number }) => item.productId === productItem.id);
+      if (existingItemIndex !== -1) {
+        cartItems[existingItemIndex].quantity += quantity;
+      } else {
+        cartItems.push(newItem);
+      }
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }
+  };
+
   return (
     <Grid container direction="column" alignItems="center" spacing={3}>
       {productItem && (
@@ -74,6 +99,9 @@ const ProductInfo: React.FC = () => {
             <Typography variant="body1" color="textSecondary" component="p" align="center">
               {productItem.description}
             </Typography>
+            <Button onClick={handleAddToCart} variant="contained" color="primary">
+              Add to Cart
+            </Button>
             <TextField
               label="New Title"
               value={updatedTitle}
@@ -99,12 +127,28 @@ const ProductInfo: React.FC = () => {
         </Link>
       </Grid>
       <Grid container direction="column" alignItems="center" spacing={3}>
-      <Grid item>
-        <Button onClick={handleDelete} variant="outlined" color="error">
-          Delete Product
-        </Button>
+        <Grid item>
+          <Button onClick={handleDelete} variant="outlined" color="error">
+            Delete Product
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Select Quantity</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Quantity"
+            type="string"
+            value={quantity ?? ''}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            InputProps={{ inputProps: { min: 1 } }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleConfirmAddToCart} color="primary">Add to Cart</Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 };

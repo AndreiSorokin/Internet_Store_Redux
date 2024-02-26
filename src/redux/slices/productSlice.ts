@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialState, Product } from "../../misc/type";
+import { PayloadAction, createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { CartItem, InitialState, Product } from "../../misc/type";
 
 import axios from "axios";
 
@@ -142,14 +142,10 @@ export const updateProduct = createAsyncThunk(
 );
 
 
-
 const productsSlice = createSlice({
    name: 'products',
    initialState,
    reducers: {
-      getUserInput: (state, action) => {
-         state.userInput = action.payload
-      },
       filterByCategory: (state, action) => {
          const category = action.payload;
          state.selectedCategory = category;
@@ -256,6 +252,6 @@ const productsSlice = createSlice({
    }
 })
 
-export const { getUserInput, filterByCategory, setPriceFilter, sortByPrice } = productsSlice.actions
+export const { filterByCategory, setPriceFilter, sortByPrice } = productsSlice.actions
 const productsReducer = productsSlice.reducer;
 export default productsReducer;

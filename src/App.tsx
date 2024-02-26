@@ -1,11 +1,8 @@
-import React from 'react'
 import {
-  BrowserRouter as Router,
   Routes, Route
 } from 'react-router-dom'
 import "./App.css";
 
-import Cart from "./components/Cart";
 import NavBar from "./components/NavBar";
 import ProductsPage from './pages/ProductsPage';
 import LoginPage from './pages/LoginPage';
@@ -13,6 +10,7 @@ import RegisterPage from './pages/RegisterPage';
 import ItemPage from './pages/ItemPage';
 import CreateProductPage from './pages/CreateProductPage';
 import ProfilePage from './pages/ProfilePage';
+import CartPage from './pages/CartPage';
 
 function App() {
   return (
@@ -25,7 +23,7 @@ function App() {
         <Route path="/products" element={<ProductsPage/>}/>
         <Route path="/products/:id" element={<ItemPage/>}/>
         <Route path="/createNew" element={<CreateProductPage/>}/>
-        <Route path="/cart" element={<Cart/>}/>
+        <Route path="/cart" element={<CartPage/>}/>
       </Routes>
     </div>
   )

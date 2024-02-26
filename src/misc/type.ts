@@ -11,6 +11,14 @@ export type Category = {
    image: string;
 }
 
+export type Product = {
+   title: string;
+   price: number | null;
+   description: string;
+   categoryId: number | null;
+   images: string[];
+}
+
 export type Products = {
    id: number;
    title: string;
@@ -20,22 +28,15 @@ export type Products = {
    images: string[];
 }
 
-export type SingleProduct = {
-   id: number;
-   title: string;
-   price: number;
-   description: string;
-   category: Category;
-   images: string[];
+export type CartItem = {
+   product: Products;
+   quantity: number;
 }
 
-export type Product = {
-   title: string;
-   price: number | null;
-   description: string;
-   categoryId: number | null;
-   images: string[];
+export type CartState = {
+   items: CartItem[]
 }
+
 
 export type InitialState = {
    products: Products[];
@@ -61,7 +62,7 @@ export type LoggedInUser = User & {
 }
 
 export type InitialStateUser = {
-   user: User | null
+   user: User | null;
 }
 
 export type Credentials = {

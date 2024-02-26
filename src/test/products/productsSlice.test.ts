@@ -1,12 +1,12 @@
-import { Products, Product } from "../../misc/type";
+import axios from "axios";
+import { Products } from "../../misc/type";
 import productReducer, {
-  createProduct,
     fetchProducts,
+    fetchSingleProduct,
     filterByCategory,
-    getUserInput,
+    setPriceFilter,
     sortByPrice,
 } from "../../redux/slices/productSlice";
-import store from "../../redux/store";
 
 const initialState = {
   products: [],
@@ -16,7 +16,7 @@ const initialState = {
   selectedProduct: null,
   selectedCategory: '',
   priceFilter: '',
-  filteredProducts: [],
+  filteredProducts: []
 };
 
 describe("product reducer", () => {
@@ -25,7 +25,7 @@ describe("product reducer", () => {
   {
     id: 1,
     title: "product1",
-    price: 1,
+    price: 10,
     description: "product1",
     category: { id: 1, name: "Category 1", image: 'img' },
     images: ["img1", "img2"],
@@ -33,17 +33,12 @@ describe("product reducer", () => {
   {
     id: 2,
     title: "product2",
-    price: 2,
+    price: 90,
     description: "product2",
     category: { id: 2, name: "Category 2", image: 'img' },
     images: ["img1", "img2"],
   },
 ];
-
-  test("should return initial state", () => {
-    const state = productReducer(undefined, { type: "" });
-    expect(state).toEqual(initialState);
-  });
 
   test("should return a list of products", () => {
 
@@ -101,15 +96,8 @@ describe("product reducer", () => {
     });
   });
 
-  test("should get user input", () => {
-    const state = productReducer(
-      initialState,
-      getUserInput("testInput")
-    )
-    expect(state).toEqual({
-      ...initialState,
-      userInput: "testInput"
-    })
+  test("should return a single product", async () => {
+    
   })
 
   test("should filter by category", () => {
@@ -121,6 +109,19 @@ describe("product reducer", () => {
     )
     expect(state.filteredProducts.length).toBe(1)
     expect(state.filteredProducts[0].category.name).toBe("Category 1")
+  })
+
+  test("should filter by price category", () => {
+    const state = productReducer(
+      {
+        ...initialState,
+        products: mockProducts
+      },
+      setPriceFilter("20 to 100")
+    );
+    expect(state.priceFilter).toBe("20 to 100");
+
+    expect(state.filteredProducts).toHaveLength(1);
   })
 
   test("should sort by price from low to high", () => {

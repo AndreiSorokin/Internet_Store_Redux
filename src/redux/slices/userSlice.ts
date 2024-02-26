@@ -65,7 +65,7 @@ export const userLogin = createAsyncThunk(
       try {
          const response = await axios.post(`${BASE_URL}/auth/login/`, credentials);
          console.log('Login Response:', response.data);
-         return response.data.token;
+         return response.data;
       } catch (error) {
          console.error('Login Error:', error);
          return rejectWithValue(error);
@@ -93,11 +93,9 @@ const userSlice = createSlice({
       getUserInput: (state, action) => {
          state.user = action.payload;
       },
-      userLogout: (state) => {
-         return {
-            ...initialState,
-            user: null
-         };
+      clearUser: (state) => {
+         state.user = null;
+         localStorage.removeItem('userInformation');
       },
    },
    extraReducers(builder) {
@@ -147,11 +145,12 @@ const userSlice = createSlice({
       builder.addCase(userLogout.fulfilled, (state) => {
          return {
             ...state,
-            user: null
+            // user: null
          };
       });
    }
 })
 
+export const { getUserInput, clearUser } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;

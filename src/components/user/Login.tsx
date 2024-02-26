@@ -16,6 +16,7 @@ import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { userLogin } from '../../redux/slices/userSlice';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUserInput } from '../../redux/slices/userSlice';
 
 export default function Login() {
   const user = useAppSelector((state: AppState) => state.userRegister.user)
@@ -29,13 +30,17 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(userLogin({ email, password })).then((response: any) => {
-      if(!user) {
-        return alert('incorrect email or password')
+      if(response.payload && response.payload.access_token) {
+        localStorage.setItem('userInformation', JSON.stringify(response.payload));
+        dispatch(getUserInput(response.payload));
+        navigate('/');
+      } else {
+        alert('Incorrect email or password');
       }
-      navigate('/');
+    }).catch((error: any) => {
+      console.error('Login error: ', error);
     });
   };
-
 
   function Copyright(props: any) {
     return (

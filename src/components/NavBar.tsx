@@ -6,7 +6,7 @@ import { useTheme } from './contextAPI/ThemeContext';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import { userLogout } from '../redux/slices/userSlice';
+import { clearUser, userLogout } from '../redux/slices/userSlice';
 
 const Navbar = () => {
    const user = useAppSelector((state) => state.userRegister.user);
@@ -20,7 +20,7 @@ const Navbar = () => {
    };
 
    const handleLogout = () => {
-      dispatch(userLogout());
+      dispatch(clearUser());
    };
 
    return (
@@ -41,15 +41,19 @@ const Navbar = () => {
                      Menu
                   </Button>
                   <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
-                     <Link to="/">
-                        <Button>Profile</Button>
-                     </Link>
+                     {user &&
+                        <Link to="/">
+                           <Button>Profile</Button>
+                        </Link>   
+                     }
                      <Link to="/products">
                         <Button>Products</Button>
                      </Link>
-                     <Link to="/cart">
-                        <Button>Cart</Button>
-                     </Link>
+                     {user &&
+                        <Link to="/cart">
+                           <Button>Cart</Button>
+                        </Link>
+                     }
                   </ButtonGroup>
                   {user ? (
                      <Button onClick={handleLogout} sx={{ display: { xs: 'none', md: 'block' } }}>Log out</Button>
@@ -74,15 +78,19 @@ const Navbar = () => {
                            Products
                         </Button>
                      </Link>
-                     <Link to="/cart">
-                        <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
-                           Cart
-                        </Button>
-                     </Link>
+                     {user && // Only render the "Cart" button if user is logged in
+                        <Link to="/cart">
+                           <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
+                              Cart
+                           </Button>
+                        </Link>
+                     }
                      {user ? (
-                        <Button variant="outlined" onClick={handleLogout} style={{ color: theme === "bright" ? "black" : "white" }}>
-                           Log out
-                        </Button>
+                        <Link to="/auth/login">
+                           <Button variant="outlined" onClick={handleLogout} style={{ color: theme === "bright" ? "black" : "white" }}>
+                              Log out
+                           </Button>
+                        </Link>
                      ) : (
                         <Link to="/auth/login">
                            <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>

@@ -63,6 +63,8 @@ export type LoggedInUser = User & {
 
 export type InitialStateUser = {
    user: User | null;
+   loading?: boolean,
+   error?: string | null,
 }
 
 export type Credentials = {

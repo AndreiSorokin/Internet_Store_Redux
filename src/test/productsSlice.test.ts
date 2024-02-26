@@ -1,12 +1,12 @@
 import axios from "axios";
-import { Products } from "../../misc/type";
+import { Products } from "../misc/type";
 import productReducer, {
     fetchProducts,
     fetchSingleProduct,
     filterByCategory,
     setPriceFilter,
     sortByPrice,
-} from "../../redux/slices/productSlice";
+} from "../redux/slices/productSlice";
 
 const initialState = {
   products: [],
@@ -96,9 +96,22 @@ describe("product reducer", () => {
     });
   });
 
-  test("should return a single product", async () => {
+  test("should fetch a single product", async () => {
+    // const mockProduct = {
+    //   id: 1,
+    //   title: "product1",
+    //   price: 10,
+    //   description: "product1",
+    //   category: { id: 1, name: "Category 1", image: 'img' },
+    //   images: ["img1", "img2"],
+    // };
+
+    // jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockProduct });
     
-  })
+    // const resultAction = await fetchSingleProduct('1');
+    // expect(resultAction.type).toBe(fetchSingleProduct.fulfilled.type);
+    // expect(resultAction.payload).toEqual(mockProduct);
+  });
 
   test("should filter by category", () => {
     const state = productReducer({

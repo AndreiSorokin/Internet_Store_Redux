@@ -13,7 +13,9 @@ console.log("User information from local storage:", data);
 
 
 const initialState: InitialStateUser = {
-   user: userState
+   user: userState,
+   loading: false,
+   error: null,
 };
 
 const BASE_URL = 'https://api.escuelajs.co/api/v1'
@@ -94,8 +96,8 @@ const userSlice = createSlice({
          state.user = action.payload;
       },
       clearUser: (state) => {
-         state.user = null;
          localStorage.removeItem('userInformation');
+         state.user = null;
       },
    },
    extraReducers(builder) {
@@ -103,6 +105,7 @@ const userSlice = createSlice({
          return {
             ...state,
             loading: false,
+            error: null,
             user: action.payload
          }
       })
@@ -145,7 +148,24 @@ const userSlice = createSlice({
       builder.addCase(userLogout.fulfilled, (state) => {
          return {
             ...state,
-            // user: null
+            error: null,
+            loading: false,
+            user: null
+         };
+      });
+      builder.addCase(userLogout.pending, (state) => {
+         return {
+            ...state,
+            error: null,
+            loading: true,
+            user: state.user
+         };
+      });
+      builder.addCase(userLogout.rejected, (state, action) => {
+         return {
+            ...state,
+            error: action.error.message ?? "error",
+            loading: false,
          };
       });
    }

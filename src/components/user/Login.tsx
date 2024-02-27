@@ -17,8 +17,11 @@ import { userLogin } from '../../redux/slices/userSlice';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserInput } from '../../redux/slices/userSlice';
+import { useTheme } from '../contextAPI/ThemeContext';
 
 export default function Login() {
+  const { theme } = useTheme()
+
   const user = useAppSelector((state: AppState) => state.userRegister.user)
   const defaultTheme = createTheme();
 
@@ -56,7 +59,12 @@ export default function Login() {
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <div style={{
+      backgroundColor: theme === "bright" ? "white" : "black",
+      color: theme === "bright" ? "black" : "white",
+      height: '120vh',
+      paddingTop: '20vh'
+    }}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -84,6 +92,14 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
               autoFocus
+              InputProps={{
+                style: {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+              }}
+              sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                color: theme === 'bright' ? 'black' : 'white',
+              } }}
             />
             <TextField
               margin="normal"
@@ -96,10 +112,21 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               autoComplete="current-password"
+              InputProps={{
+                style: {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+              }}
+              sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                color: theme === 'bright' ? 'black' : 'white'
+              } }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
+              sx={{'svg': {
+                color: theme === 'bright' ? 'black' : 'white',
+              }}}
             />
             <Button
               type="submit"
@@ -125,6 +152,6 @@ export default function Login() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
+    </div>
   );
 }

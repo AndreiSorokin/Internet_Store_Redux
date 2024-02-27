@@ -28,16 +28,6 @@ export type Products = {
    images: string[];
 }
 
-export type CartItem = {
-   product: Products;
-   quantity: number;
-}
-
-export type CartState = {
-   items: CartItem[]
-}
-
-
 export type InitialState = {
    products: Products[];
    userInput: string;
@@ -48,6 +38,15 @@ export type InitialState = {
    priceFilter: string;
    filteredProducts: Products[];
 };
+
+export type CartItem = {
+   product: Products;
+   quantity: number;
+}
+
+export type CartState = {
+   items: CartItem[]
+}
 
 export type User = {
    email: string;

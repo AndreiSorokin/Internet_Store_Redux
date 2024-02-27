@@ -3,9 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState, useAppDispatch } from '../redux/store';
 import { CartItem } from '../misc/type';
 import { updateCartItemQuantity, removeFromCart } from '../redux/slices/cartSlice';
+import { useTheme } from '../components/contextAPI/ThemeContext'
+
 import { Button } from '@mui/material';
 
 const CartPage: React.FC = () => {
+  const { theme } = useTheme();
+
   const cartItems = useSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
 
@@ -33,8 +37,17 @@ const CartPage: React.FC = () => {
     }
   };
 
+  const totalPrice = cartItems.reduce((total, cartItem) => {
+    return total + cartItem.product.price * cartItem.quantity;
+  }, 0);
+  
   return (
-    <div>
+    <div style={{
+      backgroundColor: theme === "bright" ? "white" : "black",
+      color: theme === "bright" ? "black" : "white",
+      height: '100vh',
+      paddingTop: '20vh'
+    }}>
       <h2>Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
@@ -55,6 +68,7 @@ const CartPage: React.FC = () => {
           ))}
         </ul>
       )}
+      <p>Total Price: ${totalPrice.toFixed(2)}</p>
     </div>
   );
 };

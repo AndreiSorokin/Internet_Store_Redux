@@ -3,8 +3,11 @@ import { useAppDispatch } from '../../redux/store'
 import { Product } from '../../misc/type'
 import { Button, TextField } from '@mui/material'
 import { createProduct, uploadImage  } from '../../redux/slices/productSlice'
+import { useTheme } from '../contextAPI/ThemeContext'
 
 export default function CreateProduct() {
+   const { theme } = useTheme()
+
    const dispatch = useAppDispatch()
 
    const [title, setTitle] = useState('')
@@ -50,47 +53,86 @@ export default function CreateProduct() {
    
    
    return (
-      <form onSubmit={handleSubmit}>
-         <TextField
-            label="Title"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-         />
-         <TextField
-            label="Price"
-            type="number"
-            value={price ?? ''}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-         />
-         <TextField
-            label="Description"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-            fullWidth
-            multiline
-            rows={4}
-            margin="normal"
-            variant="outlined"
-         />
-         <TextField
-            label="Category ID"
-            type="number"
-            value={categoryId ?? ''}
-            onChange={(e) => setCategoryId(parseInt(e.target.value))}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-         />
-         <input type="file" onChange={handleImagesChange} accept="image/*" multiple />
-         <Button type="submit" variant="contained" color="primary">
-            Create Product
-         </Button>
-      </form>
+      <div style={{
+         backgroundColor: theme === "bright" ? "white" : "black",
+         color: theme === "bright" ? "black" : "white",
+         height: '100vh',
+         paddingTop: '20vh'
+      }}>
+         <form onSubmit={handleSubmit}>
+            <TextField
+               label="Title"
+               onChange={(e) => setTitle(e.target.value)}
+               value={title}
+               fullWidth
+               margin="normal"
+               variant="outlined"
+               InputProps={{
+                  style: {
+                     color: theme === 'bright' ? 'black' : 'white',
+                  },
+               }}
+               sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+               } }}
+            />
+            <TextField
+               label="Price"
+               type="number"
+               value={price ?? ''}
+               onChange={(e) => setPrice(parseFloat(e.target.value))}
+               fullWidth
+               margin="normal"
+               variant="outlined"
+               InputProps={{
+                  style: {
+                     color: theme === 'bright' ? 'black' : 'white',
+                  },
+               }}
+               sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+               } }}
+            />
+            <TextField
+               label="Description"
+               onChange={(e) => setDescription(e.target.value)}
+               value={description}
+               fullWidth
+               multiline
+               rows={4}
+               margin="normal"
+               variant="outlined"
+               InputProps={{
+                  style: {
+                     color: theme === 'bright' ? 'black' : 'white',
+                  },
+               }}
+               sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+               } }}
+            />
+            <TextField
+               label="Category ID"
+               type="number"
+               value={categoryId ?? ''}
+               onChange={(e) => setCategoryId(parseInt(e.target.value))}
+               fullWidth
+               margin="normal"
+               variant="outlined"
+               InputProps={{
+                  style: {
+                     color: theme === 'bright' ? 'black' : 'white',
+                  },
+               }}
+               sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+               } }}
+            />
+            <input type="file" onChange={handleImagesChange} accept="image/*" multiple />
+            <Button type="submit" variant="contained" color="primary">
+               Create Product
+            </Button>
+         </form>
+      </div>
    );
 }

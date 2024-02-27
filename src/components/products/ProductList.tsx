@@ -12,9 +12,12 @@ import Grid from '@mui/material/Grid';
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { useTheme } from "../contextAPI/ThemeContext";
 
 
 export default function ProductList() {
+  const { theme } = useTheme()
+  
   const dispatch = useAppDispatch();
 
   const productList = useAppSelector(state => state.products.products);
@@ -61,7 +64,13 @@ export default function ProductList() {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+    <div style={{
+      backgroundColor: theme === "bright" ? "white" : "black",
+      color: theme === "bright" ? "black" : "white",
+      height: '300vh',
+      paddingTop: '20vh'
+    }} >
+      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
       <Link to={'/createNew'}>
         <Button>Create new</Button>
       </Link>
@@ -69,8 +78,16 @@ export default function ProductList() {
         label="Search Products"
         variant="outlined"
         value={searchQuery}
+        placeholder="Search Products"
         onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ margin: "2vh", width: "80%" }}
+        InputProps={{
+          style: {
+            color: theme === 'bright' ? 'black' : 'white',
+          },
+        }}
+        sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+          color: theme === 'bright' ? 'black' : 'white',
+        } }}
       />
       <Pagination
         count={Math.ceil(filteredProducts.length / itemsPerPage)}
@@ -78,18 +95,31 @@ export default function ProductList() {
         shape="rounded"
         page={currentPage}
         onChange={handlePageChange}
-        style={{ margin: "2vh" }}
+        sx={{
+          margin: "2vh",
+          'button': {
+            color: theme === 'bright' ? 'black' : 'white',
+            border: theme === 'bright' ? '1px solid white' : '1px solid white',
+          }
+        }}
       />
       <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
         <FormControl style={{ margin: "1vh" }}>
-          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+          <InputLabel style={{ color: theme === 'bright' ? 'black' : 'white' }} id="demo-simple-select-label">Category</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={selectedCategory}
             label="Category"
             onChange={handleCategoryChange}
-            style={{ minWidth: "100px" }}
+            sx={{
+              margin: "2vh",
+              'div': {
+                minWidth: "100px",
+                color: theme === 'bright' ? 'black' : 'white',
+                border: theme === 'bright' ? '1px solid white' : '1px solid white',
+              }
+            }}
           >
             {uniqueCategories.map(category => (
               <MenuItem key={category} value={category}>{category}</MenuItem>
@@ -97,14 +127,14 @@ export default function ProductList() {
           </Select>
         </FormControl>
         <FormControl style={{ margin: "1vh" }}>
-          <InputLabel id="price-range-label">Price Range</InputLabel>
+          <InputLabel style={{ color: theme === 'bright' ? 'black' : 'white' }} id="price-range-label">Price Range</InputLabel>
           <Select
             labelId="price-range-label"
             id="price-range-select"
             value={priceFilter}
             label="Price Range"
             onChange={handlePriceFilterChange}
-            style={{ minWidth: "150px" }}
+            style={{ minWidth: "150px", border: theme === 'bright' ? 'none' : '1px solid white' }}
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="Under 20">Under $20</MenuItem>
@@ -136,5 +166,6 @@ export default function ProductList() {
         ))}
       </Grid>
     </Box>
+    </div>
   );
 }

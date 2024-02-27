@@ -17,10 +17,13 @@ import { User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
 import { userRegistration, uploadAvatar } from '../../redux/slices/userSlice'
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../contextAPI/ThemeContext';
 
 const defaultTheme = createTheme();
 
 export default function Registration() {
+  const { theme } = useTheme()
+
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -75,7 +78,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <div style={{
+      backgroundColor: theme === "bright" ? "white" : "black",
+      color: theme === "bright" ? "black" : "white",
+      height: '120vh',
+      paddingTop: '20vh'
+    }} >
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -103,6 +111,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  InputProps={{
+                    style: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                    },
+                  }}
+                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                    color: theme === 'bright' ? 'black' : 'white',
+                  } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -115,6 +131,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  InputProps={{
+                    style: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                    },
+                  }}
+                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                    color: theme === 'bright' ? 'black' : 'white',
+                  } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,6 +152,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  InputProps={{
+                    style: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                    },
+                  }}
+                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                    color: theme === 'bright' ? 'black' : 'white',
+                  } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -141,6 +173,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
+                  sx={{'svg': {
+                    color: theme === 'bright' ? 'black' : 'white',
+                  }}}
                 />
               </Grid>
             </Grid>
@@ -163,6 +198,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
+    </div>
   );
 }

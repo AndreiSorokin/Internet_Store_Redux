@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton } from '@mui/material';
 import ButtonGroup from '@mui/material-next/ButtonGroup';
-import { Link } from 'react-router-dom';
-import { useTheme } from './contextAPI/ThemeContext';
+import { Link, useNavigate } from 'react-router-dom';
+import ThemeProvider, { useTheme } from './contextAPI/ThemeContext';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAppDispatch, useAppSelector } from '../redux/store';
@@ -11,30 +11,36 @@ import { clearUser, userLogout } from '../redux/slices/userSlice';
 const Navbar = () => {
    const user = useAppSelector((state) => state.userRegister.user);
    const dispatch = useAppDispatch();
+   const navigate = useNavigate()
    
    const [showMenu, setShowMenu] = useState(false);
    const { toggleTheme, theme } = useTheme();
+
+   const boxShadowLight = '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)';
+   const boxShadowDark = '0px 2px 4px -1px rgba(255,255,255,0.2), 0px 4px 5px 0px rgba(255,255,255,0.14), 0px 1px 10px 0px rgba(255,255,255,0.12)';
+
+   const boxShadow = theme === 'dark' ? boxShadowDark : boxShadowLight;
 
    const toggleMenu = () => {
       setShowMenu(!showMenu);
    };
 
    const handleLogout = () => {
-      dispatch(clearUser());
+      dispatch(userLogout());
+      navigate('/auth/login');
    };
 
    return (
-      <div style={{
-         backgroundColor: theme === "bright" ? "white" : "black",
-         color: theme === "bright" ? "black" : "white",
-         }}>
-         <p style={{height:'50px'}}>{theme}</p>
-         <div style={{ marginBottom: '100px' }}>
-            <AppBar sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+      <ThemeProvider>
+         <div>
+            <AppBar style={{
+               backgroundColor: theme === "bright" ? "white" : "black",
+               color: theme === "bright" ? "black" : "white", boxShadow
+               }} >
                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="h6" component="div">
                      <div style={{ fontSize: '30px' }}>
-                        <span style={{ color: 'white' }}>T</span>he <span style={{ color: 'white' }}>S</span>tore
+                        <span>T</span>he <span>S</span>tore
                      </div>
                   </Typography>
                   <Button onClick={toggleMenu} sx={{ display: { xs: 'block', md: 'none' } }}>
@@ -62,8 +68,8 @@ const Navbar = () => {
                         <Button sx={{ display: { xs: 'none', md: 'block' } }}>Log in</Button>
                      </Link>
                   )}
-                  <IconButton onClick={toggleTheme} sx={{ color: 'white' }}>
-                     {theme === 'bright' ? <Brightness4Icon /> : <Brightness7Icon />}
+                  <IconButton onClick={toggleTheme}>
+                     {theme === 'bright' ? <Brightness4Icon /> : <Brightness7Icon sx={{ color: 'white' }} />}
                   </IconButton>
                </Toolbar>
                {showMenu && (
@@ -78,7 +84,7 @@ const Navbar = () => {
                            Products
                         </Button>
                      </Link>
-                     {user && // Only render the "Cart" button if user is logged in
+                     {user &&
                         <Link to="/cart">
                            <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
                               Cart
@@ -102,7 +108,7 @@ const Navbar = () => {
                )}
             </AppBar>
          </div>
-      </div>
+      </ThemeProvider>
    );
 };
 

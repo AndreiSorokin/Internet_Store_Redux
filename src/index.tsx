@@ -12,16 +12,21 @@ import App from './App';
 import store from "./redux/store";
 import reportWebVitals from './reportWebVitals';
 import ThemeProvider from './components/contextAPI/ThemeContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
+// const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <ThemeProvider>
-          <App />
+          {/* <GoogleOAuthProvider clientId={clientId}> */}
+            <App />
+          {/* </GoogleOAuthProvider> */}
         </ThemeProvider>
       </Provider>
     </BrowserRouter>

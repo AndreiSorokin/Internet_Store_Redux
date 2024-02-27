@@ -18,7 +18,7 @@ const initialState: InitialStateUser = {
    error: null,
 };
 
-const BASE_URL = 'https://api.escuelajs.co/api/v1'
+const BASE_URL = 'https://api.escuelajs.co/api/v1';
 
 export const userRegistration = createAsyncThunk(
    'userRegistration',

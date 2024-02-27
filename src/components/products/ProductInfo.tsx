@@ -8,8 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { addToCart } from "../../redux/slices/cartSlice";
+import { useTheme } from "../contextAPI/ThemeContext";
 
 const ProductInfo: React.FC = () => {
+  const { theme } = useTheme()
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const productItem = useSelector((state: AppState) => state.products.selectedProduct);
@@ -66,7 +68,7 @@ const ProductInfo: React.FC = () => {
       alert(`${quantity} ${productItem.title} added to cart!`);
       setOpenDialog(false);
 
-      const cartItems = JSON.parse(localStorage.getItem("cartItems") || "");
+      const cartItems = JSON.parse(localStorage.getItem("cartInformation") || "");
       const newItem = { productId: productItem.id, quantity: quantity };
       const existingItemIndex = cartItems.findIndex((item: { productId: number }) => item.productId === productItem.id);
       if (existingItemIndex !== -1) {
@@ -79,7 +81,12 @@ const ProductInfo: React.FC = () => {
   };
 
   return (
-    <Grid container direction="column" alignItems="center" spacing={3}>
+    <Grid style={{
+      backgroundColor: theme === "bright" ? "white" : "black",
+      color: theme === "bright" ? "black" : "white",
+      height: '120vh',
+      paddingTop: '20vh'
+    }} container direction="column" alignItems="center" spacing={3}>
       {productItem && (
         <Grid item>
           <CardContent>
@@ -96,7 +103,7 @@ const ProductInfo: React.FC = () => {
             <Typography gutterBottom variant="h6" component="p" align="center">
               Price: ${productItem.price}
             </Typography>
-            <Typography variant="body1" color="textSecondary" component="p" align="center">
+            <Typography variant="body1" color="textSecondary" component="p" align="center" sx={{color: theme === 'bright' ? 'black' : 'white'}}>
               {productItem.description}
             </Typography>
             <Button onClick={handleAddToCart} variant="contained" color="primary">
@@ -106,12 +113,22 @@ const ProductInfo: React.FC = () => {
               label="New Title"
               value={updatedTitle}
               onChange={(e) => setUpdatedTitle(e.target.value)}
-            />
+              InputProps={{
+                style: {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+              }}
+              sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                color: theme === 'bright' ? 'black' : 'white',
+              } }} />
             <TextField
               label="New Price"
               type="text"
               value={updatedPrice ?? ''}
               onChange={(e) => setUpdatedPrice(Number(e.target.value))}
+              sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                color: theme === 'bright' ? 'black' : 'white',
+              } }}
             />
             <Button onClick={handleUpdate} variant="outlined" color="primary">
               Update
@@ -121,7 +138,7 @@ const ProductInfo: React.FC = () => {
       )}
       <Grid item>
         <Link to="/products" style={{ textDecoration: "none" }}>
-          <IconButton>
+          <IconButton sx={{color: theme === 'bright' ? 'black' : 'white'}}>
             <ArrowBackIcon />Back
           </IconButton>
         </Link>

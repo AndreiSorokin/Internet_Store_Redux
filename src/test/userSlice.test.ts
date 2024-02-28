@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { User } from '../misc/type'
-import userReducer, { clearUser, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
+import userReducer, { clearUser, getUserInput, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 
 const userState: User | null = null;
@@ -49,7 +49,6 @@ describe("user reducer", () => {
          });
       });
       
-
       test("should login", async () => {
          const credentials = {
             email: 'a@a.a',
@@ -76,7 +75,6 @@ describe("user reducer", () => {
          });
       });
       
-   
       test("should logout", async () => {
          const localStorageRemoveItemMock = jest.fn();
          global.localStorage.removeItem = localStorageRemoveItemMock.mockReturnValue(undefined);
@@ -96,6 +94,46 @@ describe("user reducer", () => {
          const stateAfterClearUser = userReducer(stateAfterLogout, clearUser());
    
          expect(stateAfterClearUser.user).toBeNull();
+      });
+
+      test("should get user input", () => {
+         const userInput = {
+            email: 'test@example.com',
+            password: 'testpassword',
+            name: 'Test User',
+            avatar: 'avatar-url'
+         };
+      
+         const state = userReducer(
+            initialState,
+            getUserInput(userInput)
+         );
+      
+         expect(state).toEqual(
+            {
+               user: userInput,
+               loading: false,
+               error: null 
+            }
+         )
+      })
+
+      test("should clear a user", () => {
+         const localStorageMock = {
+            removeItem: jest.fn(),
+         };
+         Object.defineProperty(window, 'localStorage', {
+            value: localStorageMock,
+         });
+         
+         const state = userReducer(initialState, clearUser());
+   
+         expect(localStorageMock.removeItem).toHaveBeenCalledWith('userInformation');
+         expect(state).toEqual({
+            user: null,
+            loading: false,
+            error: null
+         });
       });
    })
 

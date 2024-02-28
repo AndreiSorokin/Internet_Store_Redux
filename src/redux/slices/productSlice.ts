@@ -132,7 +132,7 @@ export const updateProduct = createAsyncThunk(
             price
          });
          
-         console.log('API Response:', response.data);
+         console.log('API Response for updating products:', response.data);
          return response.data;
       } catch (error) {
          console.error('API Error:', error);
@@ -247,8 +247,52 @@ const productsSlice = createSlice({
       });
       builder.addCase(deleteProduct.fulfilled, (state, action) => {
          const productId = Number(action.payload);
-         state.products = state.products.filter(product => product.id !== productId);
+         return {
+            ...state,
+            loading: false,
+            error: null,
+            products: state.products.filter(product => product.id !== productId)
+         }
       });
+      builder.addCase(deleteProduct.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         }
+      });
+      builder.addCase(deleteProduct.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      });
+      builder.addCase(updateProduct.fulfilled, (state, action) => {
+         const updatedProduct = action.payload;
+         const updatedProducts = state.products.map(product =>
+            product.id === updatedProduct.id ? updatedProduct : product
+         );
+         return {
+            ...state,
+            loading: false,
+            products: updatedProducts
+         };
+      });
+      builder.addCase(updateProduct.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         }
+      });
+      builder.addCase(updateProduct.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      })
    }
 })
 

@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -16,10 +15,8 @@ import { useState } from 'react'
 import { User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
 import { userRegistration, uploadAvatar } from '../../redux/slices/userSlice'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contextAPI/ThemeContext';
-
-const defaultTheme = createTheme();
 
 export default function Registration() {
   const { theme } = useTheme()
@@ -57,7 +54,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const newUser: User = { name, email, password, avatar: avatarUrl };
     dispatch(userRegistration(newUser));
     alert('Your account has been created successfully')
-    navigate('/auth/login');
+    navigate('/');
   } catch (error) {
     console.error('Error:', error);
   }
@@ -67,7 +64,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
+        <Link color="inherit" to="https://mui.com/">
           Your Website
         </Link>{' '}
         {new Date().getFullYear()}
@@ -189,7 +186,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/auth/login" variant="body2">
+                <Link to="/auth/login">
                   Already have an account? Sign in
                 </Link>
               </Grid>

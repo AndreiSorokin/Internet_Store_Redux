@@ -16,10 +16,12 @@ export type AppState = ReturnType<typeof store.getState>;
 export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
+
 store.subscribe(() => {
    const currentState = store.getState();
+   console.log('store state',currentState);
    const userInformation = currentState.userRegister.user;
-   const cartInformation = currentState.cart.items
+   const cartInformation = currentState.cart.items;
 
    localStorage.setItem("userInformation", JSON.stringify(userInformation));
    localStorage.setItem("cartInformation", JSON.stringify(cartInformation));

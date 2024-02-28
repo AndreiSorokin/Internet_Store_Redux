@@ -5,6 +5,15 @@ const initialState: CartState = {
    items: [],
 };
 
+let cartState: CartState | null = null;
+const data = localStorage.getItem("cartInformation");
+
+if (data) {
+   cartState = JSON.parse(data);
+}
+
+console.log("User information from local storage:", data);
+
 const cartSlice = createSlice({
    name: 'cart',
    initialState,

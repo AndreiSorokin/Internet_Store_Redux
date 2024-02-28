@@ -24,6 +24,7 @@ export default function ProfilePage() {
         </Link>
       </div>
   }
+  console.log('user',user)
   return (
     <div style={{
       backgroundColor: theme === "bright" ? "white" : "black",

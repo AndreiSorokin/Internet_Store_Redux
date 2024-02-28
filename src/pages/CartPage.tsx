@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState, useAppDispatch } from '../redux/store';
 import { CartItem } from '../misc/type';
@@ -12,6 +12,13 @@ const CartPage: React.FC = () => {
 
   const cartItems = useSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems) {
+      dispatch(updateCartItemQuantity(JSON.parse(storedCartItems)));
+    }
+  }, [dispatch]);
 
   const handleIncrementQuantity = (productId: number) => {
     const cartItem = cartItems.find(item => item.product.id === productId);

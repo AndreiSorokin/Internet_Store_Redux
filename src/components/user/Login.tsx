@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -15,7 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { userLogin } from '../../redux/slices/userSlice';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getUserInput } from '../../redux/slices/userSlice';
 import { useTheme } from '../contextAPI/ThemeContext';
 
@@ -49,7 +48,7 @@ export default function Login() {
     return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
+        <Link color="inherit" to="https://mui.com/">
           Your Website
         </Link>{' '}
         {new Date().getFullYear()}
@@ -138,12 +137,12 @@ export default function Login() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link to="#">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/registration" variant="body2">
+                <Link to="/registration">
                   Don't have an account? Sign Up
                 </Link>
               </Grid>

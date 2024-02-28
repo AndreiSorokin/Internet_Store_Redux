@@ -76,7 +76,7 @@ const ProductInfo: React.FC = () => {
       } else {
         cartItems.push(newItem);
       }
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      localStorage.setItem("cartInformation", JSON.stringify(cartItems));
     }
   };
 

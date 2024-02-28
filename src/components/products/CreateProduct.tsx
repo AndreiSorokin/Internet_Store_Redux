@@ -4,9 +4,14 @@ import { Product } from '../../misc/type'
 import { Button, TextField } from '@mui/material'
 import { createProduct, uploadImage  } from '../../redux/slices/productSlice'
 import { useTheme } from '../contextAPI/ThemeContext'
+import useSuccsessMessage from '../../hooks/SuccsessMessage'
+import useErrorMessage from '../../hooks/ErrorMessage'
 
 export default function CreateProduct() {
    const { theme } = useTheme()
+   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage()
+   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
+
 
    const dispatch = useAppDispatch()
 
@@ -20,7 +25,7 @@ export default function CreateProduct() {
       e.preventDefault();
    
       if (!title || !price || !description || !categoryId || images.length === 0) {
-         return alert('Please make sure that you have added title, price, description, category ID, and images');
+         return showError('Please make sure that you have added title, price, description, category ID, and images');
       }
    
       try {
@@ -38,6 +43,7 @@ export default function CreateProduct() {
             images: uploadedImageUrls,
          };
          dispatch(createProduct(newProduct));
+         showSuccessMessage('Product added successfully')
          console.log('New Product:', JSON.stringify(newProduct));
       } catch (error) {
          console.error('Error creating product:', error);
@@ -59,6 +65,8 @@ export default function CreateProduct() {
          height: '100vh',
          paddingTop: '20vh'
       }}>
+         {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
+         {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
          <form onSubmit={handleSubmit}>
             <TextField
                label="Title"

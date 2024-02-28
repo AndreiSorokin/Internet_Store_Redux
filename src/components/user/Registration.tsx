@@ -17,9 +17,11 @@ import { useAppDispatch } from '../../redux/store';
 import { userRegistration, uploadAvatar } from '../../redux/slices/userSlice'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contextAPI/ThemeContext';
+import useErrorMessage from '../../hooks/ErrorMessage';
 
 export default function Registration() {
   const { theme } = useTheme()
+  const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -41,7 +43,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
   if(!name || !email || !password || !avatar) {
-    return alert('Ensure that fill out att the fields')
+    return showError('Ensure that fill out att the fields')
   }
 
   try {
@@ -81,6 +83,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       height: '120vh',
       paddingTop: '20vh'
     }} >
+      {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

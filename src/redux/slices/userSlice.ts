@@ -1,6 +1,6 @@
 import axios from "axios";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialStateUser, User, Credentials } from "../../misc/type";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { InitialStateUser, User, Credentials, LoggedInUser } from "../../misc/type";
 
 let userState: User | null = null;
 const data = localStorage.getItem("userInformation");
@@ -68,13 +68,16 @@ export const userLogin = createAsyncThunk(
          const response = await axios.post(`${BASE_URL}/auth/login/`, credentials);
          console.log('Login Response:', response.data);
          localStorage.setItem('token', response.data.access_token);
-         return response.data;
+         const { role, name, avatar } = response.data; // Assuming 'name' and 'avatar' are directly present in response data
+         const user = { ...response.data, role, name, avatar };
+         return user;
       } catch (error) {
          console.error('Login Error:', error);
          return rejectWithValue(error);
       }
    }
 );
+
 
 export const userLogout = createAsyncThunk(
    'userLogout',
@@ -94,6 +97,9 @@ const userSlice = createSlice({
    initialState,
    reducers: {
       getUserInput: (state, action) => {
+         state.user = action.payload;
+      },
+      setUser: (state, action: PayloadAction<LoggedInUser>) => {
          state.user = action.payload;
       },
       clearUser: (state) => {
@@ -172,6 +178,6 @@ const userSlice = createSlice({
    }
 })
 
-export const { getUserInput, clearUser } = userSlice.actions;
+export const { getUserInput, setUser, clearUser } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;

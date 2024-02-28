@@ -4,11 +4,13 @@ import { AppState, useAppDispatch } from '../redux/store';
 import { CartItem } from '../misc/type';
 import { updateCartItemQuantity, removeFromCart } from '../redux/slices/cartSlice';
 import { useTheme } from '../components/contextAPI/ThemeContext'
+import useSuccsessMessage from '../hooks/SuccsessMessage';
 
 import { Button } from '@mui/material';
 
 const CartPage: React.FC = () => {
   const { theme } = useTheme();
+  const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage()
 
   const cartItems = useSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
@@ -40,7 +42,7 @@ const CartPage: React.FC = () => {
     const answer = window.confirm(`Do you want to remove ${cartItems.map(cartItem => cartItem.product.title)}?`);
     if(answer) {
       dispatch(removeFromCart(productId));
-      alert(`Product ${cartItems.map(cartItem => cartItem.product.title)} has been deleted`);
+      showSuccessMessage(`Product ${cartItems.map(cartItem => cartItem.product.title)} has been deleted`);
     }
   };
 
@@ -55,6 +57,7 @@ const CartPage: React.FC = () => {
       height: '100vh',
       paddingTop: '20vh'
     }}>
+      {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       <h2>Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>

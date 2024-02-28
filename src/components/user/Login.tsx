@@ -10,38 +10,42 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { userLogin } from '../../redux/slices/userSlice';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getUserInput } from '../../redux/slices/userSlice';
 import { useTheme } from '../contextAPI/ThemeContext';
+import useErrorMessage from '../../hooks/ErrorMessage'
 
 export default function Login() {
   const { theme } = useTheme()
+  const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
   const user = useAppSelector((state: AppState) => state.userRegister.user)
-  const defaultTheme = createTheme();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(userLogin({ email, password })).then((response: any) => {
-      if(response.payload && response.payload.access_token) {
-        localStorage.setItem('userInformation', JSON.stringify(response.payload));
-        dispatch(getUserInput(response.payload));
-        navigate('/');
-      } else {
-        alert('Incorrect email or password');
-      }
-    }).catch((error: any) => {
-      console.error('Login error: ', error);
-    });
+
+    dispatch(userLogin({ email, password }))
+      .then((response: any) => {
+        if (response.payload && response.payload.access_token) {
+          const { role, name, avatar } = response.payload;
+          localStorage.setItem('userInformation', JSON.stringify({ ...response.payload, role, name, avatar }));
+          navigate('/');
+        } else {
+          showError('Incorrect email or password');
+        }
+      })
+      .catch((error: any) => {
+        console.error('Error:', error);
+      });
   };
 
   function Copyright(props: any) {
@@ -64,6 +68,7 @@ export default function Login() {
       height: '120vh',
       paddingTop: '20vh'
     }}>
+      {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

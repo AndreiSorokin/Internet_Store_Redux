@@ -75,7 +75,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     );
   }
 
-
   return (
     <div style={{
       backgroundColor: theme === "bright" ? "white" : "black",

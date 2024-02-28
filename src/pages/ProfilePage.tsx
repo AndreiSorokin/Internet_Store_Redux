@@ -1,9 +1,4 @@
-import React from 'react'
-import {
-  BrowserRouter as Router, Link
-} from 'react-router-dom'
 import { AppState, useAppSelector } from '../redux/store'
-import { Button } from '@mui/material'
 import { useTheme } from '../components/contextAPI/ThemeContext';
 
 export default function ProfilePage() {

@@ -68,7 +68,7 @@ export const userLogin = createAsyncThunk(
          const response = await axios.post(`${BASE_URL}/auth/login/`, credentials);
          console.log('Login Response:', response.data);
          localStorage.setItem('token', response.data.access_token);
-         const { role, name, avatar } = response.data; // Assuming 'name' and 'avatar' are directly present in response data
+         const { role, name, avatar } = response.data;
          const user = { ...response.data, role, name, avatar };
          return user;
       } catch (error) {

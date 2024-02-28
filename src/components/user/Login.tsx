@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,29 +12,30 @@ import Container from '@mui/material/Container';
 
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { userLogin } from '../../redux/slices/userSlice';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getUserInput } from '../../redux/slices/userSlice';
 import { useTheme } from '../contextAPI/ThemeContext';
-import useErrorMessage from '../../hooks/ErrorMessage'
+import useErrorMessage from '../../hooks/ErrorMessage';
+import useInput  from '../../hooks/UseInput';
 
 export default function Login() {
-  const { theme } = useTheme()
+  const { theme } = useTheme();
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
-  const user = useAppSelector((state: AppState) => state.userRegister.user)
+  const user = useAppSelector((state: AppState) => state.userRegister.user);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
+  const emailInput = useInput();
+  const passwordInput = useInput();
+
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    dispatch(userLogin({ email, password }))
-      .then((response: any) => {
+      try {
+        const response = await dispatch(userLogin({ email: emailInput.value, password: passwordInput.value }));
+
         if (response.payload && response.payload.access_token) {
           const { role, name, avatar } = response.payload;
           localStorage.setItem('userInformation', JSON.stringify({ ...response.payload, role, name, avatar }));
@@ -42,11 +43,12 @@ export default function Login() {
         } else {
           showError('Incorrect email or password');
         }
-      })
-      .catch((error: any) => {
+      } catch (error) {
         console.error('Error:', error);
-      });
-  };
+      }
+    },
+    [emailInput.value, passwordInput.value, dispatch, navigate, showError]
+  );
 
   function Copyright(props: any) {
     return (
@@ -62,12 +64,14 @@ export default function Login() {
   }
 
   return (
-    <div style={{
-      backgroundColor: theme === "bright" ? "white" : "black",
-      color: theme === "bright" ? "black" : "white",
-      height: '120vh',
-      paddingTop: '20vh'
-    }}>
+    <div
+      style={{
+        backgroundColor: theme === 'bright' ? 'white' : 'black',
+        color: theme === 'bright' ? 'black' : 'white',
+        height: '120vh',
+        paddingTop: '20vh',
+      }}
+    >
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -79,8 +83,7 @@ export default function Login() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          </Avatar>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -93,17 +96,20 @@ export default function Login() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              {...emailInput}
               autoFocus
               InputProps={{
                 style: {
                   color: theme === 'bright' ? 'black' : 'white',
                 },
               }}
-              sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                color: theme === 'bright' ? 'black' : 'white',
-              } }}
+              sx={{
+                borderRadius: '5px',
+                border: theme === 'bright' ? 'none' : '1px solid white',
+                'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+              }}
             />
             <TextField
               margin="normal"
@@ -113,43 +119,35 @@ export default function Login() {
               label="Password"
               type="password"
               id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              {...passwordInput}
               autoComplete="current-password"
               InputProps={{
                 style: {
                   color: theme === 'bright' ? 'black' : 'white',
                 },
               }}
-              sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                color: theme === 'bright' ? 'black' : 'white'
-              } }}
+              sx={{
+                borderRadius: '5px',
+                border: theme === 'bright' ? 'none' : '1px solid white',
+                'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+              }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-              sx={{'svg': {
-                color: theme === 'bright' ? 'black' : 'white',
-              }}}
+              sx={{ 'svg': { color: theme === 'bright' ? 'black' : 'white' } }}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link to="#">
-                  Forgot password?
-                </Link>
+                <Link to="#">Forgot password?</Link>
               </Grid>
               <Grid item>
-                <Link to="/registration">
-                  Don't have an account? Sign Up
-                </Link>
+                <Link to="/registration">Don't have an account? Sign Up</Link>
               </Grid>
             </Grid>
           </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   BrowserRouter as Router, Link
@@ -27,41 +27,50 @@ export default function ProductList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const itemsPerPage = 10;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = currentPage * itemsPerPage;
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const filteredProducts = productList.filter(product => {
-    const titleMatches = product.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
-    const priceMatches = 
-      !priceFilter ||
-      (priceFilter === "Under 20" && product.price < 20) ||
-      (priceFilter === "20 to 100" && product.price >= 20 && product.price <= 100) ||
-      (priceFilter === "Over 100" && product.price > 100);
-    return titleMatches && categoryMatches && priceMatches;
-  });
-  const currentPageData = filteredProducts.slice(startIndex, endIndex);
-  const uniqueCategories = ["All", ...Array.from(new Set(productList.map(product => product.category.name)))];
+  const filteredProducts = useMemo(() => {
+    return productList.filter(product => {
+      const titleMatches = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
+      const priceMatches = 
+        !priceFilter ||
+        (priceFilter === "Under 20" && product.price < 20) ||
+        (priceFilter === "20 to 100" && product.price >= 20 && product.price <= 100) ||
+        (priceFilter === "Over 100" && product.price > 100);
+      return titleMatches && categoryMatches && priceMatches;
+    });
+  }, [productList, searchQuery, selectedCategory, priceFilter]);
 
-  const handleCategoryChange = (e: SelectChangeEvent<string>) => {
+  const currentPageData = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = currentPage * itemsPerPage;
+    return filteredProducts.slice(startIndex, endIndex);
+  }, [currentPage, filteredProducts, itemsPerPage]);
+
+  const uniqueCategories = useMemo(() => {
+    return ["All", ...Array.from(new Set(productList.map(product => product.category.name)))];
+  }, [productList]);
+
+  const handleCategoryChange = useCallback((e: SelectChangeEvent<string>) => {
     setSelectedCategory(e.target.value);
     dispatch(filterByCategory(e.target.value));
-  };
+  }, [dispatch]);
 
-  const handlePageChange = (e: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = useCallback((e: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
 
-  const handlePriceFilterChange = (e: SelectChangeEvent<string>) => {
+  const handlePriceFilterChange = useCallback((e: SelectChangeEvent<string>) => {
     dispatch(setPriceFilter(e.target.value));
-  };
-  const handleSortByPrice = (order: 'from low to high' | 'from high to low') => {
+  }, [dispatch]);
+
+  const handleSortByPrice = useCallback((order: 'from low to high' | 'from high to low') => {
     dispatch(sortByPrice(order));
-  };
+  }, [dispatch]);
 
   return (
     <div style={{

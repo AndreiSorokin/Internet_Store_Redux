@@ -56,7 +56,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const newUser: User = { name, email, password, avatar: avatarUrl };
     dispatch(userRegistration(newUser));
     alert('Your account has been created successfully')
-    navigate('/');
+    navigate('/auth/profile');
   } catch (error) {
     console.error('Error:', error);
   }

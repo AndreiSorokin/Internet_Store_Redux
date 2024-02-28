@@ -48,7 +48,7 @@ const Navbar = () => {
                   </Button>
                   <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
                      {user &&
-                        <Link to="/">
+                        <Link to="/auth/profile">
                            <Button>Profile</Button>
                         </Link>   
                      }
@@ -74,7 +74,7 @@ const Navbar = () => {
                </Toolbar>
                {showMenu && (
                   <div style={{ backgroundColor: theme === "bright" ? "white" : "black", padding: '10px', textAlign: 'center', borderTop: '1px solid black' }}>
-                     <Link to="/">
+                     <Link to="/auth/profile">
                         <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
                            Profile
                         </Button>

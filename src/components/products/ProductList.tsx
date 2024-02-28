@@ -109,6 +109,9 @@ export default function ProductList() {
           'button': {
             color: theme === 'bright' ? 'black' : 'white',
             border: theme === 'bright' ? '1px solid white' : '1px solid white',
+          },
+          'div': {
+            color: theme === 'bright' ? 'black' : 'white',
           }
         }}
       />

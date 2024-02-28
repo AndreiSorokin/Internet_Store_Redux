@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
-import { userLogin } from '../../redux/slices/userSlice';
+import {  userLogin } from '../../redux/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
@@ -29,26 +29,26 @@ export default function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      try {
-        const response = await dispatch(userLogin({ email: emailInput.value, password: passwordInput.value }));
-
-        if (response.payload && response.payload.access_token) {
-          const { role, name, avatar } = response.payload;
-          localStorage.setItem('userInformation', JSON.stringify({ ...response.payload, role, name, avatar }));
-          navigate('/');
-        } else {
-          showError('Incorrect email or password');
-        }
-      } catch (error) {
-        console.error('Error:', error);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch(userLogin({
+        email: emailInput.value,
+        password: passwordInput.value
+      }));
+  
+      if (response.payload && response.payload.access_token) {
+        navigate('/auth/profile');
+      } else {
+        showError('Incorrect email or password');
       }
-    },
-    [emailInput.value, passwordInput.value, dispatch, navigate, showError]
-  );
+  
+    } catch (error) {
+      console.error('Login Error:', error);
+    }
+  };
+  
+  
 
   function Copyright(props: any) {
     return (
@@ -96,7 +96,8 @@ export default function Login() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              {...emailInput}
+              value={emailInput.value}
+              onChange={emailInput.onChange}
               autoFocus
               InputProps={{
                 style: {
@@ -119,7 +120,8 @@ export default function Login() {
               label="Password"
               type="password"
               id="password"
-              {...passwordInput}
+              value={passwordInput.value}
+              onChange={passwordInput.onChange}
               autoComplete="current-password"
               InputProps={{
                 style: {

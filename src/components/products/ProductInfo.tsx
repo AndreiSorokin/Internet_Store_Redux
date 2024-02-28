@@ -85,10 +85,10 @@ const ProductInfo: React.FC = () => {
             <Typography variant="body1" color="textSecondary" component="p" align="center" sx={{color: theme === 'bright' ? 'black' : 'white'}}>
               {productItem.description}
             </Typography>
-            {/* Use updatedTitleInput and updatedPriceInput */}
             <TextField
               {...updatedTitleInput}
               label="New Title"
+              type="text"
               InputProps={{
                 style: {
                   color: theme === 'bright' ? 'black' : 'white',
@@ -101,6 +101,11 @@ const ProductInfo: React.FC = () => {
               {...updatedPriceInput}
               label="New Price"
               type="text"
+              InputProps={{
+                style: {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+              }}
               sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                 color: theme === 'bright' ? 'black' : 'white',
               } }}

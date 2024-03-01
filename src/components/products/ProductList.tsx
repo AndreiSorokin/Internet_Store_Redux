@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { AppState, useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   BrowserRouter as Router, Link
 } from 'react-router-dom'
@@ -19,6 +19,7 @@ export default function ProductList() {
   const { theme } = useTheme()
   
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state: AppState) => state.userRegister.user);
 
   const productList = useAppSelector(state => state.products.products);
   const priceFilter = useAppSelector(state => state.products.priceFilter);
@@ -81,7 +82,7 @@ export default function ProductList() {
       padding:'25px'
     }} >
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-      <Link to={'/createNew'}>
+      <Link style={{marginTop:"10vh", display: user ? 'block' : 'none'}} to={'/createNew'}>
         <Button>Create new</Button>
       </Link>
       <TextField
@@ -95,7 +96,7 @@ export default function ProductList() {
             color: theme === 'bright' ? 'black' : 'white',
           },
         }}
-        sx={{ margin: "5vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+        sx={{ margin: "15vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
           color: theme === 'bright' ? 'black' : 'white',
         } }}
       />
@@ -106,7 +107,6 @@ export default function ProductList() {
         page={currentPage}
         onChange={handlePageChange}
         sx={{
-          margin: "2vh",
           'button': {
             color: theme === 'bright' ? 'black' : 'white',
             border: theme === 'bright' ? '1px solid white' : '1px solid white',

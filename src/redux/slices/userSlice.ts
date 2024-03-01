@@ -11,7 +11,6 @@ if (data) {
 
 console.log("User information from local storage:", data);
 
-
 const initialState: InitialStateUser = {
    user: userState,
    loading: false,
@@ -32,7 +31,8 @@ export const userRegistration = createAsyncThunk(
          return rejectWithValue(error)
       }
    }
-)
+);
+
 export const uploadAvatar = createAsyncThunk(
    'uploadAvatar',
    async (file: File, { rejectWithValue }) => {
@@ -111,10 +111,9 @@ export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
    async ({ id, email, name }: LoggedInUser, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`${BASE_URL}/users/${id}`, { email, name, role: 'admin' });
+         const response = await axios.put(`${BASE_URL}/users/${id}`, { email, name });
          const updatedUser = response.data;
          dispatch(setUser(updatedUser))
-         console.log('Update User Profile Response:', updatedUser);
          return updatedUser;
       } catch (error) {
       console.error('Login Error:', error);
@@ -122,6 +121,21 @@ export const updateUserProfile = createAsyncThunk(
       }
    }
 );
+
+export const switchRole = createAsyncThunk(
+   'switchRole',
+   async ({ id }: LoggedInUser, { rejectWithValue, dispatch }) => {
+      try {
+         const response = await axios.put(`${BASE_URL}/users/${id}`, {role: 'admin'} );
+         const switchedUser = response.data;
+         dispatch(setUser(switchedUser))
+         return switchedUser;
+      } catch (error) {
+      console.error('Login Error:', error);
+      return rejectWithValue('An error occurred during login');
+      }
+   }
+)
 
 export const userLogout = createAsyncThunk(
    'userLogout',
@@ -159,20 +173,42 @@ const userSlice = createSlice({
             error: null,
             user: action.payload
          }
-      })
+      });
       builder.addCase(userRegistration.pending, (state, action) => {
          return {
             ...state,
             loading: true,
             error: null
          };
-      })
+      });
       builder.addCase(userRegistration.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "error"
          }
+      });
+      builder.addCase(uploadAvatar.fulfilled, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: null,
+            avatar: action.payload
+         };
+      });
+         builder.addCase(uploadAvatar.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         };
+      });
+         builder.addCase(uploadAvatar.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? 'Error occurred while uploading avatar'
+         };
       });
       builder.addCase(userLogin.fulfilled, (state, action) => {         
          return {
@@ -188,20 +224,12 @@ const userSlice = createSlice({
             loading: true,
             error: null
          };
-      })
+      });
       builder.addCase(userLogin.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "error"
-         };
-      });
-      builder.addCase(userLogout.fulfilled, (state) => {
-         return {
-            ...state,
-            error: null,
-            loading: false,
-            user: null
          };
       });
       builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
@@ -246,6 +274,36 @@ const userSlice = createSlice({
             ...state,
             loading: false,
             error: action.error.message ?? "error",
+         };
+      });
+      builder.addCase(switchRole.fulfilled, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: null,
+            user: action.payload
+         };
+      });
+      builder.addCase(switchRole.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         };
+      });
+      builder.addCase(switchRole.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error",
+         };
+      });
+      builder.addCase(userLogout.fulfilled, (state) => {
+         return {
+            ...state,
+            error: null,
+            loading: false,
+            user: null
          };
       });
       builder.addCase(userLogout.pending, (state) => {

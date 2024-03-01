@@ -1,13 +1,16 @@
 import { AppState, useAppDispatch, useAppSelector } from '../redux/store';
 import { useTheme } from '../components/contextAPI/ThemeContext';
-import { updateUserProfile } from '../redux/slices/userSlice';
+import { switchRole, updateUserProfile } from '../redux/slices/userSlice';
 import { LoggedInUser } from '../misc/type';
 import  useInput  from '../hooks/UseInput';
 
 import { Button, TextField } from '@mui/material';
+import useSuccsessMessage from '../hooks/SuccsessMessage';
 
 export default function ProfilePage() {
   const { theme } = useTheme();
+  const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
+
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
@@ -15,8 +18,9 @@ export default function ProfilePage() {
   const nameInput = useInput();
   const emailInput = useInput();
 
-  const becomeAdmin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (user) {
       const updatedUser: LoggedInUser = {
         ...user,
@@ -26,8 +30,18 @@ export default function ProfilePage() {
       dispatch(updateUserProfile(updatedUser));
 
       localStorage.setItem('userInformation', JSON.stringify(updatedUser));
+      showSuccessMessage('Your information has been changed successfully')
     }
   };
+
+  const handleSwitchRole = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if(user) {
+      dispatch(switchRole(user))
+      localStorage.setItem('userInformation', JSON.stringify(user));
+    }
+  }
 
   return (
     <div
@@ -41,11 +55,12 @@ export default function ProfilePage() {
         minHeight: '100vh',
       }}
     >
+      {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       {user && (
         <div style={{ textAlign: 'center' }}>
           <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />
           <h1>Hello, {user.name}</h1>
-          <form onSubmit={becomeAdmin} style={{ width: '100%', maxWidth: '400px' }}>
+          <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
               name="name"
               label="Name"
@@ -82,6 +97,11 @@ export default function ProfilePage() {
             />
             <Button type="submit" variant="outlined" color="primary">
               Apply Changes
+            </Button>
+          </form>
+          <form onSubmit={handleSwitchRole} style={{ width: '100%', maxWidth: '400px', marginTop: '15px' }}>
+            <Button type="submit" variant="outlined" color="primary">
+              Switch role
             </Button>
           </form>
         </div>

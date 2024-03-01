@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { User } from '../misc/type'
-import userReducer, { clearUser, getUserInput, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
+import { LoggedInUser, User } from '../misc/type'
+import userReducer, { clearUser, fetchUserProfile, getUserInput, setUser, switchRole, updateUserProfile, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
+import store from '../redux/store';
 
 const userState: User | null = null;
 
@@ -18,16 +19,21 @@ const userData: User = {
    avatar: 'avatar-url'
 };
 
+const BASE_URL = 'https://api.escuelajs.co/api/v1'
+
+const loggedInUser: LoggedInUser = {
+   id: 1,
+   email: 'aa@aa.aa',
+   name: 'name',
+   password: 'password',
+   role: 'customer',
+   avatar: 'avatar'
+};
+
 describe("user reducer", () => {
 
    describe("fulfilled", () => {
       test("should register a user", async () => {
-         const userData = {
-            email: 'test@example.com',
-            password: 'testpassword',
-            name: 'Test User',
-            avatar: 'avatar-url'
-         };
       
          const mockApiResponse = {
             id: '123',
@@ -48,6 +54,34 @@ describe("user reducer", () => {
             error: null,
          });
       });
+
+      test("should fetch user profile", async() => {
+         const access_token = 'mock-token';
+         const mockApiResponse = {
+            id: 1,
+            email: "john@mail.com",
+            password: "changeme",
+            name: "Jhon",
+            role: "customer",
+            avatar: "avatar"
+         }
+         localStorage.setItem('token', access_token);
+
+         jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockApiResponse });
+
+         const dispatch = jest.fn();
+         const getState = jest.fn();
+
+         await fetchUserProfile()(dispatch, getState, null);
+
+         const state = userReducer(initialState, fetchUserProfile.fulfilled(mockApiResponse, "fullfilled"));
+
+         expect(state).toEqual({
+            user: mockApiResponse,
+            loading: false,
+            error: null,
+         });
+      })
       
       test("should login", async () => {
          const credentials = {
@@ -74,7 +108,44 @@ describe("user reducer", () => {
             error: null,
          });
       });
-      
+
+      test('should update user profile', async () => {
+         
+         const updatedUser = {
+            ...loggedInUser,
+            name: 'updatedName',
+            email: 'updatedEmail@aa.aa'
+         }
+
+         jest.spyOn(axios, 'put').mockResolvedValueOnce({ data: updatedUser });
+
+         const dispatch = jest.fn();
+         await dispatch(updateUserProfile(loggedInUser))
+
+         const action = fetchUserProfile.fulfilled(updatedUser, '1')
+         const state = userReducer(initialState, action);
+         
+         expect(state.user?.name).toBe('updatedName');
+         expect(state.user?.email).toBe('updatedEmail@aa.aa');
+      });
+
+      test("should switch roles", async () => {
+         const switchedUser = {
+            ...loggedInUser,
+            role: 'admin'
+         }
+
+         jest.spyOn(axios, 'put').mockResolvedValueOnce({ data: switchedUser });
+
+         const dispatch = jest.fn();
+         await dispatch(switchRole(loggedInUser))
+
+         const action = switchRole.fulfilled(switchedUser, '', loggedInUser)
+         const state = userReducer(initialState, action);
+         
+         expect((state.user as LoggedInUser)?.role).toBe('admin');
+      })
+
       test("should logout", async () => {
          const localStorageRemoveItemMock = jest.fn();
          global.localStorage.removeItem = localStorageRemoveItemMock.mockReturnValue(undefined);
@@ -152,6 +223,19 @@ describe("user reducer", () => {
          })
       });
 
+      test("should have loading truthy when fetching profile is pending", () => {
+         const state = userReducer(
+            initialState,
+            fetchUserProfile.pending('pending')
+         );
+      
+         expect(state).toEqual({
+            user: userState,
+            loading: true,
+            error: null,
+         })
+      })
+
       test("should have loading truthy when logging in is pending", () => {
          const credentials = {
             email: 'a@a.a',
@@ -170,6 +254,35 @@ describe("user reducer", () => {
          });
       });
 
+      test("should have loading truthy when updating profile is pending", () => {
+
+         const state = userReducer(
+            initialState,
+            fetchUserProfile.pending('1')
+         );
+
+         expect(state).toEqual({
+            user: null,
+            loading: true,
+            error: null,
+         });
+      })
+
+      test("should have loading truthy when switching role is pending", () => {
+         const action = {
+            type: switchRole.pending.type,
+            meta: { arg: loggedInUser.id }
+         };
+      
+         const state = userReducer(initialState, action);
+
+         expect(state).toEqual({
+            user: null,
+            loading: true,
+            error: null,
+         })
+      })
+
       test("should have loading truthy when logging out is pending", () => {
       
          const state = userReducer(
@@ -182,6 +295,12 @@ describe("user reducer", () => {
             loading: true,
             error: null
          })
+
+         expect(state).toEqual({
+            user: null,
+            loading: true,
+            error: null,
+         });
       })
    })
 
@@ -201,6 +320,19 @@ describe("user reducer", () => {
          });
       });
 
+      test("fethicg profile should have error", () => {
+         const state = userReducer(
+            initialState,
+            fetchUserProfile.rejected(error, "error")
+         );
+      
+         expect(state).toEqual({
+            user: null,
+            loading: false,
+            error: error.message,
+         });
+      })
+
       test("login should have error", () => {
          const credentials = {
             email: 'a@a.a',
@@ -212,6 +344,36 @@ describe("user reducer", () => {
             userLogin.rejected(error, "error", credentials)
          );
       
+         expect(state).toEqual({
+            user: userState,
+            loading: false,
+            error: error.message
+         });
+      })
+
+      test("updating profile should have error", () => {
+
+         const state = userReducer(
+            initialState,
+            fetchUserProfile.rejected(error, "error")
+         );
+      
+         expect(state).toEqual({
+            user: userState,
+            loading: false,
+            error: error.message
+         });
+      })
+
+      test("switching role should have error", () => {
+         const action = {
+            type: switchRole.rejected.type,
+            error: error,
+            meta: { arg: loggedInUser.id }
+         };
+      
+         const state = userReducer(initialState, action);
+
          expect(state).toEqual({
             user: userState,
             loading: false,

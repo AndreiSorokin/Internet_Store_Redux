@@ -53,7 +53,7 @@ const LandingPage = () => {
          >
             <Container maxWidth="md" sx={{ color: theme === "bright" ? "black" : "white" }}>
                <Typography variant="h2" component="h1" gutterBottom>
-                  Welcome to My Store
+                  Welcome to The Store
                </Typography>
                <Typography variant="h5" component="p" paragraph>
                   Discover amazing products and shop with ease.

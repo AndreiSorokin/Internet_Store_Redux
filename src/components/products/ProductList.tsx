@@ -147,7 +147,11 @@ export default function ProductList() {
             value={priceFilter}
             label="Price Range"
             onChange={handlePriceFilterChange}
-            sx={{ minWidth: "150px", border: theme === 'bright' ? 'none' : '1px solid white' }}
+            sx={{ minWidth: "150px", border: theme === 'bright' ? 'none' : '1px solid white', 'div': {
+              minWidth: "100px",
+              color: theme === 'bright' ? 'black' : 'white',
+              border: theme === 'bright' ? '1px solid white' : '1px solid white',
+            } }}
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="Under 20">Under $20</MenuItem>

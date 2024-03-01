@@ -18,7 +18,7 @@ const useErrorMessage = () => {
       fontWeight: 'bold',
       border: '2px solid rgb(233, 23, 23)',
       borderRadius: '5px',
-      margin: 'auto',
+      margin: '5vh auto',
       padding: '5px',
       textAlign: 'center',
       lineHeight: '1.5',

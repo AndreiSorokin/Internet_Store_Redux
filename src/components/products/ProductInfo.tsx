@@ -84,6 +84,8 @@ const ProductInfo: React.FC = () => {
 
       await dispatch(fetchSingleProduct(productItem.id.toString()));
       showSuccessMessage('Product updated successfully');
+      updatedTitleInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)
+      updatedPriceInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)
     }
   };
 

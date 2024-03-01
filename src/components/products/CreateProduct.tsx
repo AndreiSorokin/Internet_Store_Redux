@@ -1,13 +1,15 @@
 import React from 'react';
-import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
-import { LoggedInUser, Product } from '../../misc/type';
-import { Button, TextField } from '@mui/material';
+import { useAppDispatch } from '../../redux/store';
+import { Product } from '../../misc/type';
 import { createProduct, uploadImage } from '../../redux/slices/productSlice';
 import { useTheme } from '../contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput from '../../hooks/UseInput';
-import { title } from 'process';
+
+import { Box, Button, Grid, IconButton, TextField } from '@mui/material';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Link } from 'react-router-dom';
 
 export default function CreateProduct() {
    const { theme } = useTheme();
@@ -15,7 +17,6 @@ export default function CreateProduct() {
    const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
    const dispatch = useAppDispatch();
-   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
 
 
    const titleInput = useInput();
@@ -53,7 +54,11 @@ export default function CreateProduct() {
       };
       dispatch(createProduct(newProduct));
       showSuccessMessage('Product added successfully');
-      console.log('New Product:', JSON.stringify(newProduct));
+      titleInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+      priceInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+      descriptionInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+      categoryIdInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+      setImages([]);
       } catch (error) {
       console.error('Error creating product:', error);
       }
@@ -67,88 +72,100 @@ export default function CreateProduct() {
    };
 
    return (
-      <div style={{
+      <Grid sx={{
       backgroundColor: theme === "bright" ? "white" : "black",
       color: theme === "bright" ? "black" : "white",
       height: '100vh',
       paddingTop: '20vh'
-      }}>
+      }} container direction="column" alignItems="center" spacing={3}>
+      <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
+         <Link to="/products" style={{ textDecoration: "none" }}>
+            <IconButton sx={{ color: theme === 'bright' ? 'black' : 'white' }}>
+               <ArrowBackIcon />
+               Back
+            </IconButton>
+         </Link>
+      </Grid>
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
-      <form onSubmit={handleSubmit}>
-         <TextField
-            label="Title"
-            value={titleInput.value}
-            onChange={titleInput.onChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            InputProps={{
-               style: {
+      <Grid item>
+         <form onSubmit={handleSubmit}>
+            <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
+               <TextField
+                  label="Title"
+                  value={titleInput.value}
+                  onChange={titleInput.onChange}
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                     style: {
+                        color: theme === 'bright' ? 'black' : 'white',
+                     },
+                  }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
-               },
-            }}
-            sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-            color: theme === 'bright' ? 'black' : 'white',
-            } }}
-         />
-         <TextField
-            label="Price"
-            type="number"
-            value={priceInput.value}
-            onChange={priceInput.onChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            InputProps={{
-            style: {
-               color: theme === 'bright' ? 'black' : 'white',
-            },
-            }}
-            sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-            color: theme === 'bright' ? 'black' : 'white',
-            } }}
-         />
-         <TextField
-            label="Description"
-            value={descriptionInput.value}
-            onChange={descriptionInput.onChange}
-            fullWidth
-            multiline
-            rows={4}
-            margin="normal"
-            variant="outlined"
-            InputProps={{
-            style: {
-               color: theme === 'bright' ? 'black' : 'white',
-            },
-            }}
-            sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-            color: theme === 'bright' ? 'black' : 'white',
-            } }}
-         />
-         <TextField
-            label="Category ID"
-            type="number"
-            value={categoryIdInput.value}
-            onChange={categoryIdInput.onChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            InputProps={{
-            style: {
-               color: theme === 'bright' ? 'black' : 'white',
-            },
-            }}
-            sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-            color: theme === 'bright' ? 'black' : 'white',
-            } }}
-         />
-         <input type="file" onChange={handleImagesChange} accept="image/*" multiple />
-         <Button type="submit" variant="contained" color="primary">
-            Create Product
-         </Button>
-      </form>
-   </div>
-);
+                  } }}
+               />
+               <TextField
+                  label="Price"
+                  type="number"
+                  value={priceInput.value}
+                  onChange={priceInput.onChange}
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                  style: {
+                     color: theme === 'bright' ? 'black' : 'white',
+                  },
+                  }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+                  } }}
+               />
+               <TextField
+                  label="Description"
+                  value={descriptionInput.value}
+                  onChange={descriptionInput.onChange}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                  style: {
+                     color: theme === 'bright' ? 'black' : 'white',
+                  },
+                  }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+                  } }}
+               />
+               <TextField
+                  label="Category ID"
+                  type="number"
+                  value={categoryIdInput.value}
+                  onChange={categoryIdInput.onChange}
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                  style: {
+                     color: theme === 'bright' ? 'black' : 'white',
+                  },
+                  }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+                  } }}
+               />
+               <input type="file" onChange={handleImagesChange} accept="image/*" multiple />
+               <Button sx={{ marginTop: '15px' }} type="submit" variant="contained" color="primary">
+                  Create Product
+               </Button>
+            </Box>
+         </form>
+      </Grid>
+   </Grid>
+   );
 }

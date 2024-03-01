@@ -77,7 +77,8 @@ export default function ProductList() {
       backgroundColor: theme === "bright" ? "white" : "black",
       color: theme === "bright" ? "black" : "white",
       height: '300vh',
-      paddingTop: '20vh'
+      paddingTop: '20vh',
+      padding:'25px'
     }} >
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
       <Link to={'/createNew'}>
@@ -94,7 +95,7 @@ export default function ProductList() {
             color: theme === 'bright' ? 'black' : 'white',
           },
         }}
-        sx={{ margin: "2vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+        sx={{ margin: "5vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
           color: theme === 'bright' ? 'black' : 'white',
         } }}
       />
@@ -138,15 +139,15 @@ export default function ProductList() {
             ))}
           </Select>
         </FormControl>
-        <FormControl style={{ margin: "1vh" }}>
-          <InputLabel style={{ color: theme === 'bright' ? 'black' : 'white' }} id="price-range-label">Price Range</InputLabel>
+        <FormControl sx={{ margin: "1vh" }}>
+          <InputLabel sx={{ color: theme === 'bright' ? 'black' : 'white' }} id="price-range-label">Price Range</InputLabel>
           <Select
             labelId="price-range-label"
             id="price-range-select"
             value={priceFilter}
             label="Price Range"
             onChange={handlePriceFilterChange}
-            style={{ minWidth: "150px", border: theme === 'bright' ? 'none' : '1px solid white' }}
+            sx={{ minWidth: "150px", border: theme === 'bright' ? 'none' : '1px solid white' }}
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="Under 20">Under $20</MenuItem>
@@ -154,7 +155,7 @@ export default function ProductList() {
             <MenuItem value="Over 100">Over $100</MenuItem>
           </Select>
         </FormControl>
-        <Box style={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
+        <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
           <Button style={{ marginBottom: "1vh", width: "100%" }} onClick={() => handleSortByPrice('from low to high')} variant="outlined">Sort by Price (Low to High)</Button>
           <Button style={{ width: "100%" }} onClick={() => handleSortByPrice('from high to low')} variant="outlined">Sort by Price (High to Low)</Button>
         </Box>

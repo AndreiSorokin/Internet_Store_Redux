@@ -111,10 +111,10 @@ export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
    async ({ id, email, name }: LoggedInUser, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`${BASE_URL}/users/${id}`, { email, name });
-         console.log('Update User Profile Response:', response.data);
-         const updatedUser = response.data as LoggedInUser;
+         const response = await axios.put(`${BASE_URL}/users/${id}`, { email, name, role: 'admin' });
+         const updatedUser = response.data;
          dispatch(setUser(updatedUser))
+         console.log('Update User Profile Response:', updatedUser);
          return updatedUser;
       } catch (error) {
       console.error('Login Error:', error);

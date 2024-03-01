@@ -2,73 +2,85 @@ import { AppState, useAppDispatch, useAppSelector } from '../redux/store';
 import { useTheme } from '../components/contextAPI/ThemeContext';
 import { updateUserProfile } from '../redux/slices/userSlice';
 import { LoggedInUser } from '../misc/type';
-import { useState } from 'react';
+import  useInput  from '../hooks/UseInput';
+
 import { Button, TextField } from '@mui/material';
 
 export default function ProfilePage() {
   const { theme } = useTheme();
+
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  const [updatedUser, setUpdatedUser] = useState<LoggedInUser>({
-    ...user,
-  });
-  const [isAdmin, setIsAdmin] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUpdatedUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
+  const nameInput = useInput();
+  const emailInput = useInput();
 
-  // const becomeAdmin = () => {
-  //   dispatch(updateUserProfile(updatedUser));
-  //   localStorage.setItem('userInformation', JSON.stringify(updatedUser));
-  // };
-
-  const becomeAdmin = () => {
+  const becomeAdmin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (user) {
-      const updatedUser: LoggedInUser = { ...user, role: 'admin' };
+      const updatedUser: LoggedInUser = {
+        ...user,
+        name: nameInput.value,
+        email: emailInput.value
+      };
       dispatch(updateUserProfile(updatedUser));
-      setIsAdmin(true);
+
       localStorage.setItem('userInformation', JSON.stringify(updatedUser));
     }
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme === 'bright' ? 'white' : 'black',
+        color: theme === 'bright' ? 'black' : 'white',
+        minHeight: '100vh',
+      }}
+    >
       {user && (
-        <div
-          style={{
-            backgroundColor: theme === 'bright' ? 'white' : 'black',
-            color: theme === 'bright' ? 'black' : 'white',
-            height: '100vh',
-            paddingTop: '20vh',
-          }}
-        >
-          <img src={user.avatar} alt="" />
+        <div style={{ textAlign: 'center' }}>
+          <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />
           <h1>Hello, {user.name}</h1>
-          <form onSubmit={becomeAdmin}>
+          <form onSubmit={becomeAdmin} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
               name="name"
               label="Name"
-              value={updatedUser.name}
-              onChange={handleInputChange}
+              value={nameInput.value}
+              onChange={nameInput.onChange}
               variant="outlined"
               margin="normal"
               fullWidth
+              InputProps={{
+                style: {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+                }}
+                sx={{ margin: "2vh", width: "100%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                color: theme === 'bright' ? 'black' : 'white',
+                } }}
             />
             <TextField
               name="email"
               label="Email"
-              value={updatedUser.email}
-              onChange={handleInputChange}
+              value={emailInput.value}
+              onChange={emailInput.onChange}
               variant="outlined"
               margin="normal"
               fullWidth
+              InputProps={{
+                style: {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+                }}
+                sx={{ margin: "2vh", width: "100%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                color: theme === 'bright' ? 'black' : 'white',
+                } }}
             />
-            <Button type="submit" variant="contained" color="primary">
+            <Button type="submit" variant="outlined" color="primary">
               Apply Changes
             </Button>
           </form>
@@ -76,4 +88,6 @@ export default function ProfilePage() {
       )}
     </div>
   );
+  
+  
 }

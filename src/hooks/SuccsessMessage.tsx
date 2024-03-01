@@ -19,11 +19,11 @@ const useSuccsessMessage = () => {
       fontWeight: 'bold',
       border: '2px solid rgb(23, 233, 23)',
       borderRadius: '5px',
-      margin: 'auto',
+      margin: '15px auto',
       padding: '5px',
       textAlign: 'center',
       lineHeight: '1.5',
-      marginBottom: '15px',
+      marginBottom: '15px'
 };
 
    return {

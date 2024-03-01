@@ -1,18 +1,22 @@
 import React from 'react';
-import { useAppDispatch } from '../../redux/store';
-import { Product } from '../../misc/type';
+import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
+import { LoggedInUser, Product } from '../../misc/type';
 import { Button, TextField } from '@mui/material';
 import { createProduct, uploadImage } from '../../redux/slices/productSlice';
 import { useTheme } from '../contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput from '../../hooks/UseInput';
+import { title } from 'process';
 
 export default function CreateProduct() {
    const { theme } = useTheme();
    const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
    const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
+
    const dispatch = useAppDispatch();
+   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+
 
    const titleInput = useInput();
    const priceInput = useInput();
@@ -74,7 +78,8 @@ export default function CreateProduct() {
       <form onSubmit={handleSubmit}>
          <TextField
             label="Title"
-            {...titleInput}
+            value={titleInput.value}
+            onChange={titleInput.onChange}
             fullWidth
             margin="normal"
             variant="outlined"
@@ -90,7 +95,8 @@ export default function CreateProduct() {
          <TextField
             label="Price"
             type="number"
-            {...priceInput}
+            value={priceInput.value}
+            onChange={priceInput.onChange}
             fullWidth
             margin="normal"
             variant="outlined"
@@ -105,7 +111,8 @@ export default function CreateProduct() {
          />
          <TextField
             label="Description"
-            {...descriptionInput}
+            value={descriptionInput.value}
+            onChange={descriptionInput.onChange}
             fullWidth
             multiline
             rows={4}
@@ -123,7 +130,8 @@ export default function CreateProduct() {
          <TextField
             label="Category ID"
             type="number"
-            {...categoryIdInput}
+            value={categoryIdInput.value}
+            onChange={categoryIdInput.onChange}
             fullWidth
             margin="normal"
             variant="outlined"

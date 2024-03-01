@@ -10,8 +10,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
-import {  userLogin } from '../../redux/slices/userSlice';
+import { useAppDispatch } from '../../redux/store';
+import { userLogin } from '../../redux/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
@@ -20,8 +20,6 @@ import useInput  from '../../hooks/UseInput';
 export default function Login() {
   const { theme } = useTheme();
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
-
-  const user = useAppSelector((state: AppState) => state.userRegister.user);
 
   const emailInput = useInput();
   const passwordInput = useInput();
@@ -37,7 +35,7 @@ export default function Login() {
         password: passwordInput.value
       }));
   
-      if (response.payload && response.payload.access_token) {
+      if (response.meta.requestStatus === 'fulfilled') {
         navigate('/auth/profile');
       } else {
         showError('Incorrect email or password');
@@ -45,8 +43,10 @@ export default function Login() {
   
     } catch (error) {
       console.error('Login Error:', error);
+      showError('An unexpected error occurred');
     }
   };
+  
   
   
 

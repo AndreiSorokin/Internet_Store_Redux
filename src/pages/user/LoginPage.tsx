@@ -46,9 +46,6 @@ export default function LoginPage() {
       showError('An unexpected error occurred');
     }
   };
-  
-  
-  
 
   function Copyright(props: any) {
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -54,7 +54,7 @@ const LandingPage = () => {
          >
             <Container maxWidth="md" sx={{ color: theme === "bright" ? "black" : "white" }}>
                <Typography variant="h2" component="h1" gutterBottom>
-                  Welcome to The Store
+                  <p>Welcome to The Store</p>
                </Typography>
                <Typography variant="h5" component="p" paragraph>
                   Discover amazing products and shop with ease.

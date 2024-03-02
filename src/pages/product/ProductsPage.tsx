@@ -13,6 +13,7 @@ import Filters from "../../components/products/Filters";
 import Search from "../../components/products/Search";
 import Pagination from "../../components/products/Pagination";
 import ProductItem from "../../components/products/ProductItem";
+import ScrollToTopButton from "../../components/ScrollToTop";
 
 
 export default function ProductsPage() {
@@ -65,7 +66,7 @@ export default function ProductsPage() {
     <div style={{
       backgroundColor: theme === "bright" ? "white" : "black",
       color: theme === "bright" ? "black" : "white",
-      height: '300vh',
+      height: '400vh',
       paddingTop: '20vh',
       padding:'25px'
     }} >
@@ -79,6 +80,7 @@ export default function ProductsPage() {
         <Pagination theme={theme} currentPage={currentPage} filteredProducts={filteredProducts} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
         <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
         <ProductItem currentPageData={currentPageData}/>
+        <ScrollToTopButton/>
     </Box>
     </div>
   );

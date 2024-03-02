@@ -1,7 +1,7 @@
-import React from 'react';
-import { useAppDispatch } from '../../redux/store';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { Product } from '../../misc/type';
-import { createProduct, uploadImage } from '../../redux/slices/productSlice';
+import { createProduct, fetchProducts, uploadImage } from '../../redux/slices/productSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
@@ -17,7 +17,11 @@ export default function CreateProductPage() {
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
   const dispatch = useAppDispatch();
+  const productList = useAppSelector(state => state.products.products);
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+}, [dispatch]);
 
   const titleInput = useInput();
   const priceInput = useInput();
@@ -36,6 +40,17 @@ export default function CreateProductPage() {
 
       if (!title || !price || !description || !categoryId || images.length === 0) {
       return showError('Please make sure that you have added title, price, description, category ID, and images');
+      }
+
+      const existingProduct = productList.find(product =>
+        product.title === title &&
+        product.price === parseFloat(price) &&
+        product.description === description &&
+        product.category.id === parseInt(categoryId)
+      );
+
+      if (existingProduct) {
+        return showError('A product with similar details already exists.');
       }
 
       try {

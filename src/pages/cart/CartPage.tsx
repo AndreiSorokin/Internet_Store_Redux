@@ -8,6 +8,7 @@ import useSuccsessMessage from '../../hooks/SuccsessMessage';
 
 import { Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import ScrollToTopButton from '../../components/ScrollToTop';
 
 const CartPage: React.FC = () => {
   const { theme } = useTheme();
@@ -129,6 +130,7 @@ const CartPage: React.FC = () => {
           </Grid>
         </div>
       )}
+      <ScrollToTopButton/>
     </Grid>
     </div>
   );

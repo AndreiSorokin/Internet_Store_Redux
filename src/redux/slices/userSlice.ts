@@ -24,7 +24,6 @@ export const userRegistration = createAsyncThunk(
    async(user: User, {rejectWithValue}) => {
       try {
          const response = await axios.post(`${BASE_URL}/users/`, user)
-         console.log('API Response:', response.data);
          return response.data
       } catch (error) {
          console.error('API Error:', error);
@@ -196,14 +195,14 @@ const userSlice = createSlice({
             avatar: action.payload
          };
       });
-         builder.addCase(uploadAvatar.pending, (state) => {
+      builder.addCase(uploadAvatar.pending, (state) => {
          return {
             ...state,
             loading: true,
             error: null
          };
       });
-         builder.addCase(uploadAvatar.rejected, (state, action) => {
+      builder.addCase(uploadAvatar.rejected, (state, action) => {
          return {
             ...state,
             loading: false,

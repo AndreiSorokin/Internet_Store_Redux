@@ -9,17 +9,16 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useState } from 'react'
 import { User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
 import { userRegistration, uploadAvatar } from '../../redux/slices/userSlice'
 import { Link, useNavigate } from 'react-router-dom';
-import { useTheme } from '../contextAPI/ThemeContext';
+import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
 
-export default function Registration() {
+export default function RegisterPage() {
   const { theme } = useTheme()
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
@@ -44,6 +43,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   if(!name || !email || !password || !avatar) {
     return showError('Ensure that fill out att the fields')
+  } else if(password.length < 4) {
+    return showError('Ensure that your password as least 4 characters long')
+  } else if(!/\S+@\S+\.\S+/.test(email)) {
+    return showError('Incorrect email format')
   }
 
   try {

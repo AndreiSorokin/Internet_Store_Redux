@@ -13,11 +13,11 @@ import Container from '@mui/material/Container';
 import { useAppDispatch } from '../../redux/store';
 import { userLogin } from '../../redux/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTheme } from '../contextAPI/ThemeContext';
+import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput  from '../../hooks/UseInput';
 
-export default function Login() {
+export default function LoginPage() {
   const { theme } = useTheme();
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 

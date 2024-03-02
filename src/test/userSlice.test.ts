@@ -189,6 +189,12 @@ describe("user reducer", () => {
          )
       })
 
+      test("should set a user", () => {
+         const newState = userReducer(initialState, setUser(loggedInUser));
+      
+         expect(newState.user).toEqual(loggedInUser);
+      })
+
       test("should clear a user", () => {
          const localStorageMock = {
             removeItem: jest.fn(),

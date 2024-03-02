@@ -5,13 +5,13 @@ import {
 import "./App.css";
 
 import NavBar from "./components/NavBar";
-import ProductsPage from './pages/ProductsPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ItemPage from './pages/ItemPage';
-import CreateProductPage from './pages/CreateProductPage';
-import ProfilePage from './pages/ProfilePage';
-import CartPage from './pages/CartPage';
+import ProductsPage from './pages/product/ProductsPage';
+import LoginPage from './pages/user/LoginPage';
+import RegisterPage from './pages/user/RegisterPage';
+import ItemPage from './pages/product/ItemPage';
+import CreateProductPage from './pages/product/CreateProductPage';
+import ProfilePage from './pages/user/ProfilePage';
+import CartPage from './pages/cart/CartPage';
 import LandingPage from './pages/LandingPage';
 
 function App() {

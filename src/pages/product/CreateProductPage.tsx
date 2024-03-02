@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppDispatch } from '../../redux/store';
 import { Product } from '../../misc/type';
 import { createProduct, uploadImage } from '../../redux/slices/productSlice';
-import { useTheme } from '../contextAPI/ThemeContext';
+import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput from '../../hooks/UseInput';
@@ -11,22 +11,22 @@ import { Box, Button, Grid, IconButton, TextField } from '@mui/material';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from 'react-router-dom';
 
-export default function CreateProduct() {
-   const { theme } = useTheme();
-   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
-   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
+export default function CreateProductPage() {
+  const { theme } = useTheme();
+  const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
+  const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
-   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
 
-   const titleInput = useInput();
-   const priceInput = useInput();
-   const descriptionInput = useInput();
-   const categoryIdInput = useInput();
+  const titleInput = useInput();
+  const priceInput = useInput();
+  const descriptionInput = useInput();
+  const categoryIdInput = useInput();
 
-   const [images, setImages] = React.useState<File[]>([]);
+  const [images, setImages] = React.useState<File[]>([]);
 
-   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       const { value: title } = titleInput;
@@ -39,39 +39,44 @@ export default function CreateProduct() {
       }
 
       try {
-      const uploadedImageUrls: string[] = [];
-      for (const image of images) {
-         const uploadedImageUrl = await uploadImage(image);
-         uploadedImageUrls.push(uploadedImageUrl);
-      }
-
-      const newProduct: Product = {
-         title,
-         price: parseFloat(price),
-         description,
-         categoryId: parseInt(categoryId),
-         images: uploadedImageUrls,
-      };
-      dispatch(createProduct(newProduct));
-      showSuccessMessage('Product added successfully');
-      titleInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-      priceInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-      descriptionInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-      categoryIdInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-      setImages([]);
+        const uploadedImageUrls: string[] = [];
+            for (const image of images) {
+              console.log(image)
+              if (typeof image === 'string') {
+                  uploadedImageUrls.push(image);
+              } else {
+                  const uploadedImageUrl = await uploadImage(image);
+                  uploadedImageUrls.push(uploadedImageUrl);
+              }
+            }
+            
+        const newProduct: Product = {
+            title,
+            price: parseFloat(price),
+            description,
+            categoryId: parseInt(categoryId),
+            images: uploadedImageUrls,
+        };
+        dispatch(createProduct(newProduct));
+        showSuccessMessage('Product added successfully');
+        titleInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+        priceInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+        descriptionInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+        categoryIdInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+        setImages([]);
       } catch (error) {
-      console.error('Error creating product:', error);
+        console.error('Error creating product:', error);
       }
-   };
+  };
 
-   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files.length > 0) {
       const selectedFiles = Array.from(e.target.files);
       setImages(selectedFiles);
       }
-   };
+  };
 
-   return (
+  return (
       <Grid sx={{
       backgroundColor: theme === "bright" ? "white" : "black",
       color: theme === "bright" ? "black" : "white",
@@ -79,19 +84,19 @@ export default function CreateProduct() {
       paddingTop: '20vh'
       }} container direction="column" alignItems="center" spacing={3}>
       <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
-         <Link to="/products" style={{ textDecoration: "none" }}>
+          <Link to="/products" style={{ textDecoration: "none" }}>
             <IconButton sx={{ color: theme === 'bright' ? 'black' : 'white' }}>
-               <ArrowBackIcon />
-               Back
+                <ArrowBackIcon />
+                Back
             </IconButton>
-         </Link>
+          </Link>
       </Grid>
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       <Grid item>
-         <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
-               <TextField
+              <TextField
                   label="Title"
                   value={titleInput.value}
                   onChange={titleInput.onChange}
@@ -99,15 +104,15 @@ export default function CreateProduct() {
                   margin="normal"
                   variant="outlined"
                   InputProps={{
-                     style: {
+                    style: {
                         color: theme === 'bright' ? 'black' : 'white',
-                     },
+                    },
                   }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
-               />
-               <TextField
+                />
+                <TextField
                   label="Price"
                   type="number"
                   value={priceInput.value}
@@ -117,14 +122,14 @@ export default function CreateProduct() {
                   variant="outlined"
                   InputProps={{
                   style: {
-                     color: theme === 'bright' ? 'black' : 'white',
+                    color: theme === 'bright' ? 'black' : 'white',
                   },
                   }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
-               />
-               <TextField
+                />
+                <TextField
                   label="Description"
                   value={descriptionInput.value}
                   onChange={descriptionInput.onChange}
@@ -135,14 +140,14 @@ export default function CreateProduct() {
                   variant="outlined"
                   InputProps={{
                   style: {
-                     color: theme === 'bright' ? 'black' : 'white',
+                    color: theme === 'bright' ? 'black' : 'white',
                   },
                   }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
-               />
-               <TextField
+                />
+                <TextField
                   label="Category ID"
                   type="number"
                   value={categoryIdInput.value}
@@ -152,20 +157,20 @@ export default function CreateProduct() {
                   variant="outlined"
                   InputProps={{
                   style: {
-                     color: theme === 'bright' ? 'black' : 'white',
+                    color: theme === 'bright' ? 'black' : 'white',
                   },
                   }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
-               />
-               <input type="file" onChange={handleImagesChange} accept="image/*" multiple />
-               <Button sx={{ marginTop: '15px' }} type="submit" variant="contained" color="primary">
+                />
+                <input type="file" onChange={handleImagesChange} accept="image/*" multiple />
+                <Button sx={{ marginTop: '15px' }} type="submit" variant="contained" color="primary">
                   Create Product
-               </Button>
+              </Button>
             </Box>
-         </form>
+        </form>
       </Grid>
-   </Grid>
-   );
+  </Grid>
+  );
 }

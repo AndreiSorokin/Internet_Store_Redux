@@ -6,11 +6,12 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { fetchProducts } from '../redux/slices/productSlice';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useTheme } from '../components/contextAPI/ThemeContext';
 
 const LandingPage = () => {
@@ -83,24 +84,24 @@ const LandingPage = () => {
                      interval={5000}
                   >
                      {featuredProducts.map((product) => (
-                        <Link to={`/products/${product.id}`}>
-                        <Card key={product.id} sx={{ height: [300, 350], margin: ['10px', '20px'] }}>
-                           <CardMedia
-                              component="img"
-                              height="200"
-                              image={product.category.image}
-                              alt={product.title}
-                              sx={{ objectFit: 'contain', margin: '10px auto' }}
-                           />
-                           <CardContent>
-                              <Typography variant="h6" component="div">
-                                 {product.title}
-                              </Typography>
+                        <Link key={product.id} to={`/products/${product.id}`}>
+                           <Card sx={{ height: [300, 350], margin: ['10px', '20px'] }}>
+                              <CardMedia
+                                 component="img"
+                                 height="200"
+                                 image={product.category.image}
+                                 alt={product.title}
+                                 sx={{ objectFit: 'contain', margin: '10px auto' }}
+                              />
+                              <CardContent>
+                                 <Typography variant="h6" component="div">
+                                    {product.title}
+                                 </Typography>
                                  <Button variant="outlined">
                                     View
                                  </Button>
-                           </CardContent>
-                        </Card>
+                              </CardContent>
+                           </Card>
                         </Link>
                      ))}
                   </Carousel>

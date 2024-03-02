@@ -1,11 +1,11 @@
-import { AppState, useAppDispatch, useAppSelector } from '../redux/store';
-import { useTheme } from '../components/contextAPI/ThemeContext';
-import { switchRole, updateUserProfile } from '../redux/slices/userSlice';
-import { LoggedInUser } from '../misc/type';
-import  useInput  from '../hooks/UseInput';
+import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
+import { useTheme } from '../../components/contextAPI/ThemeContext';
+import { switchRole, updateUserProfile } from '../../redux/slices/userSlice';
+import { LoggedInUser } from '../../misc/type';
+import  useInput  from '../../hooks/UseInput';
 
 import { Button, TextField } from '@mui/material';
-import useSuccsessMessage from '../hooks/SuccsessMessage';
+import useSuccsessMessage from '../../hooks/SuccsessMessage';
 
 export default function ProfilePage() {
   const { theme } = useTheme();

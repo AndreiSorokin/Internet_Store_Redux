@@ -3,7 +3,7 @@ import { deleteProduct, fetchSingleProduct, updateProduct } from "../../redux/sl
 import { AppState, useAppDispatch, useAppSelector } from "../../redux/store";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from "../contextAPI/ThemeContext";
+import { useTheme } from "../../components/contextAPI/ThemeContext";
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useInput from '../../hooks/UseInput';
 import { LoggedInUser } from "../../misc/type";
@@ -13,7 +13,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Box, Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 
-const ProductInfo: React.FC = () => {
+const ItemPage: React.FC = () => {
   const { theme } = useTheme();
   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
 
@@ -209,4 +209,4 @@ const ProductInfo: React.FC = () => {
   );
 };
 
-export default ProductInfo;
+export default ItemPage;

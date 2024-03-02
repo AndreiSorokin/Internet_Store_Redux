@@ -25,13 +25,19 @@ export default function ProductList() {
   const priceFilter = useAppSelector(state => state.products.priceFilter);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");
+  const [selectedCategory, setSelectedCategory] = useState(localStorage.getItem("selectedCategory") || "All");
   const itemsPerPage = 10;
+  // localStorage.getItem("priceMatches")
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  useEffect(() => {
+    localStorage.setItem("searchQuery", searchQuery);
+    localStorage.setItem("selectedCategory", selectedCategory);
+  }, [searchQuery, selectedCategory]);
 
   const filteredProducts = useMemo(() => {
     return productList.filter(product => {

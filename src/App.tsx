@@ -1,5 +1,6 @@
 import {
-  Routes, Route
+  Routes, Route,
+  Navigate
 } from 'react-router-dom'
 import "./App.css";
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/products/:id" element={<ItemPage/>}/>
         <Route path="/createNew" element={<CreateProductPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
+        <Route path='*' element={<Navigate to='/' replace/>}/>
       </Routes>
     </div>
   )

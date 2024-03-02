@@ -39,14 +39,14 @@ const LandingPage = () => {
       <div style={{
          backgroundColor: theme === "bright" ? "white" : "black",
          color: theme === "bright" ? "black" : "white",
-         height: '100%',
+         minHeight: '100vh',
          paddingTop: '20vh'
       }}>
          <Box
             sx={{
                bgcolor: 'primary.main',
                color: 'primary.contrastText',
-               py: 8,
+               py: [6, 8],
                textAlign: 'center',
                backgroundColor: theme === "bright" ? "white" : "black"
             }}
@@ -63,7 +63,7 @@ const LandingPage = () => {
                </Button>
             </Container>
          </Box>
-         <Box py={8} bgcolor="background.default" sx={{ backgroundColor: theme === "bright" ? "white" : "black" }}>
+         <Box py={[6, 8]} bgcolor="background.default" sx={{ backgroundColor: theme === "bright" ? "white" : "black" }}>
             <Container maxWidth="lg">
                <Typography variant="h4" align="center" gutterBottom>
                   Featured Products
@@ -83,25 +83,25 @@ const LandingPage = () => {
                      interval={5000}
                   >
                      {featuredProducts.map((product) => (
-                        <Card key={product.id} sx={{height: '350px', margin:'20px'}}>
+                        <Link to={`/products/${product.id}`}>
+                        <Card key={product.id} sx={{ height: [300, 350], margin: ['10px', '20px'] }}>
                            <CardMedia
                               component="img"
                               height="200"
                               image={product.category.image}
                               alt={product.title}
-                              sx={{ objectFit: 'contain', margin:'10px auto'}}
+                              sx={{ objectFit: 'contain', margin: '10px auto' }}
                            />
                            <CardContent>
                               <Typography variant="h6" component="div">
                                  {product.title}
                               </Typography>
-                              <Link to={`/products/${product.id}`}>
                                  <Button variant="outlined">
                                     View
                                  </Button>
-                              </Link>
                            </CardContent>
                         </Card>
+                        </Link>
                      ))}
                   </Carousel>
                </Box>

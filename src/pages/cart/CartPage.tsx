@@ -53,11 +53,15 @@ const CartPage: React.FC = () => {
   const totalPrice = cartItems.reduce((total, cartItem) => {
     return total + cartItem.product.price * cartItem.quantity;
   }, 0);
-  
+
   return (
     <div style={{ backgroundColor: theme === "bright" ? "white" : "black",
-        color: theme === "bright" ? "black" : "white"
+        color: theme === "bright" ? "black" : "white",
+        paddingTop: '5vh'
       }}>
+        {succsessMessage && (
+          <p style={succsessMessageStyle}>{succsessMessage}</p>
+        )}
       <Grid
         container
         justifyContent="center"
@@ -81,9 +85,6 @@ const CartPage: React.FC = () => {
         <div>
           <Grid item xs={12} textAlign="center">
             <h2>Cart</h2>
-            {succsessMessage && (
-              <p style={succsessMessageStyle}>{succsessMessage}</p>
-            )}
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={2}>

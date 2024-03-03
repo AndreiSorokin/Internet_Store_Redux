@@ -6,10 +6,12 @@ import  useInput  from '../../hooks/UseInput';
 
 import { Button, TextField } from '@mui/material';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
+import useErrorMessage from '../../hooks/ErrorMessage';
 
 export default function ProfilePage() {
   const { theme } = useTheme();
   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
+  const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
 
   const dispatch = useAppDispatch();
@@ -22,6 +24,10 @@ export default function ProfilePage() {
     e.preventDefault();
 
     if (user) {
+      if(!/\S+@\S+\.\S+/.test(emailInput.value)) {
+        return showError('Incorrect email format')
+      }
+      
       const updatedUser: LoggedInUser = {
         ...user,
         name: nameInput.value,
@@ -40,6 +46,7 @@ export default function ProfilePage() {
     if(user) {
       dispatch(switchRole(user))
       localStorage.setItem('userInformation', JSON.stringify(user));
+      showSuccessMessage('You have bocome an admin')
     }
   }
 
@@ -56,6 +63,7 @@ export default function ProfilePage() {
       }}
     >
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
+      {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       {user && (
         <div style={{ textAlign: 'center' }}>
           <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />

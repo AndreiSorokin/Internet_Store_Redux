@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -80,7 +80,7 @@ const LandingPage = () => {
                      emulateTouch
                      swipeable
                      selectedItem={1}
-                     autoPlay
+                     autoPlay={true}
                      interval={5000}
                   >
                      {featuredProducts.map((product) => (

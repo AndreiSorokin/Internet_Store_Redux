@@ -95,6 +95,10 @@ const ItemPage: React.FC = () => {
     }
   }, [dispatch, id]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Grid style={{
       backgroundColor: theme === "bright" ? "white" : "black",
@@ -157,7 +161,16 @@ const ItemPage: React.FC = () => {
               </DialogActions>
             </Dialog>
             <form onSubmit={handleUpdate}>
-              <Box sx={{ display: user?.role === 'admin' ? 'flex' : 'none', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
+            <Box sx={{
+              display: user?.role === 'admin' ? 'block' : 'none',
+              flexDirection: "column",
+              alignItems: "center",
+              marginLeft: "auto",
+              marginRight: "auto",
+              width: "fit-content",
+              marginTop: '5vh'
+              }}
+              >
               <TextField
                 value={updatedTitleInput.value}
                 onChange={updatedTitleInput.onChange}

@@ -24,25 +24,22 @@ function App() {
       <NavBar/>
       <Routes>
         <Route path='/' element={<LandingPage/>}></Route>
-        {user ? (
-          <Route path="/auth/profile" element={<ProfilePage/>}/>
-        ) : (
-          <Route path="/auth/profile" element={<Navigate to="/" replace/>}/>
-        )}
+        <Route
+          path='/auth/profile'
+          element={user ? <ProfilePage/> : <Navigate to="/" replace />}
+        />
         <Route path="/auth/login" element={<LoginPage/>}/>
         <Route path="/registration" element={<RegisterPage/>}/>
         <Route path="/products" element={<ProductsPage/>}/>
         <Route path="/products/:id" element={<ItemPage/>}/>
-        {user ? (
-          <Route path="/createNew" element={<CreateProductPage/>}/>
-        ) : (
-          <Route path="/createNew" element={<Navigate to="/" replace/>}/>
-        )}
-        {user ? (
-          <Route path="/cart" element={<CartPage/>}/>
-        ) : (
-          <Route path="/cart" element={<Navigate to="/" replace/>}/>
-        )}
+        <Route
+          path="/createNew"
+          element={user ? <CreateProductPage /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path='cart'
+          element={user ? <CartPage/> : <Navigate to="/" replace />}
+        />
         <Route path='*' element={<Navigate to='/' replace/>}/>
       </Routes>
     </div>

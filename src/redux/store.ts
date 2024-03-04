@@ -19,7 +19,6 @@ export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 store.subscribe(() => {
    const currentState = store.getState();
-   console.log('store state',currentState);
    const userInformation = currentState.userRegister.user;
    const cartInformation = currentState.cart.items;
 

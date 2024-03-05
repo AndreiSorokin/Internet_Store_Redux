@@ -1,3 +1,5 @@
+https://fs17-frontend-project.fly.dev/
+
 Online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects. **LINK**
 
 After users sign up they can see "profile" and "cart" pages in addition to "products" that can be seen by anyone visiting the web site.

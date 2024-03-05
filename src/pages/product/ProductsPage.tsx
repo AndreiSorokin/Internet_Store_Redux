@@ -9,9 +9,9 @@ import { fetchProducts } from "../../redux/slices/productSlice";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTheme } from "../../components/contextAPI/ThemeContext";
-import Filters from "../../components/products/Filters";
-import Search from "../../components/products/Search";
-import Pagination from "../../components/products/Pagination";
+import Filters from "../../components/utils/Filters";
+import Search from "../../components/utils/Search";
+import Pagination from "../../components/utils/Pagination";
 import ProductItem from "../../components/products/ProductItem";
 import ScrollToTopButton from "../../components/ScrollToTop";
 

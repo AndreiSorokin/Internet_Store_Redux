@@ -6,7 +6,7 @@ This is the online store with Platzi Fake StoreAPI where people can buy differen
 
 After users sign up they can see "profile" and "cart" pages in addition to "products" that can be seen by anyone visiting the web site.
 
-Getting Started:
+### Getting Started:
    1. To run the code u need Node.js to execute JavaScript code outside of a web browser, "react": "^18.2.0",
 "react-dom": "^18.2.0"
    2. ENV variables HERE
@@ -21,7 +21,7 @@ Unauthorizrd users can only access the "products" page, in order to add products
 As a logged in user you can also add new products.
 On your "profile" page you can change your information as well as switch role to "admin". Afer you have got "admin" you can modify and delete products. To do so you need to go to a product page and choose the needed option.
 
-Folder Structure:
+### Folders:
    1. All the types - src/misc/type.ts
    2. Logic - src/redux/slices
    3. Store - src/redux/store.ts
@@ -32,7 +32,7 @@ Folder Structure:
    8. Custom hooks - src/hooks
    9. Tests - src/test
 
-Data Flow:
+### Data Flow:
    1. The ThemeContext.tsx holds two values: theme and toggleTheme. Also we have App component wrappe dwith ThemeProvider in index.tsx.
 The ThemeProvider component wraps the entire Navbar component, providing the theme.
 ThemeProvider component wraps its children with the ThemeContext.Provider, passing the theme and toggleTheme values as context, useTheme hook is defined to take these values from the context.
@@ -46,10 +46,10 @@ The initial state includes information retrieved from the local storage. Async t
 Reducers update sleces' states based on the outcome of the async thunks (fulfilled, pending, rejected).
 After that components handle functionalities dispatching async thunks.
 
-Testing:
+### Testing:
    For unit testing in this project I used React Testing Library, Jest
 
-Deployment:
+### Deployment:
    Hoisting: fly.io
    Steps:
       1. Sign Up and Install Flyctl
@@ -60,7 +60,7 @@ Deployment:
       6. Run fly scale count to adjust the number of instances running the application
       7. To update the project make changes and deploy again
 
-This project has 8 pages:
+### This project has 8 pages:
    1. Landing page where you can find featured products from all available categories
 ![Screenshot 2024-03-06 211632](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/5c2c638a-4729-46e6-ad06-ebe9e86cd0f8)
 
@@ -86,11 +86,12 @@ This project has 8 pages:
    8. Cart page show items in your cart, you can also change quantity and remove them
 ![Screenshot 2024-03-06 214326](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/48188414-84ac-4175-b608-78229b0d32c4)
 
-Component structure:
+### Component structure:
 ![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)
 
-Relationship between components:
+### Relationship between components:
 
+```
 src/
 ┣ components/
 ┃ ┣ contextAPI/
@@ -139,3 +140,4 @@ src/
 ┣ react-app-env.d.ts
 ┣ reportWebVitals.ts
 ┗ setupTests.ts
+```

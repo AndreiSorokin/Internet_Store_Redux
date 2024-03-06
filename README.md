@@ -86,6 +86,9 @@ This project has 8 pages:
    8. Cart page show items in your cart, you can also change quantity and remove them
 ![Screenshot 2024-03-06 214326](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/48188414-84ac-4175-b608-78229b0d32c4)
 
+Component structure:
+![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)
+
 Relationship between components:
 src/
 ┣ components/
@@ -135,8 +138,5 @@ src/
 ┣ react-app-env.d.ts
 ┣ reportWebVitals.ts
 ┗ setupTests.ts
-
-
-![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)
 
 

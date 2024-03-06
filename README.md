@@ -4,16 +4,6 @@ It may take some time to open the link above
 
 This is the online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects.
 
-This project has 4 pages:
-   1. Landing page where you can find featured products from all available categories
-   2. Products page to find all the products and fitlet rhem by price and category
-   3. Item page shows an item's information, you can choose quantity and add the item to your cart and if you are an admin you can also modify the item and delete as well as delete it
-   4. Create product page allows logged in users to create new products
-   5. Login page is used to log in and also gives you a link to sign up
-   6. Registration page allows you to creat an account
-   7. Profile page shows a user's information and also you cat cwith your role to admin
-   8. Cart page show items in your cart, you can also change quantity and remove them
-
 After users sign up they can see "profile" and "cart" pages in addition to "products" that can be seen by anyone visiting the web site.
 
 Getting Started:
@@ -69,3 +59,84 @@ Deployment:
       5. To deploy run fly deploy
       6. Run fly scale count to adjust the number of instances running the application
       7. To update the project make changes and deploy again
+
+This project has 8 pages:
+   1. Landing page where you can find featured products from all available categories
+![Screenshot 2024-03-06 211632](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/5c2c638a-4729-46e6-ad06-ebe9e86cd0f8)
+
+   2. Products page to find all the products and fitlet them by price and category, also on this page you can find a button to create a new product if you are a logged in user
+![Screenshot 2024-03-06 211918](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/1d77208d-9d8f-44ce-909a-988b35cd80b7)
+![Screenshot 2024-03-06 214054](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/b1b9553c-8835-453d-b62c-525a3fca01b9)
+
+   3. Item page shows an item's information, you can choose quantity and add the item to your cart and if you are an admin you can also modify the item and delete as well as delete it
+![Screenshot 2024-03-06 214216](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/db511679-5466-4d6b-80c8-2a3c30f9be03)
+
+   4. Create product page allows logged in users to create new products
+![Screenshot 2024-03-06 214132](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/5d3a26b3-e5c4-472b-a539-f98c1ce36f24)
+
+   5. Login page is used to log in and also gives you a link to sign up
+![Screenshot 2024-03-06 214353](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/ab5b1fa8-57fb-414d-b092-34bddbfd2cf3)
+
+   6. Registration page allows you to creat an account
+![Screenshot 2024-03-06 214412](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/36d9bcb5-9d25-4b18-a3c8-fd07c417e771)
+
+   7. Profile page shows a user's information and also you cat cwith your role to admin
+![Screenshot 2024-03-06 211810](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/f267bfa4-76ff-4309-8d59-7a05703b22b1)
+
+   8. Cart page show items in your cart, you can also change quantity and remove them
+![Screenshot 2024-03-06 214326](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/48188414-84ac-4175-b608-78229b0d32c4)
+
+Relationship between components:
+src/
+┣ components/
+┃ ┣ contextAPI/
+┃ ┃ ┗ ThemeContext.tsx
+┃ ┣ products/
+┃ ┃ ┗ ProductItem.tsx
+┃ ┣ utils/
+┃ ┃ ┣ Filters.tsx
+┃ ┃ ┣ Pagination.tsx
+┃ ┃ ┗ Search.tsx
+┃ ┣ NavBar.tsx
+┃ ┗ ScrollToTop.tsx
+┣ hooks/
+┃ ┣ ErrorMessage.tsx
+┃ ┣ SuccsessMessage.tsx
+┃ ┗ UseInput.tsx
+┣ misc/
+┃ ┗ type.ts
+┣ pages/
+┃ ┣ cart/
+┃ ┃ ┗ CartPage.tsx
+┃ ┣ product/
+┃ ┃ ┣ CreateProductPage.tsx
+┃ ┃ ┣ ItemPage.tsx
+┃ ┃ ┗ ProductsPage.tsx
+┃ ┣ user/
+┃ ┃ ┣ LoginPage.tsx
+┃ ┃ ┣ ProfilePage.tsx
+┃ ┃ ┗ RegisterPage.tsx
+┃ ┗ LandingPage.tsx
+┣ redux/
+┃ ┣ slices/
+┃ ┃ ┣ cartSlice.ts
+┃ ┃ ┣ productSlice.ts
+┃ ┃ ┗ userSlice.ts
+┃ ┗ store.ts
+┣ test/
+┃ ┣ cartSlice.test.ts
+┃ ┣ productsSlice.test.ts
+┃ ┗ userSlice.test.ts
+┣ App.css
+┣ App.tsx
+┣ index.css
+┣ index.tsx
+┣ logo.svg
+┣ react-app-env.d.ts
+┣ reportWebVitals.ts
+┗ setupTests.ts
+
+
+![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)
+
+

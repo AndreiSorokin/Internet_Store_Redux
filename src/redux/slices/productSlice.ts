@@ -14,13 +14,11 @@ const initialState: InitialState = {
    filteredProducts: []
 };
 
-const BASE_URL = 'https://api.escuelajs.co/api/v1';
-
 export const fetchProducts = createAsyncThunk(
    "fetchProducts",
    async () => {
       try {
-         const response = await axios.get(`${BASE_URL}/products`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/products`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -34,7 +32,7 @@ export const fetchSingleProduct = createAsyncThunk(
    "fetchSingleProduct",
    async (id: string) => {
       try {
-         const response = await axios.get(`${BASE_URL}/products/${id}`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/products/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -69,7 +67,7 @@ export const createProduct = createAsyncThunk(
             uploadedImageUrls.push(uploadedImageUrl);
          }
 
-         const response = await axios.post(`${BASE_URL}/products/`, {
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/products/`, {
             title,
             price,
             description,
@@ -91,7 +89,7 @@ export const uploadImage = async (image: File): Promise<string> => {
       const formData = new FormData();
       formData.append('file', image);
 
-      const response = await axios.post(`${BASE_URL}/files/upload`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/files/upload`, formData, {
          headers: {
             'Content-Type': 'multipart/form-data'
          }
@@ -114,7 +112,7 @@ export const deleteProduct = createAsyncThunk(
    'deleteProduct',
    async (productId: string, { rejectWithValue }) => {
       try {
-         await axios.delete(`${BASE_URL}/products/${productId}`);
+         await axios.delete(`${process.env.REACT_APP_BASE_URL}/products/${productId}`);
          return productId;
       } catch (error) {
       console.error('API Error:', error);
@@ -127,7 +125,7 @@ export const updateProduct = createAsyncThunk(
    'updateProduct',
    async ({ id, title, price }: { id: string, title: string, price: number }, { rejectWithValue }) => {
       try {
-         const response = await axios.put(`${BASE_URL}/products/${id}`, {
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/products/${id}`, {
             title,
             price
          });

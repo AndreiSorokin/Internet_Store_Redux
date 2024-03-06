@@ -17,13 +17,11 @@ const initialState: InitialStateUser = {
    error: null,
 };
 
-const BASE_URL = 'https://api.escuelajs.co/api/v1';
-
 export const userRegistration = createAsyncThunk(
    'userRegistration',
    async(user: User, {rejectWithValue}) => {
       try {
-         const response = await axios.post(`${BASE_URL}/users/`, user)
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/`, user)
          return response.data
       } catch (error) {
          console.error('API Error:', error);
@@ -39,7 +37,7 @@ export const uploadAvatar = createAsyncThunk(
          const formData = new FormData();
          formData.append('file', file);
          
-         const response = await axios.post(`${BASE_URL}/files/upload`, formData, {
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/files/upload`, formData, {
          headers: {
             'Content-Type': 'multipart/form-data'
          }
@@ -69,7 +67,7 @@ export const fetchUserProfile = createAsyncThunk(
          throw new Error('No token found');
       }
       
-      const response = await axios.get(`${BASE_URL}/auth/profile`, {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/profile`, {
          headers: {
             Authorization: `Bearer ${access_token}`,
          },
@@ -92,7 +90,7 @@ export const userLogin = createAsyncThunk(
    'userLogin',
    async (credentials: Credentials, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.post(`${BASE_URL}/auth/login/`, credentials);
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/login/`, credentials);
          console.log('Login Response:', response.data);
          localStorage.setItem('token', response.data.access_token);
          
@@ -110,7 +108,7 @@ export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
    async ({ id, email, name }: LoggedInUser, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`${BASE_URL}/users/${id}`, { email, name });
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { email, name });
          const updatedUser = response.data;
          dispatch(setUser(updatedUser))
          return updatedUser;
@@ -125,7 +123,7 @@ export const switchRole = createAsyncThunk(
    'switchRole',
    async ({ id }: LoggedInUser, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`${BASE_URL}/users/${id}`, {role: 'admin'} );
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, {role: 'admin'} );
          const switchedUser = response.data;
          dispatch(setUser(switchedUser))
          return switchedUser;

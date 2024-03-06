@@ -1,11 +1,24 @@
 https://fs17-frontend-project.fly.dev/
 
-Online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects. **LINK**
+It may take some time to open the link above
+
+This is the online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects.
+
+This project has 4 pages:
+   1. Landing page where you can find featured products from all available categories
+   2. Products page to find all the products and fitlet rhem by price and category
+   3. Item page shows an item's information, you can choose quantity and add the item to your cart and if you are an admin you can also modify the item and delete as well as delete it
+   4. Create product page allows logged in users to create new products
+   5. Login page is used to log in and also gives you a link to sign up
+   6. Registration page allows you to creat an account
+   7. Profile page shows a user's information and also you cat cwith your role to admin
+   8. Cart page show items in your cart, you can also change quantity and remove them
 
 After users sign up they can see "profile" and "cart" pages in addition to "products" that can be seen by anyone visiting the web site.
 
 Getting Started:
-   1. To run the code u need Node.js to execute JavaScript code outside of a web browser, "react": "^18.2.0", "react-dom": "^18.2.0"
+   1. To run the code u need Node.js to execute JavaScript code outside of a web browser, "react": "^18.2.0",
+"react-dom": "^18.2.0"
    2. ENV variables HERE
    3. Then you need to clone the repo: REPO
    4. After cloning write npm install (or yarn install on MAC)
@@ -43,11 +56,16 @@ The initial state includes information retrieved from the local storage. Async t
 Reducers update sleces' states based on the outcome of the async thunks (fulfilled, pending, rejected).
 After that components handle functionalities dispatching async thunks.
 
-**Component Structure: Explain the main components and their relationships, possibly using a diagram.**
-
 Testing:
    For unit testing in this project I used React Testing Library, Jest
 
 Deployment:
-   **Detail the steps required for deploying the project to a server.**
-   **Mention any specific hosting platforms, CI/CD pipelines, or other tools used.**
+   Hoisting: fly.io
+   Steps:
+      1. Sign Up and Install Flyctl
+      2. Navigate to the project directory in the terminal
+      3. Initialize Fly.io configuration files by running fly launch
+      4. Configure fly.toml file
+      5. To deploy run fly deploy
+      6. Run fly scale count to adjust the number of instances running the application
+      7. To update the project make changes and deploy again

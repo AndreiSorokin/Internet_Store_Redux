@@ -40,8 +40,7 @@ const LandingPage = () => {
       <div style={{
          backgroundColor: theme === "bright" ? "white" : "black",
          color: theme === "bright" ? "black" : "white",
-         minHeight: '100vh',
-         paddingTop: '20vh'
+         minHeight: '100vh'
       }}>
          <Box
             sx={{

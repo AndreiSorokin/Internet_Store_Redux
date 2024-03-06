@@ -90,6 +90,7 @@ Component structure:
 ![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)
 
 Relationship between components:
+
 src/
 ┣ components/
 ┃ ┣ contextAPI/
@@ -138,5 +139,3 @@ src/
 ┣ react-app-env.d.ts
 ┣ reportWebVitals.ts
 ┗ setupTests.ts
-
-

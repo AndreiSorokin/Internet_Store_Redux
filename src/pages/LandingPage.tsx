@@ -48,7 +48,8 @@ const LandingPage = () => {
                color: 'primary.contrastText',
                py: [6, 8],
                textAlign: 'center',
-               backgroundColor: theme === "bright" ? "white" : "black"
+               backgroundColor: theme === "bright" ? "white" : "black",
+               transition: '0.5s ease'
             }}
          >
             <Container maxWidth="md" sx={{ color: theme === "bright" ? "black" : "white" }}>

@@ -67,6 +67,7 @@ export default function LoginPage() {
         color: theme === 'bright' ? 'black' : 'white',
         height: '120vh',
         paddingTop: '20vh',
+        transition: '0.5s ease'
       }}
     >
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}

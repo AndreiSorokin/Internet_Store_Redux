@@ -13,14 +13,15 @@ import Filters from "../../components/utils/Filters";
 import Search from "../../components/utils/Search";
 import Pagination from "../../components/utils/Pagination";
 import ProductItem from "../../components/products/ProductItem";
-import ScrollToTopButton from "../../components/ScrollToTop";
+import ScrollToTopButton from "../../components/utils/ScrollToTop";
+import { LoggedInUser } from "../../misc/type";
 
 
 export default function ProductsPage() {
   const { theme } = useTheme()
   
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: AppState) => state.userRegister.user);
+  const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
 
   const productList = useAppSelector(state => state.products.products);
   const priceFilter = useAppSelector(state => state.products.priceFilter);
@@ -68,11 +69,12 @@ export default function ProductsPage() {
       color: theme === "bright" ? "black" : "white",
       height: '400vh',
       paddingTop: '20vh',
-      padding:'25px'
+      padding:'25px',
+      transition: '0.5s ease'
     }} >
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Link style={{marginTop:"10vh", display: user ? 'block' : 'none'}} to={'/createNew'}>
+        <Link style={{marginTop:"10vh", display: user?.role === 'admin' ? 'block' : 'none'}} to={'/createNew'}>
           <Button>Create new</Button>
         </Link>
 

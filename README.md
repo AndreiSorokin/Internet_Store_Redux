@@ -64,7 +64,7 @@ This project has 8 pages:
    1. Landing page where you can find featured products from all available categories
 ![Screenshot 2024-03-06 211632](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/5c2c638a-4729-46e6-ad06-ebe9e86cd0f8)
 
-   2. Products page to find all the products and fitlet them by price and category, also on this page you can find a button to create a new product if you are a logged in user
+   2. Products page to find all the products and fitler them by price and category, also on this page you can find a button to create a new product if you are an admin
 ![Screenshot 2024-03-06 211918](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/1d77208d-9d8f-44ce-909a-988b35cd80b7)
 ![Screenshot 2024-03-06 214054](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/b1b9553c-8835-453d-b62c-525a3fca01b9)
 

@@ -60,6 +60,7 @@ export default function ProfilePage() {
         backgroundColor: theme === 'bright' ? 'white' : 'black',
         color: theme === 'bright' ? 'black' : 'white',
         minHeight: '100vh',
+        transition: '0.5s ease'
       }}
     >
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
@@ -70,6 +71,7 @@ export default function ProfilePage() {
           <h1>Hello, {user.name}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
+              placeholder={user.name}
               name="name"
               label="Name"
               value={nameInput.value}
@@ -83,10 +85,11 @@ export default function ProfilePage() {
                 },
                 }}
                 sx={{ margin: "2vh", width: "100%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                color: theme === 'bright' ? 'black' : 'white',
+                color: theme === 'bright' ? 'black' : 'white'
                 } }}
             />
             <TextField
+              placeholder={user.email}
               name="email"
               label="Email"
               value={emailInput.value}

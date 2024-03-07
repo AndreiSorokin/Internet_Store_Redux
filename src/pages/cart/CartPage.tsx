@@ -8,7 +8,7 @@ import useSuccsessMessage from '../../hooks/SuccsessMessage';
 
 import { Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
-import ScrollToTopButton from '../../components/ScrollToTop';
+import ScrollToTopButton from '../../components/utils/ScrollToTop';
 
 const CartPage: React.FC = () => {
   const { theme } = useTheme();
@@ -57,7 +57,8 @@ const CartPage: React.FC = () => {
   return (
     <div style={{ backgroundColor: theme === "bright" ? "white" : "black",
         color: theme === "bright" ? "black" : "white",
-        paddingTop: '5vh'
+        paddingTop: '5vh',
+        transition: '0.5s ease'
       }}>
         {succsessMessage && (
           <p style={succsessMessageStyle}>{succsessMessage}</p>

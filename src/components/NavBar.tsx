@@ -35,7 +35,8 @@ const Navbar = () => {
          <div>
             <AppBar style={{
                backgroundColor: theme === "bright" ? "white" : "black",
-               color: theme === "bright" ? "black" : "white", boxShadow
+               color: theme === "bright" ? "black" : "white", boxShadow,
+               transition: '0.5s ease'
                }} >
                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="h6" component="div">

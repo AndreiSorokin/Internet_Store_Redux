@@ -95,8 +95,10 @@ export default function CreateProductPage() {
       <Grid sx={{
       backgroundColor: theme === "bright" ? "white" : "black",
       color: theme === "bright" ? "black" : "white",
-      height: '100vh',
-      paddingTop: '20vh'
+      height: '110vh',
+      width: '110vw',
+      paddingTop: '20vh',
+      transition: '0.5s ease'
       }} container direction="column" alignItems="center" spacing={3}>
       <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
           <Link to="/products" style={{ textDecoration: "none" }}>
@@ -106,11 +108,11 @@ export default function CreateProductPage() {
             </IconButton>
           </Link>
       </Grid>
-      {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
-      {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       <Grid item>
         <form onSubmit={handleSubmit}>
             <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
+            {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
+            {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
               <TextField
                   label="Title"
                   value={titleInput.value}

@@ -104,7 +104,8 @@ const ItemPage: React.FC = () => {
       backgroundColor: theme === "bright" ? "white" : "black",
       color: theme === "bright" ? "black" : "white",
       height: '120vh',
-      paddingTop: '20vh'
+      paddingTop: '20vh',
+      transition: '0.5s ease'
     }} container direction="column" alignItems="center" spacing={3}>
       <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
         <Link to="/products" style={{ textDecoration: "none" }}>

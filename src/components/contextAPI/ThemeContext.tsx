@@ -16,7 +16,9 @@ export default function ThemeProvider({ children }: { children: ReactNode}) {
 
    return (
       <ThemeContext.Provider value={{ toggleTheme, theme }}>
-         {children}
+         <div style={{transition: '0.5s ease'}}>
+            {children}
+         </div>
       </ThemeContext.Provider>
    );
 }

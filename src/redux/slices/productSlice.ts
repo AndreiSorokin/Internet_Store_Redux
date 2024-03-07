@@ -1,5 +1,5 @@
-import { PayloadAction, createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CartItem, InitialState, Product } from "../../misc/type";
+import {createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { InitialState, Product } from "../../misc/type";
 
 import axios from "axios";
 
@@ -13,6 +13,7 @@ const initialState: InitialState = {
    priceFilter: '',
    filteredProducts: []
 };
+
 
 export const fetchProducts = createAsyncThunk(
    "fetchProducts",

@@ -38,10 +38,13 @@ const LandingPage = () => {
 
    return (
       <div style={{
-         backgroundColor: theme === "bright" ? "white" : "black",
-         color: theme === "bright" ? "black" : "white",
-         minHeight: '100vh'
-      }}>
+         background: `url(${require("../img/background.jpg")}) top / cover no-repeat`,
+         minHeight: '100vh',
+         display: 'flex',
+         flexDirection: 'column',
+         alignItems: 'center',
+         justifyContent: 'center',
+         }}>
          <Box
             sx={{
                bgcolor: 'primary.main',
@@ -49,14 +52,15 @@ const LandingPage = () => {
                py: [6, 8],
                textAlign: 'center',
                backgroundColor: theme === "bright" ? "white" : "black",
-               transition: '0.5s ease'
+               transition: '0.5s ease',
+               background: 'transparent'
             }}
          >
             <Container maxWidth="md" sx={{ color: theme === "bright" ? "black" : "white" }}>
                <Typography variant="h2" component="h1" gutterBottom>
-                  <p>Welcome to The Store</p>
+                  <p style={{backgroundImage: `url(${require("../img/flame.gif")})`, backgroundSize: 'cover', backgroundPosition: 'center', color: 'transparent', backgroundClip: 'text', WebkitBackgroundClip: 'text'}}>Welcome to The Store</p>
                </Typography>
-               <Typography variant="h5" component="p" paragraph>
+               <Typography variant="h5" component="p" paragraph sx={{color: theme === 'bright' ? 'black' : 'white'}}>
                   Discover amazing products and shop with ease.
                </Typography>
                <Button variant="contained" color="secondary" size="large" component={Link} to="/products">
@@ -64,9 +68,9 @@ const LandingPage = () => {
                </Button>
             </Container>
          </Box>
-         <Box py={[6, 8]} bgcolor="background.default" sx={{ backgroundColor: theme === "bright" ? "white" : "black" }}>
+         <Box py={[6, 8]} bgcolor="background.default" sx={{backgroundColor: 'transparent'}}>
             <Container maxWidth="lg">
-               <Typography variant="h4" align="center" gutterBottom>
+               <Typography variant="h4" align="center" gutterBottom sx={{color: 'black'}}>
                   Featured Products
                </Typography>
                <Box sx={{ color: theme === 'bright' ? 'black' : 'white' }}>
@@ -85,7 +89,7 @@ const LandingPage = () => {
                   >
                      {featuredProducts.map((product) => (
                         <Link key={product.id} to={`/products/${product.id}`}>
-                           <Card sx={{ height: [300, 350], margin: ['10px', '20px'] }}>
+                           <Card sx={{ height: [300, 350], backgroundColor: 'transparent', border:'1ps solid black' , margin: ['10px', '20px'] }}>
                               <CardMedia
                                  component="img"
                                  height="200"
@@ -94,10 +98,10 @@ const LandingPage = () => {
                                  sx={{ objectFit: 'contain', margin: '10px auto' }}
                               />
                               <CardContent>
-                                 <Typography variant="h6" component="div">
+                                 <Typography variant="h6" component="div" color='white'>
                                     {product.title}
                                  </Typography>
-                                 <Button variant="outlined">
+                                 <Button variant="outlined" sx={{color: 'white', border: '1px solid black'}}>
                                     View
                                  </Button>
                               </CardContent>

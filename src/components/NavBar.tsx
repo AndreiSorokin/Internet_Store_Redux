@@ -6,7 +6,7 @@ import ThemeProvider, { useTheme } from './contextAPI/ThemeContext';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import { clearUser, userLogout } from '../redux/slices/userSlice';
+import { userLogout } from '../redux/slices/userSlice';
 
 const Navbar = () => {
    const user = useAppSelector((state) => state.userRegister.user);
@@ -75,11 +75,13 @@ const Navbar = () => {
                </Toolbar>
                {showMenu && (
                   <div style={{ backgroundColor: theme === "bright" ? "white" : "black", padding: '10px', textAlign: 'center', borderTop: '1px solid black' }}>
-                     <Link to="/auth/profile">
-                        <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
-                           Profile
-                        </Button>
-                     </Link>
+                     {user &&
+                        <Link to="/auth/profile">
+                           <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
+                              Profile
+                           </Button>
+                        </Link>
+                     }
                      <Link to="/products">
                         <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
                            Products

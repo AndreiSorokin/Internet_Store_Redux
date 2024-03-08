@@ -98,7 +98,7 @@ const LandingPage = () => {
                               sx={{ objectFit: 'contain', margin: '10px auto' }}
                            />
                            <CardContent>
-                              <Typography variant="h6" component="div" color='white' sx={{ fontSize: '1.5vw', margin: { xs: '-50px auto', sm: '10px auto' } }}>
+                              <Typography variant="h6" component="div" color='white' sx={{ fontSize: {xs: '2.5vw', sm: '1.5vw'}, margin: { xs: '-50px auto', sm: '10px auto' } }}>
                                  {product.title}
                               </Typography>
                               <Button variant="outlined" sx={{ color: 'white', border: '1px solid black', display: { xs: 'none', sm: 'block' } }}>

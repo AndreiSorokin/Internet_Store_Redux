@@ -17,8 +17,6 @@ const CartPage: React.FC = () => {
   const cartItems = useSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
 
-  console.log(cartItems.map(cartItem => cartItem))
-
   useEffect(() => {
     const storedCartItems = localStorage.getItem('cartItems');
     if (storedCartItems) {

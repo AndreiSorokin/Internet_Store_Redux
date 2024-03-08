@@ -61,7 +61,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     alert('Your account has been created successfully')
     navigate('/auth/profile');
   } catch (error) {
-    console.error('Error:', error);
+    return showError('Something went wrong')
   }
 };
 

@@ -42,7 +42,6 @@ export default function LoginPage() {
       }
   
     } catch (error) {
-      console.error('Login Error:', error);
       showError('An unexpected error occurred');
     }
   };

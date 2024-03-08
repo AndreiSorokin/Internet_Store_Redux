@@ -63,7 +63,7 @@ const LandingPage = () => {
                <Typography variant="h5" component="p" paragraph sx={{color: theme === 'bright' ? 'black' : 'white'}}>
                   Discover amazing products and shop with ease.
                </Typography>
-               <Button variant="contained" color="secondary" size="large" component={Link} to="/products">
+               <Button variant="contained" size="large" sx={{background:'linear-gradient(to bottom, #ffa84c 17%,#ff7b0d 54%,#ff7b0d 94%)'}} component={Link} to="/products">
                   Shop Now
                </Button>
             </Container>

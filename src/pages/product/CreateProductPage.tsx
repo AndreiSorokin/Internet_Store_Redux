@@ -56,7 +56,6 @@ export default function CreateProductPage() {
       try {
         const uploadedImageUrls: string[] = [];
             for (const image of images) {
-              console.log(image)
               if (typeof image === 'string') {
                   uploadedImageUrls.push(image);
               } else {
@@ -80,7 +79,7 @@ export default function CreateProductPage() {
         categoryIdInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
         setImages([]);
       } catch (error) {
-        console.error('Error creating product:', error);
+        return showError('Somethins went wrong');
       }
   };
 

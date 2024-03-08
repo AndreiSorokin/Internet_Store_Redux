@@ -12,8 +12,6 @@ if (data) {
    cartState = JSON.parse(data);
 }
 
-console.log("User information from local storage:", data);
-
 const cartSlice = createSlice({
    name: 'cart',
    initialState,

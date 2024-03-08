@@ -23,7 +23,6 @@ export const fetchProducts = createAsyncThunk(
          const data = response.data;
          return data;
       } catch (error) {
-         console.error('Error fetching products:', error);
          throw error;
       }
    }
@@ -37,7 +36,6 @@ export const fetchSingleProduct = createAsyncThunk(
          const data = response.data;
          return data;
       } catch (error) {
-         console.error('Error fetching single product:', error);
          throw error;
       }
    }
@@ -50,7 +48,6 @@ const fetchImageFile = async (imageUrl: string): Promise<File> => {
       const file = new File([blob], 'image.jpg');
       return file;
    } catch (error) {
-      console.error('Error fetching image file:', error);
       throw error;
    }
 };
@@ -76,10 +73,8 @@ export const createProduct = createAsyncThunk(
             images: uploadedImageUrls
          });
          
-         console.log('API Response:', response.data);
          return response.data;
       } catch (error) {
-         console.error('API Error:', error);
          return rejectWithValue(error)
       }
    }
@@ -104,7 +99,6 @@ export const uploadImage = async (image: File): Promise<string> => {
 
       return location;
    } catch (error) {
-      console.error('Image upload error:', error);
       throw error;
    }
 };
@@ -116,7 +110,6 @@ export const deleteProduct = createAsyncThunk(
          await axios.delete(`${process.env.REACT_APP_BASE_URL}/products/${productId}`);
          return productId;
       } catch (error) {
-      console.error('API Error:', error);
       return rejectWithValue(error)
       }
    }
@@ -131,10 +124,8 @@ export const updateProduct = createAsyncThunk(
             price
          });
          
-         console.log('API Response for updating products:', response.data);
          return response.data;
       } catch (error) {
-         console.error('API Error:', error);
          return rejectWithValue(error)
       }
    }

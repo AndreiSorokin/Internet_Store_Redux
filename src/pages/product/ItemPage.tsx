@@ -125,7 +125,7 @@ const ItemPage: React.FC = () => {
             <Grid container justifyContent="center" spacing={2}>
               {productItem.images.map((image: string, index: number) => (
                 <Grid item key={index}>
-                  <CardMedia component="img" height="140" image={image} alt="An item's picture" />
+                  <CardMedia component="img" height="140" image={image} alt="An item's pictures not available"/>
                 </Grid>
               ))}
             </Grid>

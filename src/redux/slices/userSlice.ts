@@ -9,8 +9,6 @@ if (data) {
    userState = JSON.parse(data);
 }
 
-console.log("User information from local storage:", data);
-
 const initialState: InitialStateUser = {
    user: userState,
    loading: false,
@@ -24,7 +22,6 @@ export const userRegistration = createAsyncThunk(
          const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/`, user)
          return response.data
       } catch (error) {
-         console.error('API Error:', error);
          return rejectWithValue(error)
       }
    }
@@ -52,7 +49,6 @@ export const uploadAvatar = createAsyncThunk(
          return location;
       
       } catch (error) {
-         console.error('API Error:', error);
          return rejectWithValue(error)
       }
    }
@@ -91,14 +87,12 @@ export const userLogin = createAsyncThunk(
    async (credentials: Credentials, { rejectWithValue, dispatch }) => {
       try {
          const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/login/`, credentials);
-         console.log('Login Response:', response.data);
          localStorage.setItem('token', response.data.access_token);
          
          const login = await dispatch(fetchUserProfile());
 
          return login.payload;
       } catch (error) {
-         console.error('Login Error:', error);
          return rejectWithValue('An error occurred during login');
       }
    }
@@ -113,7 +107,6 @@ export const updateUserProfile = createAsyncThunk(
          dispatch(setUser(updatedUser))
          return updatedUser;
       } catch (error) {
-      console.error('Login Error:', error);
       return rejectWithValue('An error occurred during login');
       }
    }
@@ -128,7 +121,6 @@ export const switchRole = createAsyncThunk(
          dispatch(setUser(switchedUser))
          return switchedUser;
       } catch (error) {
-      console.error('Login Error:', error);
       return rejectWithValue('An error occurred during login');
       }
    }
@@ -140,7 +132,6 @@ export const userLogout = createAsyncThunk(
       try {
          localStorage.removeItem('userInformation');
       } catch (error) {
-         console.error('Logout Error:', error);
          return rejectWithValue(error);
       }
    }

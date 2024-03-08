@@ -1,11 +1,9 @@
-https://fs17-frontend-project.fly.dev/
-
-It may take some time to open the link above, alternatively you can also use this:
-https://fs17-frontend-project-pi.vercel.app/
+[https://fs17-frontend-project-pi.vercel.app/](https://fs17-frontend-project-obxj.vercel.app/)
 
 This is the online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects.
 
-After users sign up they can see "profile" and "cart" pages in addition to "products" that can be seen by anyone visiting the web site.
+### Deployment:
+   Hoisting: Vercel
 
 ### Getting Started:
    1. To run the code u need Node.js to execute JavaScript code outside of a web browser, "react": "^18.2.0",
@@ -18,6 +16,7 @@ Usage:
    1. In order to start the project write npm start (yarn start on MAC)
    2. In order to test the application write npm test (yarn test on MAC)
 
+After users sign up they can see "profile" and "cart" pages in addition to "products" that can be seen by anyone visiting the web site.
 Unauthorizrd users can only access the "products" page, in order to add products to the cart you need to log in first. In you don't have an account, you can sign up and you will automatically be redirected to "profile" page. Then you need to go to the "products" page, click on a product you would like to add to the cart and cllick "add" button.
 As a logged in user you can also add new products.
 On your "profile" page you can change your information as well as switch role to "admin". Afer you have got "admin" you can modify and delete products. To do so you need to go to a product page and choose the needed option.
@@ -49,17 +48,6 @@ After that components handle functionalities dispatching async thunks.
 
 ### Testing:
    For unit testing in this project I used React Testing Library, Jest
-
-### Deployment:
-   Hoisting: fly.io
-   Steps:
-      1. Sign Up and Install Flyctl
-      2. Navigate to the project directory in the terminal
-      3. Initialize Fly.io configuration files by running fly launch
-      4. Configure fly.toml file
-      5. To deploy run fly deploy
-      6. Run fly scale count to adjust the number of instances running the application
-      7. To update the project make changes and deploy again
 
 ### This project has 8 pages:
    1. Landing page where you can find featured products from all available categories

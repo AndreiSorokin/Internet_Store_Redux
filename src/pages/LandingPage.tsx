@@ -53,7 +53,7 @@ const LandingPage = () => {
                textAlign: 'center',
                backgroundColor: theme === "bright" ? "white" : "black",
                transition: '0.5s ease',
-               background: 'transparent'
+               background: 'transparent',
             }}
          >
             <Container maxWidth="md" sx={{ color: theme === "bright" ? "black" : "white" }}>
@@ -73,7 +73,7 @@ const LandingPage = () => {
                <Typography variant="h4" align="center" gutterBottom sx={{color: 'black'}}>
                   Featured Products
                </Typography>
-               <Box sx={{ color: theme === 'bright' ? 'black' : 'white' }}>
+               <Box sx={{ color: theme === 'bright' ? 'black' : 'white', width:'70vw' }}>
                   <Carousel
                      showArrows
                      showIndicators={false}
@@ -89,23 +89,23 @@ const LandingPage = () => {
                   >
                      {featuredProducts.map((product) => (
                         <Link key={product.id} to={`/products/${product.id}`}>
-                           <Card sx={{ height: [300, 350], backgroundColor: 'transparent', border:'1ps solid black' , margin: ['10px', '20px'] }}>
-                              <CardMedia
-                                 component="img"
-                                 height="200"
-                                 image={product.category.image}
-                                 alt={product.title}
-                                 sx={{ objectFit: 'contain', margin: '10px auto' }}
-                              />
-                              <CardContent>
-                                 <Typography variant="h6" component="div" color='white'>
-                                    {product.title}
-                                 </Typography>
-                                 <Button variant="outlined" sx={{color: 'white', border: '1px solid black'}}>
-                                    View
-                                 </Button>
-                              </CardContent>
-                           </Card>
+                        <Card sx={{ height: [300, 350], backgroundColor: 'transparent', border: '1ps solid black', margin: ['10px', '20px'] }}>
+                           <CardMedia
+                              component="img"
+                              height="200"
+                              image={product.category.image}
+                              alt={product.title}
+                              sx={{ objectFit: 'contain', margin: '10px auto' }}
+                           />
+                           <CardContent>
+                              <Typography variant="h6" component="div" color='white' sx={{ fontSize: '1.5vw', margin: { xs: '-50px auto', sm: '10px auto' } }}>
+                                 {product.title}
+                              </Typography>
+                              <Button variant="outlined" sx={{ color: 'white', border: '1px solid black', display: { xs: 'none', sm: 'block' } }}>
+                                 View
+                              </Button>
+                           </CardContent>
+                        </Card>
                         </Link>
                      ))}
                   </Carousel>

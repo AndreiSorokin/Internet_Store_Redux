@@ -1,6 +1,7 @@
 https://fs17-frontend-project.fly.dev/
 
-It may take some time to open the link above
+It may take some time to open the link above, alternatively you can also use this:
+https://fs17-frontend-project-pi.vercel.app/
 
 This is the online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects.
 

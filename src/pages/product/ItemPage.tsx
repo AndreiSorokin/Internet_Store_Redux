@@ -115,9 +115,9 @@ const ItemPage: React.FC = () => {
           </IconButton>
         </Link>
       </Grid>
-      {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       {productItem && (
         <Grid item>
+          {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
           <CardContent>
             <Typography variant="h5" component="h2" align="center" gutterBottom>
               {productItem.title}

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState, useAppDispatch } from '../../redux/store';
+import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { CartItem } from '../../misc/type';
 import { updateCartItemQuantity, removeFromCart } from '../../redux/slices/cartSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext'
@@ -14,11 +13,11 @@ const CartPage: React.FC = () => {
   const { theme } = useTheme();
   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage()
 
-  const cartItems = useSelector((state: AppState) => state.cart.items);
+  const cartItems = useAppSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const storedCartItems = localStorage.getItem('cartItems');
+    const storedCartItems = localStorage.getItem('cartInformation');
     if (storedCartItems) {
       dispatch(updateCartItemQuantity(JSON.parse(storedCartItems)));
     }

@@ -1,4 +1,4 @@
-[https://fs17-frontend-project-pi.vercel.app/](https://fs17-frontend-project-obxj.vercel.app/)
+https://fs17-frontend-project-iota.vercel.app/
 
 This is the online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects.
 

@@ -63,11 +63,15 @@ const Navbar = () => {
                      }
                   </ButtonGroup>
                   {user ? (
-                     <Button onClick={handleLogout} sx={{ display: { xs: 'none', md: 'block' } }}>Log out</Button>
-                  ) : (
-                     <Link to="/auth/login">
-                        <Button sx={{ display: { xs: 'none', md: 'block' } }}>Log in</Button>
-                     </Link>
+                     <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <Button onClick={handleLogout} sx={{ display: { xs: 'none', md: 'block' } }}>Log out</Button>
+                     </ButtonGroup>
+                     ) : (
+                        <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
+                           <Link to="/auth/login" style={{textDecoration: 'none'}}>
+                              <Button sx={{ display: { xs: 'none', md: 'block' } }}>Log in</Button>
+                           </Link>
+                        </ButtonGroup>
                   )}
                   <IconButton onClick={toggleTheme}>
                      {theme === 'bright' ? <Brightness4Icon /> : <Brightness7Icon sx={{ color: 'white' }} />}
@@ -102,7 +106,7 @@ const Navbar = () => {
                         </Link>
                      ) : (
                         <Link to="/auth/login">
-                           <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
+                           <Button variant="outlined" style={{ color: theme === "bright" ? "black" : "white" }}>
                               Log in
                            </Button>
                         </Link>

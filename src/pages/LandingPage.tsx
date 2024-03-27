@@ -98,10 +98,25 @@ const LandingPage = () => {
                               sx={{ objectFit: 'contain', margin: '10px auto' }}
                            />
                            <CardContent>
-                              <Typography variant="h6" component="div" color='white' sx={{ fontSize: {xs: '2.5vw', sm: '1.5vw'}, margin: { xs: '-50px auto', sm: '10px auto' } }}>
+                              <Typography variant="h6" component="div" color='white' sx={{ 
+                                 fontSize: {xs: '2.5vw', sm: '1.5vw'}, 
+                                 margin: { xs: '-50px auto', sm: '10px auto' },
+                                 whiteSpace: 'nowrap',
+                                 overflow: 'hidden',
+                                 textOverflow: 'ellipsis',
+                                 textDecoration: 'underline'
+                              }}>
                                  {product.title}
                               </Typography>
-                              <Button variant="outlined" sx={{ color: 'white', border: '1px solid black', display: { xs: 'none', sm: 'block' } }}>
+                              <Button variant="outlined" sx={{ 
+                                 color: 'white', border: '1px solid black', 
+                                 fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                                 padding: { xs: '5px 10px', sm: '8px 15px' },
+                                 marginTop: { xs: '55px', sm: '0' },
+                                 '&:hover': {
+                                    borderColor: 'white'
+                                 }
+                              }}>
                                  View
                               </Button>
                            </CardContent>

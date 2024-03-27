@@ -5,9 +5,6 @@ import {
 } from 'react-router-dom'
 
 import { fetchProducts } from "../../redux/slices/productSlice";
-
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import { useTheme } from "../../components/contextAPI/ThemeContext";
 import Filters from "../../components/utils/Filters";
 import Search from "../../components/utils/Search";
@@ -15,6 +12,11 @@ import Pagination from "../../components/utils/Pagination";
 import ProductItem from "../../components/products/ProductItem";
 import ScrollToTopButton from "../../components/utils/ScrollToTop";
 import { LoggedInUser } from "../../misc/type";
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 export default function ProductsPage() {
@@ -29,6 +31,8 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");
   const [selectedCategory, setSelectedCategory] = useState(localStorage.getItem("selectedCategory") || "All");
+  const [dialog, setDialog] = useState(false);
+
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -79,10 +83,20 @@ export default function ProductsPage() {
         </Link>
 
         <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme}/>
-        <Pagination theme={theme} currentPage={currentPage} filteredProducts={filteredProducts} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
-        <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
+
+        <Button style={{transform: 'translate(0,-10vh)'}} onClick={() => setDialog(true)}>Filters</Button>
+        <Dialog open={dialog} onClose={() => setDialog(false)}>
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" style={{ height: '100%' }}>
+          <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(12vw, 5vh)' }}><CloseIcon /></Button>
+            <div style={{ height: '40vh', width:'35vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
+            </div>
+          </Box>
+        </Dialog>
+
         <ProductItem currentPageData={currentPageData}/>
         <ScrollToTopButton/>
+        <Pagination theme={theme} currentPage={currentPage} filteredProducts={filteredProducts} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
     </Box>
     </div>
   );

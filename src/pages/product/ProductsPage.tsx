@@ -86,8 +86,8 @@ export default function ProductsPage() {
 
         <Button style={{transform: 'translate(0,-10vh)'}} onClick={() => setDialog(true)}>Filters</Button>
         <Dialog open={dialog} onClose={() => setDialog(false)}>
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" style={{ height: '100%' }}>
-          <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(12vw, 5vh)' }}><CloseIcon /></Button>
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ borderRadius: '5px', backgroundColor: theme === "bright" ? "white" : "black", border: theme === "bright" ? "1px solid black" : "1px solid white", '@media (max-width: 900px)': { width: '45vw', height: '50vh' } }}>
+          <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(14vw, 2vh)', color: theme === 'bright' ? 'black' : 'white' }}><CloseIcon /></Button>
             <div style={{ height: '40vh', width:'35vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
             </div>

@@ -5,7 +5,6 @@ import { AppState } from "../../redux/store";
 import { setPriceFilter, sortByPrice } from "../../redux/slices/productSlice";
 import { useTheme } from "../contextAPI/ThemeContext";
 import { Products } from "../../misc/type";
-
 interface FiltersProps {
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
@@ -39,7 +38,7 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
   return (
     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
         <FormControl style={{ margin: "1vh" }}>
-          <InputLabel style={{ color: theme === 'bright' ? 'black' : 'white' }} id="demo-simple-select-label">Category</InputLabel>
+          <InputLabel sx={{ color: theme === 'bright' ? 'black' : 'white' }} id="demo-simple-select-label">Category</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -81,8 +80,8 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
           </Select>
         </FormControl>
         <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
-          <Button style={{ marginBottom: "1vh", width: "100%" }} onClick={() => handleSortByPrice('from low to high')} variant="outlined">Sort by Price (Low to High)</Button>
-          <Button style={{ width: "100%" }} onClick={() => handleSortByPrice('from high to low')} variant="outlined">Sort by Price (High to Low)</Button>
+          <Button sx={{ marginBottom: "1vh", width: "100%" }} onClick={() => handleSortByPrice('from low to high')} variant="outlined">Sort by Price (Low to High)</Button>
+          <Button sx={{ width: "100%" }} onClick={() => handleSortByPrice('from high to low')} variant="outlined">Sort by Price (High to Low)</Button>
         </Box>
       </Box>
   );

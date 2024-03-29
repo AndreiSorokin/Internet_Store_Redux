@@ -16,11 +16,6 @@ const Navbar = () => {
    const [showMenu, setShowMenu] = useState(false);
    const { toggleTheme, theme } = useTheme();
 
-   const boxShadowLight = '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)';
-   const boxShadowDark = '0px 2px 4px -1px rgba(255,255,255,0.2), 0px 4px 5px 0px rgba(255,255,255,0.14), 0px 1px 10px 0px rgba(255,255,255,0.12)';
-
-   const boxShadow = theme === 'dark' ? boxShadowDark : boxShadowLight;
-
    const toggleMenu = () => {
       setShowMenu(!showMenu);
    };
@@ -29,6 +24,11 @@ const Navbar = () => {
       dispatch(userLogout());
       navigate('/auth/login');
    };
+
+   const boxShadowLight = '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)';
+   const boxShadowDark = '0px 2px 4px -1px rgba(255,255,255,0.2), 0px 4px 5px 0px rgba(255,255,255,0.14), 0px 1px 10px 0px rgba(255,255,255,0.12)';
+
+   const boxShadow = theme === 'dark' ? boxShadowDark : boxShadowLight;
 
    return (
       <ThemeProvider>

@@ -70,7 +70,7 @@ const LandingPage = () => {
          </Box>
          <Box py={[6, 8]} bgcolor="background.default" sx={{backgroundColor: 'transparent'}}>
             <Container maxWidth="lg">
-               <Typography variant="h4" align="center" gutterBottom sx={{color: 'black'}}>
+               <Typography variant="h4" align="center" gutterBottom sx={{color: theme === 'bright' ? 'black' : 'white'}}>
                   Featured Products
                </Typography>
                <Box sx={{ color: theme === 'bright' ? 'black' : 'white', width:'70vw' }}>

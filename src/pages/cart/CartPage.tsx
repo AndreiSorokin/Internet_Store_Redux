@@ -125,7 +125,7 @@ const CartPage: React.FC = () => {
                 </Grid>
               ))}
             </Grid>
-            <p>Total Price: ${totalPrice.toFixed(2)}</p>
+            <p style={{position: 'absolute', top: '10vh', right: '5vw', fontSize: '24px'}}>Total Price: ${totalPrice.toFixed(2)}</p>
           </Grid>
         </div>
       )}

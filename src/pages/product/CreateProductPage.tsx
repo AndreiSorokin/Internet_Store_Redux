@@ -94,10 +94,10 @@ export default function CreateProductPage() {
       <Grid sx={{
       backgroundColor: theme === "bright" ? "white" : "black",
       color: theme === "bright" ? "black" : "white",
-      height: '110vh',
-      width: '110vw',
       paddingTop: '20vh',
-      transition: '0.5s ease'
+      transition: '0.5s ease',
+      height: '110vh',
+      overflow: 'hidden',
       }} container direction="column" alignItems="center" spacing={3}>
       <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
           <Link to="/products" style={{ textDecoration: "none" }}>
@@ -119,11 +119,6 @@ export default function CreateProductPage() {
                   fullWidth
                   margin="normal"
                   variant="outlined"
-                  InputProps={{
-                    style: {
-                        color: theme === 'bright' ? 'black' : 'white',
-                    },
-                  }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
@@ -137,8 +132,11 @@ export default function CreateProductPage() {
                   margin="normal"
                   variant="outlined"
                   InputProps={{
-                  style: {
+                  sx: {
                     color: theme === 'bright' ? 'black' : 'white',
+                    '@media (max-width: 768px)': {
+                      maxWidth: '90%',
+                    },
                   },
                   }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
@@ -155,8 +153,11 @@ export default function CreateProductPage() {
                   margin="normal"
                   variant="outlined"
                   InputProps={{
-                  style: {
+                  sx: {
                     color: theme === 'bright' ? 'black' : 'white',
+                    '@media (max-width: 768px)': {
+                      maxWidth: '90%',
+                    },
                   },
                   }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
@@ -172,8 +173,11 @@ export default function CreateProductPage() {
                   margin="normal"
                   variant="outlined"
                   InputProps={{
-                  style: {
+                  sx: {
                     color: theme === 'bright' ? 'black' : 'white',
+                    '@media (max-width: 768px)': {
+                      maxWidth: '90%',
+                    },
                   },
                   }}
                   sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
@@ -183,7 +187,7 @@ export default function CreateProductPage() {
                 <input type="file" onChange={handleImagesChange} accept="image/*" multiple />
                 <Button sx={{ marginTop: '15px' }} type="submit" variant="contained" color="primary">
                   Create Product
-              </Button>
+                </Button>
             </Box>
         </form>
       </Grid>

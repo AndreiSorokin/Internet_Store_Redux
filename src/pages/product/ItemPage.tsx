@@ -167,20 +167,26 @@ const ItemPage: React.FC = () => {
         style={{ padding: '20px' }}
         >
         {productItem && (
-          <Grid item>
-                <CardContent>
-                  <Grid container justifyContent="center" spacing={2}>
-                    {productItem.images.map((image: string, index: number) => (
-                      <Grid item key={index}>
-                        <Button onClick={() => handleOpenImage(image)}>
-                          <CardMedia component="img" height="140" image={image} alt="An item's pictures not available"/>
-                        </Button>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </CardContent>
-              </Grid>
-        )}
+  <Grid item>
+    <CardContent>
+      <Grid container justifyContent="center" spacing={2}>
+        {productItem.images.map((image, index) => (
+          <Grid item key={index} xs={index === 0 ? 12 : 4}>
+            <Button onClick={() => handleOpenImage(image)}>
+              <CardMedia
+                component="img"
+                height={index === 0 ? "auto" : "140"}
+                image={image}
+                alt="An item's pictures not available"
+                sx={{ maxWidth: '100%' }}
+              />
+            </Button>
+          </Grid>
+        ))}
+      </Grid>
+    </CardContent>
+  </Grid>
+)}
         </Grid>      
           <Modal
             open={selectedImage !== null}

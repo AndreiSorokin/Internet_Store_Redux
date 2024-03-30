@@ -7,9 +7,10 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { userLogout } from '../redux/slices/userSlice';
+import { LoggedInUser } from '../misc/type';
 
 const Navbar = () => {
-   const user = useAppSelector((state) => state.userRegister.user);
+   const user = useAppSelector((state) => state.userRegister.user) as LoggedInUser;
    const dispatch = useAppDispatch();
    const navigate = useNavigate()
    
@@ -61,6 +62,11 @@ const Navbar = () => {
                            <Button>Cart</Button>
                         </Link>
                      }
+                     {user && user.role === 'admin' &&
+                        <Link to="auth/admin">
+                           <Button>Admin</Button>
+                        </Link>
+                     }
                   </ButtonGroup>
                   {user ? (
                      <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -96,6 +102,11 @@ const Navbar = () => {
                            <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
                               Cart
                            </Button>
+                        </Link>
+                     }
+                     {user && user.role === 'admin' &&
+                        <Link to="auth/admin">
+                           <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>Admin</Button>
                         </Link>
                      }
                      {user ? (

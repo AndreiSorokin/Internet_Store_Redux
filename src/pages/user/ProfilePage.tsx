@@ -60,7 +60,8 @@ export default function ProfilePage() {
         backgroundColor: theme === 'bright' ? 'white' : 'black',
         color: theme === 'bright' ? 'black' : 'white',
         minHeight: '100vh',
-        transition: '0.5s ease'
+        transition: '0.5s ease',
+        overflow: 'hidden'
       }}
     >
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
@@ -84,7 +85,7 @@ export default function ProfilePage() {
                   color: theme === 'bright' ? 'black' : 'white',
                 },
                 }}
-                sx={{ margin: "2vh", width: "100%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                sx={{ margin: "2vh", width: "90%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                 color: theme === 'bright' ? 'black' : 'white'
                 } }}
             />
@@ -102,7 +103,7 @@ export default function ProfilePage() {
                   color: theme === 'bright' ? 'black' : 'white',
                 },
                 }}
-                sx={{ margin: "2vh", width: "100%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                sx={{ margin: "2vh", width: "90%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
                 color: theme === 'bright' ? 'black' : 'white',
                 } }}
             />

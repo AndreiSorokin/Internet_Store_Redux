@@ -5,13 +5,15 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from "./slices/userSlice";
 import cartReducer from "./slices/cartSlice";
 import orderReducer from "./slices/orderSlice";
+import categoryReducer from "./slices/categorySlice";
 
 const store = configureStore({
    reducer: {
       products: productsReducer,
       userRegister: userReducer,
       cart: cartReducer,
-      orders: orderReducer
+      orders: orderReducer,
+      categories: categoryReducer
    }
 });
 export type AppState = ReturnType<typeof store.getState>;
@@ -24,10 +26,12 @@ store.subscribe(() => {
    const userInformation = currentState.userRegister.user;
    const cartInformation = currentState.cart.items;
    const orderInformation = currentState.orders.orders;
+   const categoryInformation = currentState.categories.categories;
 
    localStorage.setItem("userInformation", JSON.stringify(userInformation));
    localStorage.setItem("cartInformation", JSON.stringify(cartInformation));
    localStorage.setItem("orderInformation", JSON.stringify(orderInformation));
+   localStorage.setItem("categoryInformation", JSON.stringify(categoryInformation));
 });
 
 export default store;

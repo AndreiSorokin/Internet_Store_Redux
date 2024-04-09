@@ -11,6 +11,12 @@ export type Category = {
    image: string;
 }
 
+export type CategoryState = {
+   categories: Category[];
+   loading: boolean;
+   error: string | null;
+}
+
 export enum Size {
    Small = "Small",
    Medium = "Medium",

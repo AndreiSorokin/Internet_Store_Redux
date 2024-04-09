@@ -56,7 +56,7 @@ export const createProduct = createAsyncThunk(
    'createProduct',
    async (product: Product, { rejectWithValue }) => {
       try {
-         const { name, price, description, category, images } = product;
+         const { name, price, description, category, images, size } = product;
 
          const uploadedImageUrls: string[] = [];
          for (const imageUrl of images) {
@@ -70,7 +70,8 @@ export const createProduct = createAsyncThunk(
             price,
             description,
             category,
-            image: uploadedImageUrls
+            image: uploadedImageUrls,
+            size
          });
          
          return response.data;

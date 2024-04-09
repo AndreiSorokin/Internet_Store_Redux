@@ -68,6 +68,17 @@ export type CartState = {
    items: CartItem[]
 }
 
+export type Order = {
+   id: number;
+   items: CartItem[];
+}
+
+export type OrderState = {
+   orders: Order[];
+   loading: boolean;
+   error: string | null;
+}
+
 export type User = {
    email: string;
    password: string;

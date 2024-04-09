@@ -43,7 +43,7 @@ const CartPage: React.FC = () => {
     const answer = window.confirm(`Do you want to remove ${productName}?`);
     if(answer) {
       dispatch(removeFromCart(productId));
-      showSuccessMessage(`Product ${cartItems.map(cartItem => cartItem.product.title)} has been deleted`);
+      showSuccessMessage(`Product ${cartItems.map(cartItem => cartItem.product.name)} has been deleted`);
     }
   };
 
@@ -91,10 +91,10 @@ const CartPage: React.FC = () => {
                   <div>
                     <img
                       src={cartItem.product.category.image}
-                      alt={cartItem.product.title}
+                      alt={cartItem.product.name}
                       style={{ width: "100%", height: "auto" }}
                     />
-                    <h3>{cartItem.product.title}</h3>
+                    <h3>{cartItem.product.name}</h3>
                     <p>Price: ${cartItem.product.price}</p>
                     <p>Quantity: {cartItem.quantity}</p>
                     <Button
@@ -117,7 +117,7 @@ const CartPage: React.FC = () => {
                       variant="outlined"
                       color="primary"
                       style={{ marginBottom: "15px" }}
-                      onClick={() => handleRemoveItem(cartItem.product.id, cartItem.product.title)}
+                      onClick={() => handleRemoveItem(cartItem.product.id, cartItem.product.name)}
                     >
                       Remove
                     </Button>

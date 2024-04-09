@@ -11,22 +11,42 @@ export type Category = {
    image: string;
 }
 
-export type Product = {
-   title: string;
-   price: number | null;
-   description: string;
-   categoryId: number | null;
-   images: string[];
+export enum Size {
+   Small = "Small",
+   Medium = "Medium",
+   Large = "Large",
 }
 
-export type Products = {
-   id: number;
-   title: string;
+export type Product = {
+   name: string;
    price: number;
    description: string;
    category: Category;
    images: string[];
+   size: Size;
+   products: Product[];
 }
+
+export type Products = Product & {
+   id: number;
+}
+
+// export type Product = {
+//    title: string;
+//    price: number | null;
+//    description: string;
+//    categoryId: number | null;
+//    images: string[];
+// }
+
+// export type Products = {
+//    id: number;
+//    title: string;
+//    price: number;
+//    description: string;
+//    category: Category;
+//    images: string[];
+// }
 
 export type InitialState = {
    products: Products[];

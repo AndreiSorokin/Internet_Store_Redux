@@ -55,7 +55,7 @@ const ItemPage: React.FC = () => {
       setOpenDialog(false);
       
       localStorage.setItem("cartInformation", JSON.stringify(cartItems));
-      showSuccessMessage(`${quantity} ${productItem.title} added to cart!`);
+      showSuccessMessage(`${quantity} ${productItem.name} added to cart!`);
       setQuantity(1)
     }
   };
@@ -67,7 +67,7 @@ const ItemPage: React.FC = () => {
       if (answer) {
         const productId = productItem.id.toString();
         await dispatch(deleteProduct(productId));
-        alert(`Product ${productItem.title.toString()} has been deleted`);
+        alert(`Product ${productItem.name.toString()} has been deleted`);
         navigate('/products');
       }
     }
@@ -80,7 +80,7 @@ const ItemPage: React.FC = () => {
       const updatedPriceValue = typeof updatedPriceInput.value === 'string' ? parseFloat(updatedPriceInput.value) : updatedPriceInput.value;
       await dispatch(updateProduct({
         id: productItem.id.toString(),
-        title: updatedTitleInput.value || productItem.title,
+        name: updatedTitleInput.value || productItem.name,
         price: updatedPriceValue || productItem.price
       }));
 
@@ -154,7 +154,7 @@ const ItemPage: React.FC = () => {
       {productItem && (
         <Grid item xs={12}>
           <Typography variant="h4" align="center" gutterBottom style={{ padding: '20px' }}>
-            {productItem.title}
+            {productItem.name}
           </Typography>
         </Grid>
       )}

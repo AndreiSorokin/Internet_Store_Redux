@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { fetchProducts } from '../redux/slices/productSlice';
 import { useTheme } from '../components/contextAPI/ThemeContext';
+import { Product } from '../misc/type';
 
 const LandingPage = () => {
    const { theme } = useTheme()
@@ -20,11 +21,17 @@ const LandingPage = () => {
    const dispatch = useAppDispatch();
    const productList = useAppSelector(state => state.products.products);
 
+   console.log("productList", productList)
+
    useEffect(() => {
       dispatch(fetchProducts());
    }, [dispatch]);
 
    const getOneProductPerCategory = () => {
+      if (!Array.isArray(productList)) {
+         return [];
+      }
+
       const productMap = new Map();
       productList.forEach(product => {
          if (!productMap.has(product.category.id)) {
@@ -35,6 +42,7 @@ const LandingPage = () => {
    };
 
    const featuredProducts = getOneProductPerCategory();
+   console.log('featuredProducts', featuredProducts) //[]
 
    return (
       <div style={{

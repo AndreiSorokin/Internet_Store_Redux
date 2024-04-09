@@ -11,7 +11,7 @@ import Search from "../../components/utils/Search";
 import Pagination from "../../components/utils/Pagination";
 import ProductItem from "../../components/products/ProductItem";
 import ScrollToTopButton from "../../components/utils/ScrollToTop";
-import { LoggedInUser } from "../../misc/type";
+import { LoggedInUser, Product } from "../../misc/type";
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -27,6 +27,8 @@ export default function ProductsPage() {
 
   const productList = useAppSelector(state => state.products.products);
   const priceFilter = useAppSelector(state => state.products.priceFilter);
+
+  console.log('ProductPage', productList)
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");
@@ -45,17 +47,22 @@ export default function ProductsPage() {
   }, [searchQuery, selectedCategory]);
 
   const filteredProducts = useMemo(() => {
-    return productList.filter(product => {
-      const titleMatches = product.title.toLowerCase().includes(searchQuery.toLowerCase());
-      const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
-      const priceMatches = 
-        !priceFilter ||
-        (priceFilter === "Under 20" && product.price < 20) ||
-        (priceFilter === "20 to 100" && product.price >= 20 && product.price <= 100) ||
-        (priceFilter === "Over 100" && product.price > 100);
-      return titleMatches && categoryMatches && priceMatches;
-    });
+    if (Array.isArray(productList)) {
+      return productList.filter((product: Product) => {
+        const titleMatches = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
+        const priceMatches = 
+          !priceFilter ||
+          (priceFilter === "Under 20" && product.price < 20) ||
+          (priceFilter === "20 to 100" && product.price >= 20 && product.price <= 100) ||
+          (priceFilter === "Over 100" && product.price > 100);
+        return titleMatches && categoryMatches && priceMatches;
+      });
+    }
+    return [];
   }, [productList, searchQuery, selectedCategory, priceFilter]);
+
+  console.log('filteredProducts', filteredProducts) // []
 
   const currentPageData = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;

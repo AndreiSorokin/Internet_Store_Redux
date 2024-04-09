@@ -19,7 +19,7 @@ export const fetchProducts = createAsyncThunk(
    "fetchProducts",
    async () => {
       try {
-         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/products`);
+         const response = await axios.get(`http://localhost:8080/api/v1/products`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -56,7 +56,7 @@ export const createProduct = createAsyncThunk(
    'createProduct',
    async (product: Product, { rejectWithValue }) => {
       try {
-         const { title, price, description, categoryId, images } = product;
+         const { name, price, description, category, images } = product;
 
          const uploadedImageUrls: string[] = [];
          for (const imageUrl of images) {
@@ -66,11 +66,11 @@ export const createProduct = createAsyncThunk(
          }
 
          const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/products/`, {
-            title,
+            name,
             price,
             description,
-            categoryId,
-            images: uploadedImageUrls
+            category,
+            image: uploadedImageUrls
          });
          
          return response.data;
@@ -117,10 +117,10 @@ export const deleteProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
    'updateProduct',
-   async ({ id, title, price }: { id: string, title: string, price: number }, { rejectWithValue }) => {
+   async ({ id, name, price }: { id: string, name: string, price: number }, { rejectWithValue }) => {
       try {
          const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/products/${id}`, {
-            title,
+            name,
             price
          });
          

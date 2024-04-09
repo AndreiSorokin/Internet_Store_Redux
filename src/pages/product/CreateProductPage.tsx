@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { Product } from '../../misc/type';
+import { Category, Product, Size } from '../../misc/type';
 import { createProduct, fetchProducts, uploadImage } from '../../redux/slices/productSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput from '../../hooks/UseInput';
 
-import { Box, Button, Grid, IconButton, TextField } from '@mui/material';
+import { Box, Button, Grid, IconButton, MenuItem, TextField } from '@mui/material';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from 'react-router-dom';
 
@@ -19,34 +19,42 @@ export default function CreateProductPage() {
   const dispatch = useAppDispatch();
   const productList = useAppSelector(state => state.products.products);
 
+  //create category slice
+  // const categories = useAppSelector(state => state.categories.categories);
+
   useEffect(() => {
     dispatch(fetchProducts());
 }, [dispatch]);
 
-  const titleInput = useInput();
+  const nameInput = useInput();
   const priceInput = useInput();
   const descriptionInput = useInput();
-  const categoryIdInput = useInput();
+  const categoryInput = useInput();
 
   const [images, setImages] = React.useState<File[]>([]);
+  const [selectedSize, setSelectedSize] = React.useState<Size | "">("");
+
+  const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedSize(event.target.value as Size);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const { value: title } = titleInput;
+      const { value: name } = nameInput;
       const { value: price } = priceInput;
       const { value: description } = descriptionInput;
-      const { value: categoryId } = categoryIdInput;
+      const { value: category } = categoryInput;
 
-      if (!title || !price || !description || !categoryId || images.length === 0) {
-      return showError('Please make sure that you have added title, price, description, category ID, and images');
+      if (!name || !price || !description || !category || !selectedSize || !images) {
+      return showError('Please make sure that you have added name, price, description, category ID, and images');
       }
 
       const existingProduct = productList.find(product =>
-        product.title === title &&
+        product.name === name &&
         product.price === parseFloat(price) &&
         product.description === description &&
-        product.category.id === parseInt(categoryId)
+        product.category.id === parseInt(category)
       );
 
       if (existingProduct) {
@@ -64,20 +72,23 @@ export default function CreateProductPage() {
               }
             }
             
-        const newProduct: Product = {
-            title,
+          const newProduct: Product = {
+            name,
             price: parseFloat(price),
             description,
-            categoryId: parseInt(categoryId),
+            category: {id:1, name:"name", image:"image"},
             images: uploadedImageUrls,
-        };
+            size: selectedSize,
+            products: [] 
+          };
         dispatch(createProduct(newProduct));
         showSuccessMessage('Product added successfully');
-        titleInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+        nameInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
         priceInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
         descriptionInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-        categoryIdInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
+        categoryInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
         setImages([]);
+        setSelectedSize("");
       } catch (error) {
         return showError('Somethins went wrong');
       }
@@ -113,9 +124,9 @@ export default function CreateProductPage() {
             {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
             {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
               <TextField
-                  label="Title"
-                  value={titleInput.value}
-                  onChange={titleInput.onChange}
+                  label="Name"
+                  value={nameInput.value}
+                  onChange={nameInput.onChange}
                   fullWidth
                   margin="normal"
                   variant="outlined"
@@ -123,6 +134,19 @@ export default function CreateProductPage() {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
                 />
+                <TextField
+                  select
+                  label="Size"
+                  value={selectedSize}
+                  onChange={handleSizeChange}
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                >
+                  {Object.values(Size).map(size => (
+                    <MenuItem key={size} value={size}>{size}</MenuItem>
+                  ))}
+                </TextField>
                 <TextField
                   label="Price"
                   type="number"
@@ -167,8 +191,8 @@ export default function CreateProductPage() {
                 <TextField
                   label="Category ID"
                   type="number"
-                  value={categoryIdInput.value}
-                  onChange={categoryIdInput.onChange}
+                  value={categoryInput.value}
+                  onChange={categoryInput.onChange}
                   fullWidth
                   margin="normal"
                   variant="outlined"

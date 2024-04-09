@@ -15,10 +15,10 @@ const ProductItem: React.FC<ProductItemProps> = ({ currentPageData }) => {
             {currentPageData.map(product => (
                <Grid item key={product.id} xs={12} sm={6} md={4}>
                   <div>
-                  <div>{product.title}</div>
+                  <div>{product.name}</div>
                   <div>Price: ${product.price}</div>
                   <div>
-                  <img style={{ width: '100%', height: 'auto' }} src={product.category.image} alt={`a picture of ${product.title} not available`} />
+                  <img style={{ width: '100%', height: 'auto' }} src={product.category.image} alt={`a picture of ${product.name} not available`} />
                      <Link to={`/products/${product.id}`}>
                         <Button variant="outlined">
                            View

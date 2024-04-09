@@ -36,7 +36,7 @@ function App() {
         <Route path="/products/:id" element={<ItemPage/>}/>
         <Route
           path="/createNew"
-          element={user ? <CreateProductPage /> : <Navigate to="/" replace />}
+          element={isAdmin ? <CreateProductPage /> : <Navigate to="/" replace />}
         />
         <Route
           path='cart'

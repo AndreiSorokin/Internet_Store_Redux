@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { Category, Product, Size } from '../../misc/type';
+import { Category, NewProduct, Size } from '../../misc/type';
 import { createProduct, fetchProducts, uploadImage } from '../../redux/slices/productSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
@@ -72,14 +72,13 @@ export default function CreateProductPage() {
               }
             }
             
-          const newProduct: Product = {
+          const newProduct: NewProduct = {
             name,
             price: parseFloat(price),
             description,
             category: {id:1, name:"name", image:"image"},
             images: uploadedImageUrls,
-            size: selectedSize,
-            products: [] 
+            size: selectedSize
           };
         dispatch(createProduct(newProduct));
         showSuccessMessage('Product added successfully');

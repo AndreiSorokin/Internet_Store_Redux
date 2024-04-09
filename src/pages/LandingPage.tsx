@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { fetchProducts } from '../redux/slices/productSlice';
 import { useTheme } from '../components/contextAPI/ThemeContext';
-import { Product } from '../misc/type';
 
 const LandingPage = () => {
    const { theme } = useTheme()

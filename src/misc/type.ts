@@ -23,36 +23,18 @@ export enum Size {
    Large = "Large",
 }
 
-export type Product = {
+export type NewProduct = {
    name: string;
    price: number;
    description: string;
    category: Category;
    images: string[];
    size: Size;
-   products: Product[];
 }
 
-export type Products = Product & {
+export type Products = NewProduct & {
    id: number;
 }
-
-// export type Product = {
-//    title: string;
-//    price: number | null;
-//    description: string;
-//    categoryId: number | null;
-//    images: string[];
-// }
-
-// export type Products = {
-//    id: number;
-//    title: string;
-//    price: number;
-//    description: string;
-//    category: Category;
-//    images: string[];
-// }
 
 export type InitialState = {
    products: Products[];
@@ -77,6 +59,10 @@ export type CartState = {
 export type Order = {
    id: number;
    items: CartItem[];
+}
+
+export type Orders = {
+   orders: Order[];
 }
 
 export type OrderState = {

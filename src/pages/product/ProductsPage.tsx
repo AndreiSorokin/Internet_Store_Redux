@@ -11,7 +11,7 @@ import Search from "../../components/utils/Search";
 import Pagination from "../../components/utils/Pagination";
 import ProductItem from "../../components/products/ProductItem";
 import ScrollToTopButton from "../../components/utils/ScrollToTop";
-import { LoggedInUser, Product } from "../../misc/type";
+import { LoggedInUser, NewProduct } from "../../misc/type";
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -48,7 +48,7 @@ export default function ProductsPage() {
 
   const filteredProducts = useMemo(() => {
     if (Array.isArray(productList)) {
-      return productList.filter((product: Product) => {
+      return productList.filter((product: NewProduct) => {
         const titleMatches = product.name.toLowerCase().includes(searchQuery.toLowerCase());
         const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
         const priceMatches = 

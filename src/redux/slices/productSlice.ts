@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialState, Product } from "../../misc/type";
+import { InitialState, NewProduct } from "../../misc/type";
 
 import axios from "axios";
 
@@ -54,7 +54,7 @@ const fetchImageFile = async (imageUrl: string): Promise<File> => {
 
 export const createProduct = createAsyncThunk(
    'createProduct',
-   async (product: Product, { rejectWithValue }) => {
+   async (product: NewProduct, { rejectWithValue }) => {
       try {
          const { name, price, description, category, images, size } = product;
 

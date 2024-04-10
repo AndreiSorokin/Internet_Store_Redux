@@ -13,7 +13,6 @@ interface FiltersProps {
 
 const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory, productList }) => {
   const { theme } = useTheme()
-  
   const dispatch = useDispatch();
   const priceFilter = useSelector((state: AppState) => state.products.priceFilter);
 

@@ -46,29 +46,29 @@ export default function ProductsPage() {
     localStorage.setItem("selectedCategory", selectedCategory);
   }, [searchQuery, selectedCategory]);
 
-  const filteredProducts = useMemo(() => {
-    if (Array.isArray(productList)) {
-      return productList.filter((product: NewProduct) => {
-        const titleMatches = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-        const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
-        const priceMatches = 
-          !priceFilter ||
-          (priceFilter === "Under 20" && product.price < 20) ||
-          (priceFilter === "20 to 100" && product.price >= 20 && product.price <= 100) ||
-          (priceFilter === "Over 100" && product.price > 100);
-        return titleMatches && categoryMatches && priceMatches;
-      });
-    }
-    return [];
-  }, [productList, searchQuery, selectedCategory, priceFilter]);
+  // const filteredProducts = useMemo(() => {
+  //   if (Array.isArray(productList)) {
+  //     return productList.filter((product: NewProduct) => {
+  //       const titleMatches = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+  //       const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
+  //       const priceMatches = 
+  //         !priceFilter ||
+  //         (priceFilter === "Under 20" && product.price < 20) ||
+  //         (priceFilter === "20 to 100" && product.price >= 20 && product.price <= 100) ||
+  //         (priceFilter === "Over 100" && product.price > 100);
+  //       return titleMatches && categoryMatches && priceMatches;
+  //     });
+  //   }
+  //   return [];
+  // }, [productList, searchQuery, selectedCategory, priceFilter]);
 
-  console.log('filteredProducts', filteredProducts) // []
+  // console.log('filteredProducts', filteredProducts) // []
 
-  const currentPageData = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = currentPage * itemsPerPage;
-    return filteredProducts.slice(startIndex, endIndex);
-  }, [currentPage, filteredProducts, itemsPerPage]);
+  // const currentPageData = useMemo(() => {
+  //   const startIndex = (currentPage - 1) * itemsPerPage;
+  //   const endIndex = currentPage * itemsPerPage;
+  //   return filteredProducts.slice(startIndex, endIndex);
+  // }, [currentPage, filteredProducts, itemsPerPage]);
 
   const handlePageChange = useCallback((e: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
@@ -101,9 +101,9 @@ export default function ProductsPage() {
           </Box>
         </Dialog>
 
-        <ProductItem currentPageData={currentPageData}/>
+        <ProductItem />
         <ScrollToTopButton/>
-        <Pagination theme={theme} currentPage={currentPage} filteredProducts={filteredProducts} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
+        {/* <Pagination theme={theme} currentPage={currentPage} filteredProducts={filteredProducts} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/> */}
     </Box>
     </div>
   );

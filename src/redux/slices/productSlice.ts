@@ -177,7 +177,7 @@ const productsSlice = createSlice({
          if(!(action.payload instanceof Error)) {
             return {
                ...state,
-               products: action.payload,
+               products: action.payload.products,
                loading: false,
                error: null
             }

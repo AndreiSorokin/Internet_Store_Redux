@@ -3,16 +3,18 @@ import { Products } from "../../misc/type";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { Grid } from "@mui/material";
+import { useAppSelector } from "../../redux/store";
 
-interface ProductItemProps {
-   currentPageData: Products[];
-}
+// interface ProductItemProps {
+//    currentPageData: Products[];
+// }
 
-const ProductItem: React.FC<ProductItemProps> = ({ currentPageData }) => {
+const ProductItem = () => {
+   const productList = useAppSelector(state => state.products.products);
    return (
       <div style={{ padding: '0 10vw' }}>
          <Grid container spacing={3}>
-            {currentPageData.map(product => (
+            {productList.map(product => (
                <Grid item key={product.id} xs={12} sm={6} md={4}>
                   <div>
                   <div>{product.name}</div>

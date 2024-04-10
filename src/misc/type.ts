@@ -74,12 +74,14 @@ export type OrderState = {
 export type User = {
    email: string;
    password: string;
-   name: string;
+   firstName: string;
+   lastName: string;
    avatar: string;
+   username: string;
 }
 
 export type LoggedInUser = User & {
-   role: "customer" | "admin";
+   role: "CUSTOMER" | "ADMIN";
    id: number;
 }
 

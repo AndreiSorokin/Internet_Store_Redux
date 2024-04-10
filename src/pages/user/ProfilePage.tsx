@@ -16,8 +16,9 @@ export default function ProfilePage() {
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  console.log(user)
 
-  const nameInput = useInput();
+  const firstNameInput = useInput();
   const emailInput = useInput();
 
   const handleUpdateUser = (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +31,7 @@ export default function ProfilePage() {
       
       const updatedUser: LoggedInUser = {
         ...user,
-        name: nameInput.value,
+        firstName: firstNameInput.value,
         email: emailInput.value
       };
       dispatch(updateUserProfile(updatedUser));
@@ -69,14 +70,14 @@ export default function ProfilePage() {
       {user && (
         <div style={{ textAlign: 'center' }}>
           <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />
-          <h1>Hello, {user.name}</h1>
+          <h1>Hello, {user.firstName}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
-              placeholder={user.name}
+              placeholder={user.firstName}
               name="name"
               label="Name"
-              value={nameInput.value}
-              onChange={nameInput.onChange}
+              value={firstNameInput.value}
+              onChange={firstNameInput.onChange}
               variant="outlined"
               margin="normal"
               fullWidth
@@ -123,3 +124,4 @@ export default function ProfilePage() {
   
   
 }
+

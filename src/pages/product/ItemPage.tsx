@@ -281,7 +281,7 @@ const ItemPage: React.FC = () => {
               </DialogActions>
               </Box>
             </Dialog>
-          {user?.role === 'admin' && (
+          {user?.role === 'ADMIN' && (
             <Grid item>
               <Button onClick={() => setOpenUserInputs(true)} variant="outlined" color="primary">
                 Update Product

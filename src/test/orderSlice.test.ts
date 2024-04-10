@@ -120,3 +120,75 @@ describe('fulfilled', () => {
    });
 
 });
+
+describe('pending', () => {
+   test('should set loading to true on deleteOrder', () => {
+      const action = { type: deleteOrder.pending.type };
+      const state = orderReducer(initialState, action);
+      
+      expect(state.loading).toBe(true);
+      expect(state.error).toBeNull();
+   });
+
+   test('should set loading to true on createOrder', () => {
+      const action = { type: createOrder.pending.type };
+      const state = orderReducer(initialState, action);
+      
+      expect(state.loading).toBe(true);
+      expect(state.error).toBeNull();
+   });
+
+   test('should set loading to true on fetchOrders', () => {
+      const action = { type: fetchOrders.pending.type };
+      const state = orderReducer(initialState, action);
+      
+      expect(state.loading).toBe(true);
+      expect(state.error).toBeNull();
+   });
+
+   test('should set loading to true on fetchSingleOrder', () => {
+      const action = { type: fetchSingleOrder.pending.type };
+      const state = orderReducer(initialState, action);
+      
+      expect(state.loading).toBe(true);
+      expect(state.error).toBeNull();
+   });
+})
+
+describe('rejected', () => {
+   test('should set error on deleteOrder', () => {
+      const errorMessage = "Error";
+      const action = { type: deleteOrder.rejected.type, error: { message: errorMessage } };
+      const state = orderReducer(initialState, action);
+      
+      expect(state.loading).toBe(false);
+      expect(state.error).toBe(errorMessage);
+   });
+
+   test('should set error on createOrder', () => {
+      const errorMessage = "Error";
+      const action = { type: createOrder.rejected.type, error: { message: errorMessage } };
+      const state = orderReducer(initialState, action);
+
+      expect(state.loading).toBe(false);
+      expect(state.error).toBe(errorMessage);
+   });
+
+   test('should set error on fetchOrders', () => {
+      const errorMessage = "Error";
+      const action = { type: fetchOrders.rejected.type, error: { message: errorMessage } };
+      const state = orderReducer(initialState, action);
+
+      expect(state.loading).toBe(false);
+      expect(state.error).toBe(errorMessage);
+   });
+
+   test('should set error on fetchSingleOrder', () => {
+      const errorMessage = "Failed to fetch order";
+      const action = { type: fetchSingleOrder.rejected.type, error: { message: errorMessage } };
+      const state = orderReducer(initialState, action);
+
+      expect(state.loading).toBe(false);
+      expect(state.error).toBe(errorMessage);
+   });
+})

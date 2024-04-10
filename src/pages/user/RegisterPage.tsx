@@ -25,7 +25,9 @@ export default function RegisterPage() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [avatar, setAvatar] = useState<File | null>(null)
@@ -41,7 +43,7 @@ const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
-  if(!name || !email || !password || !avatar) {
+  if(!firstName || !lastName || !username || !email || !password || !avatar) {
     return showError('Ensure that fill out att the fields')
   } else if(password.length < 4) {
     return showError('Ensure that your password as least 4 characters long')
@@ -56,7 +58,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       avatarUrl = uploadedFileResponse.payload;
     }
 
-    const newUser: User = { name, email, password, avatar: avatarUrl };
+    const newUser: User = { firstName, lastName, username, email, password, avatar: avatarUrl };
     dispatch(userRegistration(newUser));
     alert('Your account has been created successfully')
     navigate('/auth/profile');
@@ -105,14 +107,56 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  onChange={(e) => setName(e.target.value)}
-                  value={name}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
                   autoComplete="given-name"
                   name="firstName"
                   required
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  autoFocus
+                  InputProps={{
+                    style: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                    },
+                  }}
+                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                    color: theme === 'bright' ? 'black' : 'white',
+                  } }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={firstName}
+                  autoComplete="second-name"
+                  name="lastName"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  autoFocus
+                  InputProps={{
+                    style: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                    },
+                  }}
+                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                    color: theme === 'bright' ? 'black' : 'white',
+                  } }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  autoComplete="username"
+                  name="username"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
                   autoFocus
                   InputProps={{
                     style: {

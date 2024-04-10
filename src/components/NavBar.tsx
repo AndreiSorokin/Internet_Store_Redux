@@ -62,7 +62,7 @@ const Navbar = () => {
                            <Button>Cart</Button>
                         </Link>
                      }
-                     {user && user.role === 'admin' &&
+                     {user && user.role === 'ADMIN' &&
                         <Link to="auth/admin">
                            <Button>Admin</Button>
                         </Link>
@@ -104,7 +104,7 @@ const Navbar = () => {
                            </Button>
                         </Link>
                      }
-                     {user && user.role === 'admin' &&
+                     {user && user.role === 'ADMIN' &&
                         <Link to="auth/admin">
                            <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>Admin</Button>
                         </Link>

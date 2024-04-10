@@ -188,8 +188,8 @@ export default function CreateProductPage() {
                   } }}
                 />
                 <TextField
-                  label="Category ID"
-                  type="number"
+                  label="Category"
+                  type="text"
                   value={categoryInput.value}
                   onChange={categoryInput.onChange}
                   fullWidth

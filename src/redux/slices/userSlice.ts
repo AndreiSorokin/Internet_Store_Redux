@@ -54,44 +54,45 @@ export const uploadAvatar = createAsyncThunk(
    }
 );
 
-export const fetchUserProfile = createAsyncThunk(
-   'fetchUserProfile',
-   async (_, { rejectWithValue }) => {
-      try {
-      const access_token = localStorage.getItem('token');
-      if (!access_token) {
-         throw new Error('No token found');
-      }
+// export const fetchUserProfile = createAsyncThunk(
+//    'fetchUserProfile',
+//    async (_, { rejectWithValue }) => {
+//       try {
+//       const access_token = localStorage.getItem('token');
+//       if (!access_token) {
+//          throw new Error('No token found');
+//       }
       
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/profile`, {
-         headers: {
-            Authorization: `Bearer ${access_token}`,
-         },
-      });
+//       const response = await axios.get(`http://localhost:8080/api/v1/users`, {
+//          headers: {
+//             Authorization: `Bearer ${access_token}`,
+//          },
+//       });
       
-      return response.data;
-      } catch (error) {
-      if (axios.isAxiosError(error)) {
-         const errorResponse = error.response?.data;
-         if (errorResponse) {
-            return rejectWithValue(errorResponse);
-         }
-      }
-      return rejectWithValue(error);
-      }
-   }
-);
+//       return response.data;
+//       } catch (error) {
+//       if (axios.isAxiosError(error)) {
+//          const errorResponse = error.response?.data;
+//          if (errorResponse) {
+//             return rejectWithValue(errorResponse);
+//          }
+//       }
+//       return rejectWithValue(error);
+//       }
+//    }
+// );
 
 export const userLogin = createAsyncThunk(
    'userLogin',
    async (credentials: Credentials, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/login/`, credentials);
+         const response = await axios.post(`http://localhost:8080/api/v1/users/login/`, credentials);
          localStorage.setItem('token', response.data.access_token);
          
-         const login = await dispatch(fetchUserProfile());
+         // const login = await dispatch(fetchUserProfile());
 
-         return login.payload;
+         // return login.payload;
+         return response.data
       } catch (error) {
          return rejectWithValue('An error occurred during login');
       }
@@ -100,9 +101,9 @@ export const userLogin = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
-   async ({ id, email, name }: LoggedInUser, { rejectWithValue, dispatch }) => {
+   async ({ id, email, username }: LoggedInUser, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { email, name });
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { email, username });
          const updatedUser = response.data;
          dispatch(setUser(updatedUser))
          return updatedUser;
@@ -220,28 +221,28 @@ const userSlice = createSlice({
             error: action.error.message ?? "error"
          };
       });
-      builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
-         return {
-            ...state,
-            loading: false,
-            error: null,
-            user: action.payload
-         };
-      });
-      builder.addCase(fetchUserProfile.pending, (state) => {
-         return {
-            ...state,
-            loading: true,
-            error: null
-         };
-      });
-      builder.addCase(fetchUserProfile.rejected, (state, action) => {
-         return {
-            ...state,
-            loading: false,
-            error: action.error.message ?? "error"
-         }
-      });
+      // builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
+      //    return {
+      //       ...state,
+      //       loading: false,
+      //       error: null,
+      //       user: action.payload
+      //    };
+      // });
+      // builder.addCase(fetchUserProfile.pending, (state) => {
+      //    return {
+      //       ...state,
+      //       loading: true,
+      //       error: null
+      //    };
+      // });
+      // builder.addCase(fetchUserProfile.rejected, (state, action) => {
+      //    return {
+      //       ...state,
+      //       loading: false,
+      //       error: action.error.message ?? "error"
+      //    }
+      // });
       builder.addCase(updateUserProfile.fulfilled, (state, action) => {
          return {
             ...state,

@@ -85,7 +85,7 @@ export default function ProductsPage() {
     }} >
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Link style={{marginTop:"10vh", display: user?.role === 'admin' ? 'block' : 'none'}} to={'/createNew'}>
+        <Link style={{marginTop:"10vh", display: user?.role === 'ADMIN' ? 'block' : 'none'}} to={'/createNew'}>
           <Button>Create new</Button>
         </Link>
 

@@ -32,7 +32,7 @@ export const fetchSingleProduct = createAsyncThunk(
    "fetchSingleProduct",
    async (id: string) => {
       try {
-         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/products/${id}`);
+         const response = await axios.get(`http://localhost:8080/api/v1/products/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -65,7 +65,7 @@ export const createProduct = createAsyncThunk(
             uploadedImageUrls.push(uploadedImageUrl);
          }
 
-         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/products/`, {
+         const response = await axios.post(`http://localhost:8080/api/v1/products`, {
             name,
             price,
             description,

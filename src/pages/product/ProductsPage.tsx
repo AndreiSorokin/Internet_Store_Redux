@@ -40,8 +40,8 @@ export default function ProductsPage() {
 
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
-  const [size, setSize] = useState("");
-  const [gender, setGender] = useState("");
+  const [size, setSize] = useState(localStorage.getItem("selectedSize") || "All");
+  const [gender, setGender] = useState(localStorage.getItem("selectedGender") || "All");
 
   useEffect(() => {
     dispatch(fetchProducts({ 
@@ -101,48 +101,43 @@ export default function ProductsPage() {
                   style={{ padding: '10px' }}
                 />
               </Box>
+              <FormControl fullWidth>
+                <InputLabel id="size-select-label">Size</InputLabel>
+                <Select
+                  labelId="size-select-label"
+                  id="size-select"
+                  value={size}
+                  label="Size"
+                  onChange={(e) => setSize(e.target.value)}
+                  style={{ marginBottom: '20px' }}
+                >
+                  <MenuItem value=""><em>All</em></MenuItem>
+                  <MenuItem value="Small">Small</MenuItem>
+                  <MenuItem value="Medium">Medium</MenuItem>
+                  <MenuItem value="Large">Large</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel id="gender-select-label">Gender</InputLabel>
+                <Select
+                  labelId="gender-select-label"
+                  id="gender-select"
+                  value={gender}
+                  label="Gender"
+                  onChange={(e) => setGender(e.target.value)}
+                  style={{ marginBottom: '20px' }}
+                >
+                  <MenuItem value=""><em>All</em></MenuItem>
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
+                </Select>
+              </FormControl>
             </div>
           </Box>
         </Dialog>
-        <Dialog open={dialog} onClose={() => setDialog(false)}>
-            <FormControl fullWidth>
-              <InputLabel id="size-select-label">Size</InputLabel>
-              <Select
-                labelId="size-select-label"
-                id="size-select"
-                value={size}
-                label="Size"
-                onChange={(e) => setSize(e.target.value)}
-                style={{ marginBottom: '20px' }}
-              >
-                <MenuItem value=""><em>All</em></MenuItem>
-                <MenuItem value="Small">Small</MenuItem>
-                <MenuItem value="Medium">Medium</MenuItem>
-                <MenuItem value="Large">Large</MenuItem>
-              </Select>
-            </FormControl>
-          </Dialog>
-          <Dialog open={dialog} onClose={() => setDialog(false)}>
-            <FormControl fullWidth>
-              <InputLabel id="size-select-label">Size</InputLabel>
-              <Select
-                labelId="gender-select-label"
-                id="gender-select"
-                value={gender}
-                label="Gender"
-                onChange={(e) => setGender(e.target.value)}
-                style={{ marginBottom: '20px' }}
-              >
-                <MenuItem value=""><em>All</em></MenuItem>
-                <MenuItem value="Male">Male</MenuItem>
-                <MenuItem value="Female">Female</MenuItem>
-              </Select>
-            </FormControl>
-          </Dialog>
-        
         <ProductItem />
         <ScrollToTopButton/>
-        {/* <Pagination /> */}
+        <Pagination searchQuery={searchQuery} minPrice={minPrice || 0} maxPrice={maxPrice || Number.MAX_SAFE_INTEGER} size={size} gender={gender} />
     </Box>
     </div>
   );

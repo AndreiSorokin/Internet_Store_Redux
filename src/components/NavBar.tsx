@@ -14,7 +14,9 @@ const Navbar = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
 
-   // const userData = user.userData as LoggedInUser;
+   const userData = user.userData as LoggedInUser
+
+   console.log('navbar', userData)
    
    const [showMenu, setShowMenu] = useState(false);
    const { toggleTheme, theme } = useTheme();
@@ -64,7 +66,7 @@ const Navbar = () => {
                            <Button>Cart</Button>
                         </Link>
                      }
-                     {user && user.role === 'ADMIN' &&
+                     {user && userData.role === 'ADMIN' &&
                         <Link to="auth/admin">
                            <Button>Admin</Button>
                         </Link>

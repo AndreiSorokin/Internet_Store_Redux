@@ -40,8 +40,8 @@ export default function ProductsPage() {
 
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
-  const [size, setSize] = useState(localStorage.getItem("selectedSize") || "All");
-  const [gender, setGender] = useState(localStorage.getItem("selectedGender") || "All");
+  const [size, setSize] = useState(localStorage.getItem("selectedSize") || "");
+  const [gender, setGender] = useState(localStorage.getItem("selectedGender") || "");
 
   useEffect(() => {
     dispatch(fetchProducts({ 

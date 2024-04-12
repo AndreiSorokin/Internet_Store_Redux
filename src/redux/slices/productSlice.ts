@@ -15,6 +15,19 @@ const initialState: InitialState = {
 };
 
 
+export const fetchAllProducts = createAsyncThunk(
+   "fetchAllProducts",
+   async () => {
+      try {
+         const response = await axios.get(`http://localhost:8080/api/v1/products`);
+         const data = response.data;
+         return data;
+      } catch (error) {
+         throw error;
+      }
+   }
+)
+
 export const fetchProducts = createAsyncThunk(
    "fetchProducts",
    async ({ limit, offset, searchQuery = "", minPrice = 0, maxPrice = Infinity, size, gender }: 
@@ -160,6 +173,31 @@ const productsSlice = createSlice({
       }
    },
    extraReducers(builder) {
+      builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
+         if(!(action.payload instanceof Error)) {
+            return {
+               ...state,
+               products: action.payload.products,
+               totalCount: action.payload.totalCount,
+               loading: false,
+               error: null
+            }
+         }
+      });
+      builder.addCase(fetchAllProducts.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         }
+      })
+      builder.addCase(fetchAllProducts.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      })
       builder.addCase(fetchProducts.fulfilled, (state, action) => {
          if(!(action.payload instanceof Error)) {
             return {

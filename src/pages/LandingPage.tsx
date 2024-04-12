@@ -11,7 +11,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import { fetchProducts } from '../redux/slices/productSlice';
+import { fetchAllProducts, fetchProducts } from '../redux/slices/productSlice';
 import { useTheme } from '../components/contextAPI/ThemeContext';
 
 const LandingPage = () => {
@@ -22,9 +22,9 @@ const LandingPage = () => {
 
    console.log("productList", productList)
 
-   // useEffect(() => {
-   //    dispatch(fetchProducts());
-   // }, [dispatch]);
+   useEffect(() => {
+      dispatch(fetchAllProducts());
+   }, [dispatch]);
 
    const getOneProductPerCategory = () => {
       if (!Array.isArray(productList)) {

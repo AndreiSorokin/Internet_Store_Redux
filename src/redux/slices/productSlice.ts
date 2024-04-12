@@ -10,20 +10,22 @@ const initialState: InitialState = {
    error: null,
    selectedProduct: null,
    selectedCategory: '',
-   priceFilter: '',
-   filteredProducts: []
+   filteredProducts: [],
+   totalCount: 0
 };
 
 
 export const fetchProducts = createAsyncThunk(
    "fetchProducts",
-   async () => {
+   async ({ limit, offset, searchQuery = "", minPrice = 0, maxPrice = Infinity, size, gender }: 
+   { limit: number; offset: number; searchQuery?: string; minPrice?: number; maxPrice?: number, size: string, gender: string },
+      { rejectWithValue }) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products`);
+         const response = await axios.get(`http://localhost:8080/api/v1/products?limit=${limit}&offset=${offset}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}&size=${size}&gender=${gender}`);
          const data = response.data;
          return data;
       } catch (error) {
-         throw error;
+         rejectWithValue(error);
       }
    }
 )
@@ -146,21 +148,6 @@ const productsSlice = createSlice({
             state.filteredProducts = state.products.filter(p => p.category.name === category);
          }
       },
-      setPriceFilter: (state, action) => {
-         state.priceFilter = action.payload;
-         state.filteredProducts = state.products.filter(product => {
-            switch (action.payload) {
-               case 'Under 20':
-               return product.price < 20;
-               case '20 to 100':
-               return product.price >= 20 && product.price <= 100;
-               case 'Over 100':
-               return product.price > 100;
-               default:
-               return true;
-            }
-         });
-      },
       sortByPrice: (state, action) => {
          const sortOrder = action.payload;
          state.products.sort((a, b) => {
@@ -178,6 +165,7 @@ const productsSlice = createSlice({
             return {
                ...state,
                products: action.payload.products,
+               totalCount: action.payload.totalCount,
                loading: false,
                error: null
             }
@@ -287,6 +275,6 @@ const productsSlice = createSlice({
    }
 })
 
-export const { filterByCategory, setPriceFilter, sortByPrice } = productsSlice.actions
+export const { filterByCategory, sortByPrice } = productsSlice.actions
 const productsReducer = productsSlice.reducer;
 export default productsReducer;

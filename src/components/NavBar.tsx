@@ -12,7 +12,9 @@ import { LoggedInUser } from '../misc/type';
 const Navbar = () => {
    const user = useAppSelector((state) => state.userRegister.user) as LoggedInUser;
    const dispatch = useAppDispatch();
-   const navigate = useNavigate()
+   const navigate = useNavigate();
+
+   // const userData = user.userData as LoggedInUser;
    
    const [showMenu, setShowMenu] = useState(false);
    const { toggleTheme, theme } = useTheme();

@@ -87,11 +87,12 @@ export const userLogin = createAsyncThunk(
    async (credentials: Credentials, { rejectWithValue, dispatch }) => {
       try {
          const response = await axios.post(`http://localhost:8080/api/v1/users/login/`, credentials);
-         localStorage.setItem('token', response.data.access_token);
+         localStorage.setItem('token', response.data.token);
          
          // const login = await dispatch(fetchUserProfile());
 
          // return login.payload;
+         console.log('userLogin', response.data);
          return response.data
       } catch (error) {
          return rejectWithValue('An error occurred during login');

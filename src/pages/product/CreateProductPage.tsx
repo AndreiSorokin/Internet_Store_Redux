@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { Category, NewProduct, Size } from '../../misc/type';
+import { Category, Gender, NewProduct, Size } from '../../misc/type';
 import { createProduct, fetchProducts, uploadImage } from '../../redux/slices/productSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
@@ -22,9 +22,9 @@ export default function CreateProductPage() {
   //create category slice
   // const categories = useAppSelector(state => state.categories.categories);
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-}, [dispatch]);
+//   useEffect(() => {
+//     dispatch(fetchProducts());
+// }, [dispatch]);
 
   const nameInput = useInput();
   const priceInput = useInput();
@@ -33,10 +33,15 @@ export default function CreateProductPage() {
 
   const [images, setImages] = React.useState<File[]>([]);
   const [selectedSize, setSelectedSize] = React.useState<Size | "">("");
+  const [gender, setGender] = React.useState<Gender | "">("");
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedSize(event.target.value as Size);
   };
+
+  const handleGenderSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGender(event.target.value as Gender);
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -46,7 +51,7 @@ export default function CreateProductPage() {
       const { value: description } = descriptionInput;
       const { value: category } = categoryInput;
 
-      if (!name || !price || !description || !category || !selectedSize || !images) {
+      if (!name || !price || !description || !category || !selectedSize || !images || !selectedSize || !gender) {
       return showError('Please make sure that you have added name, price, description, category ID, and images');
       }
 
@@ -78,7 +83,8 @@ export default function CreateProductPage() {
             description,
             category: {id:1, name:"name", image:"image"},
             images: uploadedImageUrls,
-            size: selectedSize
+            size: selectedSize,
+            gender: gender
           };
         dispatch(createProduct(newProduct));
         showSuccessMessage('Product added successfully');

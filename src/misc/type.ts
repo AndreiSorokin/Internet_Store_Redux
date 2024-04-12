@@ -23,6 +23,11 @@ export enum Size {
    Large = "Large",
 }
 
+export enum Gender {
+   Male = "Male",
+   Female = "Female"
+}
+
 export type NewProduct = {
    name: string;
    price: number;
@@ -30,6 +35,7 @@ export type NewProduct = {
    category: Category;
    images: string[];
    size: Size;
+   gender: Gender;
 }
 
 export type Products = NewProduct & {
@@ -43,8 +49,8 @@ export type InitialState = {
    error: string | null;
    selectedProduct: Products | null;
    selectedCategory: string;
-   priceFilter: string;
    filteredProducts: Products[];
+   totalCount: number;
 };
 
 export type CartItem = {
@@ -80,9 +86,12 @@ export type User = {
    username: string;
 }
 
+export type UserData = User
+
 export type LoggedInUser = User & {
    role: "CUSTOMER" | "ADMIN";
    id: number;
+   userData: UserData;
 }
 
 export type InitialStateUser = {

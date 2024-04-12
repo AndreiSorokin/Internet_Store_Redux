@@ -16,7 +16,8 @@ export default function ProfilePage() {
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  console.log(user)
+  const userData = user.userData
+  console.log('userData', userData)
 
   const firstNameInput = useInput();
   const emailInput = useInput();
@@ -69,11 +70,11 @@ export default function ProfilePage() {
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       {user && (
         <div style={{ textAlign: 'center' }}>
-          <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />
-          <h1>Hello, {user.firstName}</h1>
+          <img style={{ borderRadius: '5px', width: '150px' }} src={userData.avatar} alt="" />
+          <h1>Hello, {userData.firstName}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
-              placeholder={user.firstName}
+              placeholder={userData.firstName}
               name="name"
               label="Name"
               value={firstNameInput.value}

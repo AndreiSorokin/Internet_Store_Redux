@@ -22,9 +22,9 @@ const LandingPage = () => {
 
    console.log("productList", productList)
 
-   useEffect(() => {
-      dispatch(fetchProducts());
-   }, [dispatch]);
+   // useEffect(() => {
+   //    dispatch(fetchProducts());
+   // }, [dispatch]);
 
    const getOneProductPerCategory = () => {
       if (!Array.isArray(productList)) {

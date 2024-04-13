@@ -26,10 +26,10 @@ export default function CreateProductPage() {
 const productList = useAppSelector(state => state.products.products);
 
 
-useEffect(() => {
-  dispatch(fetchCategories());
-}, [dispatch])
-const categories = useAppSelector(state => state.categories.categories)
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch])
+  const categories = useAppSelector(state => state.categories.categories)
 
   const nameInput = useInput();
   const priceInput = useInput();
@@ -51,6 +51,8 @@ const handleNewCategoryImageChange = (event: React.ChangeEvent<HTMLInputElement>
     setNewCategoryImage(event.target.files[0]);
   }
 };
+
+
 const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
@@ -92,10 +94,11 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
   };
 
   const handleNewProductImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setNewCategoryImage(event.target.files[0]);
+    if (event.target.files) {
+        const fileArray = Array.from(event.target.files);
+        setImages(fileArray);
     }
-  }
+};
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -124,22 +127,35 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       const formData = new FormData();
       formData.append('name', name);
       formData.append('image', images[0]);
+      formData.append('price', price);
+      formData.append('description', description);
+      formData.append('category', category);
+      formData.append('gender', gender);
+      formData.append('size', selectedSize);
 
       try {
-        const uploadedImageUrls: string[] = [];
-            for (const image of images) {
-              if (typeof image === 'string') {
-                  uploadedImageUrls.push(image);
-              } else {
-                  showError('sss')
-              }
+        const imageUploadPromises = images.map(image => {
+            if (image instanceof File) {
+                return dispatch(uploadProductImages(image)).unwrap();
+            } else {
+                return Promise.resolve(image);
             }
-            const selectedCategory = categories.find(c => c.id.toString() === category);
-            if (!selectedCategory) {
-              showError('Selected category does not exist.');
-              return;
-            }
-          const newProduct: NewProduct = {
+        });
+
+        const uploadedImageUrls = await Promise.all(imageUploadPromises);
+
+        if (uploadedImageUrls.length !== images.length) {
+            showError('Failed to upload one or more images.');
+            return;
+        }
+
+        const selectedCategory = categories.find(c => c.id.toString() === category);
+        if (!selectedCategory) {
+            showError('Selected category does not exist.');
+            return;
+        }
+
+        const newProduct: NewProduct = {
             name,
             price: parseFloat(price),
             description,
@@ -147,8 +163,9 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
             images: uploadedImageUrls,
             size: selectedSize,
             gender: gender
-          };
-        dispatch(createProduct(newProduct));
+        };
+
+        await dispatch(createProduct(newProduct)).unwrap();
         showSuccessMessage('Product added successfully');
         nameInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
         priceInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
@@ -161,12 +178,6 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       }
   };
 
-  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files && e.target.files.length > 0) {
-      const selectedFiles = Array.from(e.target.files);
-      setImages(selectedFiles);
-      }
-  };
 
   return (
       <Grid sx={{

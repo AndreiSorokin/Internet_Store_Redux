@@ -67,7 +67,7 @@ export const deleteCategory = createAsyncThunk(
 )
 
 export const uploadCategoryImage = createAsyncThunk(
-   "categories/uploadCategoryImage",
+   "uploadCategoryImage",
    async (imageFile: File, { rejectWithValue }) => {
       const formData = new FormData();
       formData.append("image", imageFile);
@@ -87,7 +87,7 @@ export const uploadCategoryImage = createAsyncThunk(
 );
 
 export const createCategory = createAsyncThunk(
-   'categories/create',
+   'createCategory',
    async (formData: FormData, { rejectWithValue }) => {
       try {
          const response = await axios.post('http://localhost:8080/api/v1/categories', formData, {

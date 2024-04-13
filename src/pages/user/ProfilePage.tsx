@@ -1,7 +1,7 @@
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import { switchRole, updateUserProfile } from '../../redux/slices/userSlice';
-import { LoggedInUser } from '../../misc/type';
+import { LoggedInUser, UserData } from '../../misc/type';
 import  useInput  from '../../hooks/UseInput';
 
 import { Button, TextField } from '@mui/material';
@@ -16,9 +16,11 @@ export default function ProfilePage() {
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  const userData = user?.userData as LoggedInUser
+  const userData = user?.userData as UserData
+  console.log(userData)
 
   const firstNameInput = useInput();
+  const lastNameInput = useInput();
   const emailInput = useInput();
 
   const handleUpdateUser = (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,11 +31,14 @@ export default function ProfilePage() {
         return showError('Incorrect email format')
       }
       
-      const updatedUser: LoggedInUser = {
-        ...user,
+      const updatedUser: UserData = {
+        ...user.userData,
         firstName: firstNameInput.value,
-        email: emailInput.value
+        lastName: lastNameInput.value,
+        email: emailInput.value,
+        id: user.userData.id
       };
+      
       dispatch(updateUserProfile(updatedUser));
 
       localStorage.setItem('userInformation', JSON.stringify(updatedUser));
@@ -70,14 +75,32 @@ export default function ProfilePage() {
       {user && (
         <div style={{ textAlign: 'center' }}>
           <img style={{ borderRadius: '5px', width: '150px' }} src={userData.avatar} alt="" />
-          <h1>Hello, {userData.firstName}</h1>
+          <h1>Hello, {userData.username}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
               placeholder={userData.firstName}
-              name="name"
-              label="Name"
+              name="firstName"
+              label="First name"
               value={firstNameInput.value}
               onChange={firstNameInput.onChange}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              InputProps={{
+                style: {
+                  color: theme === 'bright' ? 'black' : 'white',
+                },
+                }}
+                sx={{ margin: "2vh", width: "90%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                color: theme === 'bright' ? 'black' : 'white'
+                } }}
+            />
+            <TextField
+              placeholder={userData.firstName}
+              name="lasttName"
+              label="Last name"
+              value={lastNameInput.value}
+              onChange={lastNameInput.onChange}
               variant="outlined"
               margin="normal"
               fullWidth

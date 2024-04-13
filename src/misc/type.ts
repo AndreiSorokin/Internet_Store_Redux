@@ -86,12 +86,27 @@ export type User = {
    username: string;
 }
 
-export type UserData = User
+export type UserData = {
+   email: string;
+   password: string;
+   firstName: string;
+   lastName: string;
+   avatar: string;
+   username: string;
+   id: number;
+}
+
+export enum UserStatus {
+   ACTIVE = "ACTIVE",
+   INACTIVE = "INACTIVE",
+}
 
 export type LoggedInUser = User & {
    role: "CUSTOMER" | "ADMIN";
    id: number;
    userData: UserData;
+   status: UserStatus;
+   orders: Orders;
 }
 
 export type InitialStateUser = {

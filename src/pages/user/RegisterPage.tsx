@@ -33,10 +33,9 @@ export default function RegisterPage() {
   const [avatar, setAvatar] = useState<File | null>(null)
 
 
-const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (e.target.files && e.target.files.length > 0) {
-    const selectedFile = e.target.files[0];
-    setAvatar(selectedFile);
+const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  if (event.target.files && event.target.files[0]) {
+    setAvatar(event.target.files[0]);
   }
 };
 
@@ -51,11 +50,15 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     return showError('Incorrect email format')
   }
 
+  const formData = new FormData();
+  formData.append('avatar', avatar);
+
   try {
     let avatarUrl = '';
     if (avatar) {
-      const uploadedFileResponse = await dispatch(uploadAvatar(avatar));
-      avatarUrl = uploadedFileResponse.payload;
+      const uploadedFileResponse = await dispatch(uploadAvatar(avatar)).unwrap();
+      console.log("uploadedFileResponse:", uploadedFileResponse);
+      avatarUrl = uploadedFileResponse;
     }
 
     const newUser: User = { firstName, lastName, username, email, password, avatar: avatarUrl };
@@ -129,7 +132,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               <Grid item xs={12}>
                 <TextField
                   onChange={(e) => setLastName(e.target.value)}
-                  value={firstName}
+                  value={lastName}
                   autoComplete="second-name"
                   name="lastName"
                   required

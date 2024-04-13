@@ -62,17 +62,21 @@ export const uploadProductImages = createAsyncThunk(
       const formData = new FormData();
       formData.append("image", imageFile);
       try {
+         console.log("Uploading image", imageFile.name);
          const response = await fetch("http://localhost:8080/api/v1/uploads", {
             method: "POST",
             body: formData,
          });
          const data = await response.json();
+         console.log("Response data:", data);
          if (!response.ok) {
             throw new Error(data.message || "Failed to upload image");
          }
-         return data.url;
+         console.log("Image uploaded, URL:", data.imageUrl);
+         return data.imageUrl;
       } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
+         console.error("Error uploading image:", error);
+         return rejectWithValue(error);
       }
    }
 );
@@ -89,15 +93,18 @@ export const createProduct = createAsyncThunk(
             return obj instanceof File;
          };
 
-         for (const imageFile of images) {
-            if (isFile(imageFile)) {
-               const uploadedImageUrl = await dispatch(uploadProductImages(imageFile)).unwrap();
+         for (const image of images) {
+            if (isFile(image)) {
+               const uploadedImageUrl = await dispatch(uploadProductImages(image)).unwrap();
                uploadedImageUrls.push(uploadedImageUrl);
+            } else if (typeof image === 'string') {
+               uploadedImageUrls.push(image);
             } else {
-               console.error("One of the provided images is not a File object.");
-               return rejectWithValue("One of the provided images is not a File object.");
+               console.error("One of the provided images is neither a File object nor a string URL.");
+               return rejectWithValue("Invalid image format.");
             }
          }
+         console.log('payload', product);
 
          const response = await axios.post(`http://localhost:8080/api/v1/products`, {
             name,
@@ -109,13 +116,23 @@ export const createProduct = createAsyncThunk(
             gender
          }, {
             headers: {
-               Authorization: `Bearer ${localStorage.getItem('token')}`
+               Authorization: `Bearer ${localStorage.getItem('token')}`,
+               'Content-Type': 'application/json',
             }
          });
          
          return response.data;
       } catch (error) {
-         return rejectWithValue(error);
+         if (axios.isAxiosError(error)) {
+            return rejectWithValue({
+               message: error.message,
+               response: error.response?.data
+            });
+         } else {
+            return rejectWithValue({
+               message: "An unknown error occurred"
+            });
+         }
       }
    }
 );

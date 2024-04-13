@@ -1,6 +1,6 @@
 import axios from "axios";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialStateUser, User, Credentials, LoggedInUser } from "../../misc/type";
+import { InitialStateUser, User, Credentials, LoggedInUser, UserData } from "../../misc/type";
 
 let userState: User | null = null;
 const data = localStorage.getItem("userInformation");
@@ -15,39 +15,37 @@ const initialState: InitialStateUser = {
    error: null,
 };
 
-export const userRegistration = createAsyncThunk(
-   'userRegistration',
-   async(user: User, {rejectWithValue}) => {
+export const uploadAvatar = createAsyncThunk(
+   "uploadAvatar",
+   async (imageFile: File, { rejectWithValue }) => {
+      const formData = new FormData();
+      formData.append("image", imageFile);
       try {
-         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/`, user)
-         return response.data
+         console.log("Uploading image", imageFile.name);
+         const response = await fetch("http://localhost:8080/api/v1/uploads", {
+            method: "POST",
+            body: formData,
+         });
+         const data = await response.json();
+         console.log("Response data:", data);
+         if (!response.ok) {
+            throw new Error(data.message || "Failed to upload image");
+         }
+         console.log("Image uploaded, URL:", data.imageUrl);
+         return data.imageUrl;
       } catch (error) {
-         return rejectWithValue(error)
+         console.error("Error uploading image:", error);
+         return rejectWithValue(error);
       }
    }
 );
 
-export const uploadAvatar = createAsyncThunk(
-   'uploadAvatar',
-   async (file: File, { rejectWithValue }) => {
+export const userRegistration = createAsyncThunk(
+   'userRegistration',
+   async(user: User, {dispatch, rejectWithValue}) => {
       try {
-         const formData = new FormData();
-         formData.append('file', file);
-         
-         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/files/upload`, formData, {
-         headers: {
-            'Content-Type': 'multipart/form-data'
-         }
-         });
-
-         const { location } = response.data;
-
-         if (!location) {
-            throw new Error('Invalid response');
-         }
-
-         return location;
-      
+         const response = await axios.post(`http://localhost:8080/api/v1/users/registration`, user)
+         return response.data
       } catch (error) {
          return rejectWithValue(error)
       }
@@ -84,7 +82,7 @@ export const uploadAvatar = createAsyncThunk(
 
 export const userLogin = createAsyncThunk(
    'userLogin',
-   async (credentials: Credentials, { rejectWithValue, dispatch }) => {
+   async (credentials: Credentials, { rejectWithValue }) => {
       try {
          const response = await axios.post(`http://localhost:8080/api/v1/users/login/`, credentials);
          localStorage.setItem('token', response.data.token);
@@ -102,9 +100,13 @@ export const userLogin = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
-   async ({ id, email, username }: LoggedInUser, { rejectWithValue, dispatch }) => {
+   async ({ id, email, firstName, lastName }: UserData, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { email, username });
+         const response = await axios.put(`http://localhost:8080/api/v1/users/${id}`, { email, firstName, lastName }, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+         });
          const updatedUser = response.data;
          dispatch(setUser(updatedUser))
          return updatedUser;

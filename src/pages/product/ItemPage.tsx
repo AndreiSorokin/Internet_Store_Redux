@@ -33,6 +33,9 @@ const ItemPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [openUserInputs, setOpenUserInputs] = useState<boolean>(false);
+
+  const userData = user?.userData as LoggedInUser
+  const isAdmin = user && userData?.role === 'ADMIN'
   
   const handleAddToCart = () => {
     setOpenDialog(true);
@@ -167,26 +170,26 @@ const ItemPage: React.FC = () => {
         style={{ padding: '20px' }}
         >
         {productItem && (
-  <Grid item>
-    <CardContent>
-      <Grid container justifyContent="center" spacing={2}>
-        {productItem.images.map((image, index) => (
-          <Grid item key={index} xs={index === 0 ? 12 : 4}>
-            <Button onClick={() => handleOpenImage(image)}>
-              <CardMedia
-                component="img"
-                height={index === 0 ? "auto" : "140"}
-                image={image}
-                alt="An item's pictures not available"
-                sx={{ maxWidth: '100%' }}
-              />
-            </Button>
+          <Grid item>
+            <CardContent>
+              <Grid container justifyContent="center" spacing={2}>
+                {productItem.images.map((image, index) => (
+                  <Grid item key={index} xs={index === 0 ? 12 : 4}>
+                    <Button onClick={() => handleOpenImage(image)}>
+                      <CardMedia
+                        component="img"
+                        height={index === 0 ? "auto" : "140"}
+                        image={image}
+                        alt="An item's pictures not available"
+                        sx={{ maxWidth: '100%' }}
+                      />
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </CardContent>
           </Grid>
-        ))}
-      </Grid>
-    </CardContent>
-  </Grid>
-)}
+        )}
         </Grid>      
           <Modal
             open={selectedImage !== null}
@@ -281,7 +284,7 @@ const ItemPage: React.FC = () => {
               </DialogActions>
               </Box>
             </Dialog>
-          {user?.role === 'ADMIN' && (
+          {userData && isAdmin && (
             <Grid item>
               <Button onClick={() => setOpenUserInputs(true)} variant="outlined" color="primary">
                 Update Product

@@ -28,8 +28,10 @@ export default function ProductsPage() {
   
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-
   const productList = useAppSelector(state => state.products.products);
+
+  const userData = user?.userData as LoggedInUser
+  const isAdmin = user && userData?.role === 'ADMIN'
   const count = useAppSelector((state: AppState) => state.products.totalCount);
 
   console.log('ProductPage', productList)
@@ -73,7 +75,7 @@ export default function ProductsPage() {
     }} >
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Link style={{marginTop:"10vh", display: user?.role === 'ADMIN' ? 'block' : 'none'}} to={'/createNew'}>
+        <Link style={{marginTop:"10vh", display: userData && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
           <Button>Create new</Button>
         </Link>
 

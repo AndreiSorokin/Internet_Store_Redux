@@ -56,28 +56,47 @@ export const fetchSingleProduct = createAsyncThunk(
    }
 )
 
-const fetchImageFile = async (imageUrl: string): Promise<File> => {
-   try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const file = new File([blob], 'image.jpg');
-      return file;
-   } catch (error) {
-      throw error;
+export const uploadProductImages = createAsyncThunk(
+   "uploadCategoryImage",
+   async (imageFile: File, { rejectWithValue }) => {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      try {
+         const response = await fetch("http://localhost:8080/api/v1/uploads", {
+            method: "POST",
+            body: formData,
+         });
+         const data = await response.json();
+         if (!response.ok) {
+            throw new Error(data.message || "Failed to upload image");
+         }
+         return data.url;
+      } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
+      }
    }
-};
+);
 
 export const createProduct = createAsyncThunk(
    'createProduct',
-   async (product: NewProduct, { rejectWithValue }) => {
+   async (product: NewProduct, { dispatch, rejectWithValue }) => {
       try {
-         const { name, price, description, category, images, size } = product;
+         const { name, price, description, category, images, size, gender } = product;
 
          const uploadedImageUrls: string[] = [];
-         for (const imageUrl of images) {
-            const imageFile = await fetchImageFile(imageUrl);
-            const uploadedImageUrl = await uploadImage(imageFile);
-            uploadedImageUrls.push(uploadedImageUrl);
+
+         const isFile = (obj: any): obj is File => {
+            return obj instanceof File;
+         };
+
+         for (const imageFile of images) {
+            if (isFile(imageFile)) {
+               const uploadedImageUrl = await dispatch(uploadProductImages(imageFile)).unwrap();
+               uploadedImageUrls.push(uploadedImageUrl);
+            } else {
+               console.error("One of the provided images is not a File object.");
+               return rejectWithValue("One of the provided images is not a File object.");
+            }
          }
 
          const response = await axios.post(`http://localhost:8080/api/v1/products`, {
@@ -85,45 +104,31 @@ export const createProduct = createAsyncThunk(
             price,
             description,
             category,
-            image: uploadedImageUrls,
-            size
+            images: uploadedImageUrls,
+            size,
+            gender
+         }, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
          });
          
          return response.data;
       } catch (error) {
-         return rejectWithValue(error)
+         return rejectWithValue(error);
       }
    }
 );
-
-export const uploadImage = async (image: File): Promise<string> => {
-   try {
-      const formData = new FormData();
-      formData.append('file', image);
-
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/files/upload`, formData, {
-         headers: {
-            'Content-Type': 'multipart/form-data'
-         }
-      });
-
-      const { location } = response.data;
-
-      if (!location) {
-         throw new Error('Invalid response');
-      }
-
-      return location;
-   } catch (error) {
-      throw error;
-   }
-};
 
 export const deleteProduct = createAsyncThunk(
    'deleteProduct',
    async (productId: string, { rejectWithValue }) => {
       try {
-         await axios.delete(`${process.env.REACT_APP_BASE_URL}/products/${productId}`);
+         await axios.delete(`http://localhost:8080/api/v1/products/${productId}`, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+         });
          return productId;
       } catch (error) {
       return rejectWithValue(error)
@@ -131,17 +136,23 @@ export const deleteProduct = createAsyncThunk(
    }
 );
 
+
+
 export const updateProduct = createAsyncThunk(
    'updateProduct',
    async ({ id, name, price }: { id: string, name: string, price: number }, { rejectWithValue }) => {
       try {
-         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/products/${id}`, {
+         const response = await axios.put(`http://localhost:8080/api/v1/products/${id}`, {
             name,
             price
+         }, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
          });
-         
          return response.data;
       } catch (error) {
+         console.log(localStorage.getItem('token'))
          return rejectWithValue(error)
       }
    }
@@ -256,6 +267,7 @@ const productsSlice = createSlice({
          };
       });
       builder.addCase(createProduct.rejected, (state, action) => {
+         console.log(action.payload);
          return {
             ...state,
             loading: false,

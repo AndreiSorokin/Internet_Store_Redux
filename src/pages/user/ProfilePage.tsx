@@ -16,8 +16,7 @@ export default function ProfilePage() {
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  const userData = user.userData
-  console.log('userData', userData)
+  const userData = user?.userData as LoggedInUser
 
   const firstNameInput = useInput();
   const emailInput = useInput();

@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from '../../api/axiosConfig';
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { InitialStateUser, User, Credentials, LoggedInUser, UserData } from "../../misc/type";
 
@@ -84,7 +85,7 @@ export const userLogin = createAsyncThunk(
    'userLogin',
    async (credentials: Credentials, { rejectWithValue }) => {
       try {
-         const response = await axios.post(`http://localhost:8080/api/v1/users/login/`, credentials);
+         const response = await axiosInstance.post(`http://localhost:8080/api/v1/users/login/`, credentials);
          localStorage.setItem('token', response.data.token);
          
          // const login = await dispatch(fetchUserProfile());

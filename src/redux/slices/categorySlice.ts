@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Category, CategoryState } from '../../misc/type';
 import axios from 'axios';
+import axiosInstance from '../../api/axiosConfig';
+
 
 const initialState: CategoryState = {
    categories: [],
@@ -12,7 +14,7 @@ export const fetchCategories = createAsyncThunk(
    "fetchCategories",
    async () => {
       try {
-         const response = await axios.get("http://localhost:8080/api/v1/categories");
+         const response = await axiosInstance.get("http://localhost:8080/api/v1/categories");
          const data = response.data;
          return data;
       } catch (error) {
@@ -25,7 +27,7 @@ export const fetchSingleCategory = createAsyncThunk(
    "fetchSingleCategory",
    async (id: string) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/categories/${id}`);
+         const response = await axiosInstance.get(`http://localhost:8080/api/v1/categories/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -38,7 +40,7 @@ export const updateCategory = createAsyncThunk(
    "updateCategory",
    async ({ id, category }: { id: string, category: Category }, { rejectWithValue }) => {
       try {
-         const response = await axios.put(`http://localhost:8080/api/v1/categories/${id}`, {
+         const response = await axiosInstance.put(`http://localhost:8080/api/v1/categories/${id}`, {
             body: JSON.stringify(category),
          });
          const data = response.data;
@@ -53,7 +55,7 @@ export const deleteCategory = createAsyncThunk(
    "deleteCategory",
    async (id: string, { rejectWithValue }) => {
       try {
-         const response = await axios.delete(`http://localhost:8080/api/v1/categories/${id}`, {
+         const response = await axiosInstance.delete(`http://localhost:8080/api/v1/categories/${id}`, {
             headers: {
                "Content-Type": "application/json"
             }
@@ -72,7 +74,7 @@ export const uploadCategoryImage = createAsyncThunk(
       const formData = new FormData();
       formData.append("image", imageFile);
       try {
-         const response = await axios.post("http://localhost:8080/api/v1/uploads", {
+         const response = await axiosInstance.post("http://localhost:8080/api/v1/uploads", {
             body: formData,
          });
          const data = await response.data
@@ -90,7 +92,7 @@ export const createCategory = createAsyncThunk(
    'createCategory',
    async (formData: FormData, { rejectWithValue }) => {
       try {
-         const response = await axios.post('http://localhost:8080/api/v1/categories', formData, {
+         const response = await axiosInstance.post('http://localhost:8080/api/v1/categories', formData, {
          headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'multipart/form-data',

@@ -12,7 +12,7 @@ axiosInstance.interceptors.response.use(
       if (error.response.status === 401 && !originalRequest._retry) {
          originalRequest._retry = true;
          try {
-         await axios.get('/refresh_token_endpoint', { withCredentials: true });
+         await axios.get('http://localhost:8080/api/v1/users/refreshToken', { withCredentials: true });
          return axiosInstance(originalRequest);
          } catch (refreshError) {
          return Promise.reject(refreshError);

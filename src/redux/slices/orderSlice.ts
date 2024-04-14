@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axiosInstance from '../../api/axiosConfig';
+
 import { Order, OrderState } from '../../misc/type';
 
 const initialState: OrderState = {
@@ -11,8 +13,8 @@ export const fetchOrders = createAsyncThunk(
    "fetchOrders",
    async () => {
       try {
-         const response = await fetch("http://localhost:8080/api/v1/orders");
-         const data = response.json();
+         const response = await axiosInstance.get("http://localhost:8080/api/v1/orders");
+         const data = response.data;
          return data;
       } catch (error) {
          throw error;
@@ -24,8 +26,8 @@ export const fetchSingleOrder = createAsyncThunk(
    "fetchSingleOrder",
    async (id: string) => {
       try {
-         const response = await fetch(`http://localhost:8080/api/v1/orders/admin/${id}`);
-         const data = response.json();
+         const response = await axiosInstance.get(`http://localhost:8080/api/v1/orders/admin/${id}`);
+         const data = response.data;
          return data;
       } catch (error) {
          throw error;
@@ -37,14 +39,13 @@ export const createOrder = createAsyncThunk(
    "createOrder",
    async ({ userId, order }: { userId: number, order: Order }, { rejectWithValue }) => {
       try {
-         const response = await fetch(`http://localhost:8080/api/v1/orders/${userId}`, {
-            method: "POST",
+         const response = await axiosInstance.post(`http://localhost:8080/api/v1/orders/${userId}`, {
             headers: {
                "Content-Type": "application/json"
             },
             body: JSON.stringify(order)
          })
-         const data = await response.json();
+         const data = await response.data;
          return data;
       } catch (error) {
          return rejectWithValue(error)
@@ -55,13 +56,12 @@ export const deleteOrder = createAsyncThunk(
    "deleteOrder",
    async (id: string, { rejectWithValue }) => {
       try {
-         const response = await fetch(`http://localhost:8080/api/v1/orders/${id}`, {
-            method: "DELETE",
+         const response = await axiosInstance.delete(`http://localhost:8080/api/v1/orders/${id}`, {
             headers: {
                "Content-Type": "application/json"
             }
          })
-         const data = await response.json();
+         const data = await response.data;
          return data;
       } catch (error) {
          return rejectWithValue(error)

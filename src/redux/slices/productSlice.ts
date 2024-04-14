@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { InitialState, NewProduct } from "../../misc/type";
+import axiosInstance from '../../api/axiosConfig';
 
 import axios from "axios";
 
@@ -19,7 +20,7 @@ export const fetchAllProducts = createAsyncThunk(
    "fetchAllProducts",
    async () => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products`);
+         const response = await axiosInstance.get(`http://localhost:8080/api/v1/products`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -34,7 +35,7 @@ export const fetchProducts = createAsyncThunk(
    { limit: number; offset: number; searchQuery?: string; minPrice?: number; maxPrice?: number, size: string, gender: string },
       { rejectWithValue }) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products?limit=${limit}&offset=${offset}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}&size=${size}&gender=${gender}`);
+         const response = await axiosInstance.get(`http://localhost:8080/api/v1/products?limit=${limit}&offset=${offset}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}&size=${size}&gender=${gender}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -47,7 +48,7 @@ export const fetchSingleProduct = createAsyncThunk(
    "fetchSingleProduct",
    async (id: string) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products/${id}`);
+         const response = await axiosInstance.get(`http://localhost:8080/api/v1/products/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -63,13 +64,12 @@ export const uploadProductImages = createAsyncThunk(
       formData.append("image", imageFile);
       try {
          console.log("Uploading image", imageFile.name);
-         const response = await fetch("http://localhost:8080/api/v1/uploads", {
-            method: "POST",
+         const response = await axiosInstance.post("http://localhost:8080/api/v1/uploads", {
             body: formData,
          });
-         const data = await response.json();
+         const data = await response.data;
          console.log("Response data:", data);
-         if (!response.ok) {
+         if (response.status !== 200) {
             throw new Error(data.message || "Failed to upload image");
          }
          console.log("Image uploaded, URL:", data.imageUrl);
@@ -106,7 +106,7 @@ export const createProduct = createAsyncThunk(
          }
          console.log('payload', product);
 
-         const response = await axios.post(`http://localhost:8080/api/v1/products`, {
+         const response = await axiosInstance.post(`http://localhost:8080/api/v1/products`, {
             name,
             price,
             description,
@@ -141,7 +141,7 @@ export const deleteProduct = createAsyncThunk(
    'deleteProduct',
    async (productId: string, { rejectWithValue }) => {
       try {
-         await axios.delete(`http://localhost:8080/api/v1/products/${productId}`, {
+         await axiosInstance.delete(`http://localhost:8080/api/v1/products/${productId}`, {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -159,7 +159,7 @@ export const updateProduct = createAsyncThunk(
    'updateProduct',
    async ({ id, name, price }: { id: string, name: string, price: number }, { rejectWithValue }) => {
       try {
-         const response = await axios.put(`http://localhost:8080/api/v1/products/${id}`, {
+         const response = await axiosInstance.put(`http://localhost:8080/api/v1/products/${id}`, {
             name,
             price
          }, {

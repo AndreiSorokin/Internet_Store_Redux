@@ -23,13 +23,12 @@ export const uploadAvatar = createAsyncThunk(
       formData.append("image", imageFile);
       try {
          console.log("Uploading image", imageFile.name);
-         const response = await fetch("http://localhost:8080/api/v1/uploads", {
-            method: "POST",
+         const response = await axiosInstance.post("http://localhost:8080/api/v1/uploads", {
             body: formData,
          });
-         const data = await response.json();
+         const data = await response.data;
          console.log("Response data:", data);
-         if (!response.ok) {
+         if (response.status !== 200) {
             throw new Error(data.message || "Failed to upload image");
          }
          console.log("Image uploaded, URL:", data.imageUrl);
@@ -45,7 +44,7 @@ export const userRegistration = createAsyncThunk(
    'userRegistration',
    async(user: User, {dispatch, rejectWithValue}) => {
       try {
-         const response = await axios.post(`http://localhost:8080/api/v1/users/registration`, user)
+         const response = await axiosInstance.post(`http://localhost:8080/api/v1/users/registration`, user)
          return response.data
       } catch (error) {
          return rejectWithValue(error)
@@ -103,7 +102,7 @@ export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
    async ({ id, email, firstName, lastName }: UserData, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`http://localhost:8080/api/v1/users/${id}`, { email, firstName, lastName }, {
+         const response = await axiosInstance.put(`http://localhost:8080/api/v1/users/${id}`, { email, firstName, lastName }, {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`,
             }
@@ -121,7 +120,7 @@ export const switchRole = createAsyncThunk(
    'switchRole',
    async ({ id }: LoggedInUser, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, {role: 'admin'} );
+         const response = await axiosInstance.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, {role: 'admin'} );
          const switchedUser = response.data;
          dispatch(setUser(switchedUser))
          return switchedUser;

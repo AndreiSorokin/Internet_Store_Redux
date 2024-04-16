@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartItem, CartState } from '../../misc/type';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CartItem, CartState, addProduct } from '../../misc/type';
+import axios from 'axios';
 
 const getCartFromLocalStorage = (): CartItem[] => {
    const data = localStorage.getItem('cartInformation');
@@ -13,6 +14,35 @@ const getCartFromLocalStorage = (): CartItem[] => {
 const initialState: CartState = {
    items: getCartFromLocalStorage()
 };
+
+export const getCart = createAsyncThunk(
+   'getCart',
+   async (userId: number, { rejectWithValue }) => {
+      try {
+         const response = await axios.get(`http://localhost:8080/api/v1/users/${userId}/cart`);
+         const data = response.data;
+         return data;
+      } catch (error) {
+         return rejectWithValue(error);
+      }
+   }
+)
+
+export const addProductToCart = createAsyncThunk(
+   'addProductToCart',
+   async ({ userId, productId, quantity }: addProduct, { rejectWithValue }) => {
+      try {
+         const response = await axios.post(`http://localhost:8080/api/v1/${userId}/cart`, {
+            productId,
+            quantity
+         });
+         const data = response.data;
+         return data;
+      } catch (error) {
+         return rejectWithValue(error);
+      }
+   }
+);
 
 const cartSlice = createSlice({
    name: 'cart',

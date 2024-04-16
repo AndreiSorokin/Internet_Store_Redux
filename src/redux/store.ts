@@ -6,6 +6,7 @@ import userReducer from "./slices/userSlice";
 import cartReducer from "./slices/cartSlice";
 import orderReducer from "./slices/orderSlice";
 import categoryReducer from "./slices/categorySlice";
+import { LoggedInUser } from "../misc/type";
 
 const store = configureStore({
    reducer: {
@@ -23,7 +24,7 @@ export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 store.subscribe(() => {
    const currentState = store.getState();
-   const userInformation = currentState.userRegister.user;
+   const userInformation = currentState.userRegister.user as LoggedInUser;
    const cartInformation = currentState.cart.items;
    const orderInformation = currentState.orders.orders;
    const categoryInformation = currentState.categories.categories;

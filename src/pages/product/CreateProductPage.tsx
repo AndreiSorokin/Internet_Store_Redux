@@ -107,10 +107,11 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       const { value: price } = priceInput;
       const { value: description } = descriptionInput;
 
-      if (!name || !price || !description || !category || !selectedSize || !images || !selectedSize || !gender) {
+      if (!name || !price || !description || !selectedSize || !selectedSize || !gender ||images.length === 0) {
       return showError('Please make sure that you have added name, price, description, category ID, and images');
       }
 
+      console.log(images.length)
       const existingProduct = productList.find(product =>
         product.name === name &&
         product.price === parseFloat(price) &&
@@ -125,13 +126,7 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       }
 
       const formData = new FormData();
-      formData.append('name', name);
       formData.append('image', images[0]);
-      formData.append('price', price);
-      formData.append('description', description);
-      formData.append('category', category);
-      formData.append('gender', gender);
-      formData.append('size', selectedSize);
 
       try {
         const imageUploadPromises = images.map(image => {
@@ -162,8 +157,11 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
             category: selectedCategory,
             images: uploadedImageUrls,
             size: selectedSize,
-            gender: gender
+            gender: gender,
+            categoryId: selectedCategory.id
         };
+
+        console.log("selectedCategory",selectedCategory);
 
         await dispatch(createProduct(newProduct)).unwrap();
         showSuccessMessage('Product added successfully');

@@ -25,11 +25,7 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
     setSelectedCategory(newCategory);
   };
 
-
-
-  const handleSortByPrice = (order: 'from low to high' | 'from high to low') => {
-    dispatch(sortByPrice(order));
-  };
+  //debounce for category search
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">

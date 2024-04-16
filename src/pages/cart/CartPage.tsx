@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
-import { CartItem } from '../../misc/type';
-import { updateCartItemQuantity, removeFromCart } from '../../redux/slices/cartSlice';
+import { CartItem, LoggedInUser } from '../../misc/type';
+import { updateCartItemQuantity, removeFromCart, getCart } from '../../redux/slices/cartSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext'
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 
@@ -16,6 +16,17 @@ const CartPage: React.FC = () => {
 
   const cartItems = useAppSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  const userData = user?.userData as LoggedInUser
+  const userId = userData?.id
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getCart(userId));
+    }
+  }, [dispatch, userId]);
+
+  console.log(cartItems)
 
   useEffect(() => {
     const storedCartItems = localStorage.getItem('cartInformation');

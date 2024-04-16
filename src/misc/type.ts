@@ -29,6 +29,7 @@ export enum Gender {
 }
 
 export type NewProduct = {
+   categoryId: number;
    name: string;
    price: number;
    description: string;
@@ -40,6 +41,12 @@ export type NewProduct = {
 
 export type Products = NewProduct & {
    id: number;
+}
+
+export type addProduct = {
+   userId: number;
+   productId: number;
+   quantity: number;
 }
 
 export type InitialState = {

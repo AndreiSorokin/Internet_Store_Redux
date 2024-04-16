@@ -16,6 +16,18 @@ const initialState: InitialStateUser = {
    error: null,
 };
 
+// export const getSingleUser = createAsyncThunk(
+//    "getSingleUser",
+//    async (id: number, { rejectWithValue }) => {
+//       try {
+//          const response = await axios.get(`http://localhost:8080/api/v1/users/${id}`);
+//          return response.data;
+//       } catch (error) {
+//             return rejectWithValue(error);
+//       }
+//    }
+// );
+
 export const uploadAvatar = createAsyncThunk(
    "uploadAvatar",
    async (imageFile: File, { rejectWithValue }) => {
@@ -23,10 +35,11 @@ export const uploadAvatar = createAsyncThunk(
       formData.append("image", imageFile);
       try {
          console.log("Uploading image", imageFile.name);
-         const response = await axiosInstance.post("http://localhost:8080/api/v1/uploads", {
+         const response = await fetch("http://localhost:8080/api/v1/uploads", {
+            method: "POST",
             body: formData,
          });
-         const data = await response.data;
+         const data = await response.json();
          console.log("Response data:", data);
          if (response.status !== 200) {
             throw new Error(data.message || "Failed to upload image");
@@ -52,33 +65,33 @@ export const userRegistration = createAsyncThunk(
    }
 );
 
-// export const fetchUserProfile = createAsyncThunk(
-//    'fetchUserProfile',
-//    async (_, { rejectWithValue }) => {
-//       try {
-//       const access_token = localStorage.getItem('token');
-//       if (!access_token) {
-//          throw new Error('No token found');
-//       }
+export const getSingleUser = createAsyncThunk(
+   'fetchUserProfile',
+   async (userId: number, { rejectWithValue }) => {
+      try {
+      const access_token = localStorage.getItem('token');
+      if (!access_token) {
+         throw new Error('No token found');
+      }
       
-//       const response = await axios.get(`http://localhost:8080/api/v1/users`, {
-//          headers: {
-//             Authorization: `Bearer ${access_token}`,
-//          },
-//       });
+      const response = await axios.get(`http://localhost:8080/api/v1/users/${userId}`, {
+         headers: {
+            Authorization: `Bearer ${access_token}`,
+         },
+      });
       
-//       return response.data;
-//       } catch (error) {
-//       if (axios.isAxiosError(error)) {
-//          const errorResponse = error.response?.data;
-//          if (errorResponse) {
-//             return rejectWithValue(errorResponse);
-//          }
-//       }
-//       return rejectWithValue(error);
-//       }
-//    }
-// );
+      return response.data;
+      } catch (error) {
+      if (axios.isAxiosError(error)) {
+         const errorResponse = error.response?.data;
+         if (errorResponse) {
+            return rejectWithValue(errorResponse);
+         }
+      }
+      return rejectWithValue(error);
+      }
+   }
+);
 
 export const userLogin = createAsyncThunk(
    'userLogin',
@@ -100,18 +113,21 @@ export const userLogin = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
-   async ({ id, email, firstName, lastName }: UserData, { rejectWithValue, dispatch }) => {
+   async ({ id, firstName, lastName, email }: UserData, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.put(`http://localhost:8080/api/v1/users/${id}`, { email, firstName, lastName }, {
+         const response = await axios.put(`http://localhost:8080/api/v1/users/${id}`, { firstName, lastName, email }, {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`,
             }
          });
-         const updatedUser = response.data;
-         dispatch(setUser(updatedUser))
-         return updatedUser;
+         console.log('updateUserProfile', response.data);
+         return response.data;
       } catch (error) {
-      return rejectWithValue('An error occurred during login');
+         if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data); //this part goes
+         } else {
+            return rejectWithValue('An unexpected error occurred');
+         }
       }
    }
 );
@@ -158,6 +174,27 @@ const userSlice = createSlice({
       },
    },
    extraReducers(builder) {
+      builder.addCase(getSingleUser.fulfilled, (state, action) => {
+         return {
+            user: action.payload,
+            loading: false,
+            error: null,
+         }
+      })
+      builder.addCase(getSingleUser.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         }
+      })
+      builder.addCase(getSingleUser.rejected, (state, action) => {
+         return {
+            user: null,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      });
       builder.addCase(userRegistration.fulfilled, (state, action) => {
          return {
             ...state,
@@ -251,7 +288,7 @@ const userSlice = createSlice({
             ...state,
             loading: false,
             error: null,
-            user: action.payload
+            userData: action.payload
          };
       });
       builder.addCase(updateUserProfile.pending, (state) => {

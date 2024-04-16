@@ -8,13 +8,15 @@ import { useAppSelector } from "../../redux/store";
 // interface ProductItemProps {
 //    currentPageData: Products[];
 // }
-
-const ProductItem = () => {
+interface ProductItemProps {
+   filteredProducts: Products[]; // Use the Products type for the filteredProducts array
+}
+const ProductItem: React.FC<ProductItemProps> = ({filteredProducts}) => {
    const productList = useAppSelector(state => state.products.products);
    return (
       <div style={{ padding: '0 10vw' }}>
          <Grid container spacing={3}>
-            {productList.map(product => (
+            {filteredProducts.map(product => (
                <Grid item key={product.id} xs={12} sm={6} md={4}>
                   <div>
                   <div>{product.name}</div>

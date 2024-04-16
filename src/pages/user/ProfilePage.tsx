@@ -1,12 +1,13 @@
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
-import { switchRole, updateUserProfile } from '../../redux/slices/userSlice';
+import { getSingleUser, switchRole, updateUserProfile } from '../../redux/slices/userSlice';
 import { LoggedInUser, UserData } from '../../misc/type';
 import  useInput  from '../../hooks/UseInput';
 
 import { Button, TextField } from '@mui/material';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
+import { useEffect } from 'react';
 
 export default function ProfilePage() {
   const { theme } = useTheme();
@@ -16,12 +17,23 @@ export default function ProfilePage() {
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  const userData = user?.userData as UserData
-  console.log(userData)
+  const userData = user.userData as UserData
+  const userId = userData.id //gives ID and error at the same time
+  const loading = useAppSelector((state: AppState) => state.userRegister.loading);
+  console.log("userData",userData.id)
+  console.log("user", user)
+
 
   const firstNameInput = useInput();
   const lastNameInput = useInput();
   const emailInput = useInput();
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getSingleUser(user.userData.id));
+    }
+  }, [userId, dispatch]);
+
 
   const handleUpdateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,7 +53,9 @@ export default function ProfilePage() {
       
       dispatch(updateUserProfile(updatedUser));
 
-      localStorage.setItem('userInformation', JSON.stringify(updatedUser));
+      
+      localStorage.setItem('userInformation', JSON.stringify(userData));// gives old data but changes DB
+
       showSuccessMessage('Your information has been changed successfully')
     }
   };
@@ -72,10 +86,10 @@ export default function ProfilePage() {
     >
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
-      {user && (
+      {userData && (
         <div style={{ textAlign: 'center' }}>
           <img style={{ borderRadius: '5px', width: '150px' }} src={userData.avatar} alt="" />
-          <h1>Hello, {userData.username}</h1>
+          <h1>Hello, {userData.firstName}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
               placeholder={userData.firstName}
@@ -96,7 +110,7 @@ export default function ProfilePage() {
                 } }}
             />
             <TextField
-              placeholder={userData.firstName}
+              placeholder={userData.lastName}
               name="lasttName"
               label="Last name"
               value={lastNameInput.value}

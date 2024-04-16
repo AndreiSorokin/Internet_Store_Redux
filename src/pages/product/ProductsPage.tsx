@@ -64,6 +64,19 @@ export default function ProductsPage() {
     localStorage.setItem("selectedGender", gender);
   }, [searchQuery, selectedCategory, size, gender]);
 
+  useEffect(() => {
+    localStorage.setItem("selectedCategory", selectedCategory);
+  }, [selectedCategory]);
+
+  const filteredProducts = useMemo(() => {
+    return productList.filter(product => {
+      const titleMatches = product.category.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
+      return titleMatches && categoryMatches;
+    });
+  }, [productList, searchQuery, selectedCategory]);
+
+
   return (
     <div style={{
       backgroundColor: theme === "bright" ? "white" : "black",
@@ -137,7 +150,7 @@ export default function ProductsPage() {
             </div>
           </Box>
         </Dialog>
-        <ProductItem />
+        <ProductItem filteredProducts={filteredProducts}/>
         <ScrollToTopButton/>
         <Pagination searchQuery={searchQuery} minPrice={minPrice || 0} maxPrice={maxPrice || Number.MAX_SAFE_INTEGER} size={size} gender={gender} />
     </Box>

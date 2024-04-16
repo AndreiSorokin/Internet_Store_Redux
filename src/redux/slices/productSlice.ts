@@ -20,7 +20,7 @@ export const fetchAllProducts = createAsyncThunk(
    "fetchAllProducts",
    async () => {
       try {
-         const response = await axiosInstance.get(`http://localhost:8080/api/v1/products`);
+         const response = await axios.get(`http://localhost:8080/api/v1/products`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -48,7 +48,7 @@ export const fetchSingleProduct = createAsyncThunk(
    "fetchSingleProduct",
    async (id: string) => {
       try {
-         const response = await axiosInstance.get(`http://localhost:8080/api/v1/products/${id}`);
+         const response = await axios.get(`http://localhost:8080/api/v1/products/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -64,10 +64,12 @@ export const uploadProductImages = createAsyncThunk(
       formData.append("image", imageFile);
       try {
          console.log("Uploading image", imageFile.name);
-         const response = await axiosInstance.post("http://localhost:8080/api/v1/uploads", {
+         const response = await fetch("http://localhost:8080/api/v1/uploads", {
+            method: "POST",
             body: formData,
          });
-         const data = await response.data;
+         console.log(response)
+         const data = await response.json();
          console.log("Response data:", data);
          if (response.status !== 200) {
             throw new Error(data.message || "Failed to upload image");
@@ -81,11 +83,13 @@ export const uploadProductImages = createAsyncThunk(
    }
 );
 
+
+
 export const createProduct = createAsyncThunk(
    'createProduct',
-   async (product: NewProduct, { dispatch, rejectWithValue }) => {
+   async (product: Partial<NewProduct>, { dispatch, rejectWithValue }) => {
       try {
-         const { name, price, description, category, images, size, gender } = product;
+         const { name, price, description, images, size, gender, categoryId } = product;
 
          const uploadedImageUrls: string[] = [];
 
@@ -93,27 +97,29 @@ export const createProduct = createAsyncThunk(
             return obj instanceof File;
          };
 
-         for (const image of images) {
-            if (isFile(image)) {
-               const uploadedImageUrl = await dispatch(uploadProductImages(image)).unwrap();
-               uploadedImageUrls.push(uploadedImageUrl);
-            } else if (typeof image === 'string') {
-               uploadedImageUrls.push(image);
-            } else {
-               console.error("One of the provided images is neither a File object nor a string URL.");
-               return rejectWithValue("Invalid image format.");
+         if(images) {
+            for (const image of images) {
+               if (isFile(image)) {
+                  const uploadedImageUrl = await dispatch(uploadProductImages(image)).unwrap();
+                  uploadedImageUrls.push(uploadedImageUrl);
+               } else if (typeof image === 'string') {
+                  uploadedImageUrls.push(image);
+               } else {
+                  console.error("One of the provided images is neither a File object nor a string URL.");
+                  return rejectWithValue("Invalid image format.");
+               }
             }
          }
-         console.log('payload', product);
+         console.log('uploadedImageUrls', uploadedImageUrls);
 
-         const response = await axiosInstance.post(`http://localhost:8080/api/v1/products`, {
+         const response = await axios.post(`http://localhost:8080/api/v1/products`, {
             name,
             price,
             description,
-            category,
             images: uploadedImageUrls,
             size,
-            gender
+            gender,
+            categoryId
          }, {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AppState, useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   BrowserRouter as Router, Link
@@ -11,15 +11,13 @@ import Search from "../../components/utils/Search";
 import Pagination from "../../components/utils/Pagination";
 import ProductItem from "../../components/products/ProductItem";
 import ScrollToTopButton from "../../components/utils/ScrollToTop";
-import { LoggedInUser, NewProduct } from "../../misc/type";
+import { LoggedInUser } from "../../misc/type";
+import useDebounce from "../../hooks/UseDebounce"
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
-import { useSelector } from "react-redux";
-import TablePagination from "@mui/material/TablePagination";
-import MuiPagination from '@mui/material/Pagination';
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 
@@ -30,12 +28,10 @@ export default function ProductsPage() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const productList = useAppSelector(state => state.products.products);
 
+  console.log(productList)
+
   const userData = user?.userData as LoggedInUser
   const isAdmin = user && user?.role === 'ADMIN'
-  const count = useAppSelector((state: AppState) => state.products);
-  console.log('count',count)
-
-  console.log('ProductPage', productList)
 
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");
   const [selectedCategory, setSelectedCategory] = useState(localStorage.getItem("selectedCategory") || "All");
@@ -46,24 +42,26 @@ export default function ProductsPage() {
   const [size, setSize] = useState(localStorage.getItem("selectedSize") || "");
   const [gender, setGender] = useState(localStorage.getItem("selectedGender") || "");
 
+  const debouncedSearch = useDebounce(searchQuery, 500);
+
   useEffect(() => {
     dispatch(fetchProducts({ 
       limit: 9,
       offset: 0,
-      searchQuery: searchQuery,
+      searchQuery: debouncedSearch,
       minPrice: minPrice,
       maxPrice: maxPrice,
       size,
       gender
     }));
-  }, [dispatch, searchQuery, selectedCategory, minPrice, maxPrice, size, gender]);
+  }, [dispatch, debouncedSearch, selectedCategory, minPrice, maxPrice, size, gender]);
 
   useEffect(() => {
-    localStorage.setItem("searchQuery", searchQuery);
+    localStorage.setItem("searchQuery", debouncedSearch);
     localStorage.setItem("selectedCategory", selectedCategory);
     localStorage.setItem("selectedSize", size);
     localStorage.setItem("selectedGender", gender);
-  }, [searchQuery, selectedCategory, size, gender]);
+  }, [debouncedSearch, selectedCategory, size, gender]);
 
   useEffect(() => {
     localStorage.setItem("selectedCategory", selectedCategory);
@@ -71,13 +69,11 @@ export default function ProductsPage() {
 
   const filteredProducts = useMemo(() => {
     return productList.filter(product => {
-      const titleMatches = product.category.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const titleMatches = product.name.toLowerCase().includes(debouncedSearch.toLowerCase());
       const categoryMatches = selectedCategory === "All" || selectedCategory === product.category.name;
       return titleMatches && categoryMatches;
     });
-  }, [productList, searchQuery, selectedCategory]);
-
-  console.log(productList) // I just get category ID instead of the object
+  }, [productList, debouncedSearch, selectedCategory]);
 
 
   return (

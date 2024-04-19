@@ -100,57 +100,59 @@ export default function ProductsPage() {
 
         <Button style={{transform: 'translate(0,-10vh)'}} onClick={() => setDialog(true)}>Filters</Button>
         <Dialog open={dialog} onClose={() => setDialog(false)}>
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ borderRadius: '5px', backgroundColor: theme === "bright" ? "white" : "black", border: theme === "bright" ? "1px solid black" : "1px solid white", '@media (max-width: 900px)': { width: '45vw', height: '50vh' } }}>
-            <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(14vw, 2vh)', color: theme === 'bright' ? 'black' : 'white' }}><CloseIcon /></Button>
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '55vh', borderRadius: '5px', backgroundColor: theme === "bright" ? "white" : "black", border: theme === "bright" ? "1px solid black" : "1px solid white", '@media (max-width: 900px)': { width: '45vw', height: '60vh' } }}>
+            <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(14vw, -2vh)', color: theme === 'bright' ? 'black' : 'white' }}><CloseIcon /></Button>
             <div style={{ height: '40vh', width:'35vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
-              <Box sx={{ margin: '10px' }}>
+              <Box sx={{ margin: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <input
                   type="number"
                   value={minPrice || ''}
                   onChange={(e) => setMinPrice(e.target.value ? parseInt(e.target.value) : undefined)}
                   placeholder="Min Price"
-                  style={{ padding: '10px', marginRight: '5px' }}
+                  style={{ padding: '10px', marginRight: '5px', width:'40%', marginBottom: '10px' }}
                 />
                 <input
                   type="number"
                   value={maxPrice || ''}
                   onChange={(e) => setMaxPrice(e.target.value ? parseInt(e.target.value) : undefined)}
                   placeholder="Max Price"
-                  style={{ padding: '10px' }}
+                  style={{ padding: '10px', marginRight: '5px', width:'40%' }}
                 />
               </Box>
-              <FormControl fullWidth>
-                <InputLabel id="size-select-label">Size</InputLabel>
-                <Select
-                  labelId="size-select-label"
-                  id="size-select"
-                  value={size}
-                  label="Size"
-                  onChange={(e) => setSize(e.target.value)}
-                  style={{ marginBottom: '20px' }}
-                >
-                  <MenuItem value=""><em>All</em></MenuItem>
-                  <MenuItem value="Small">Small</MenuItem>
-                  <MenuItem value="Medium">Medium</MenuItem>
-                  <MenuItem value="Large">Large</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="gender-select-label">Gender</InputLabel>
-                <Select
-                  labelId="gender-select-label"
-                  id="gender-select"
-                  value={gender}
-                  label="Gender"
-                  onChange={(e) => setGender(e.target.value)}
-                  style={{ marginBottom: '20px' }}
-                >
-                  <MenuItem value=""><em>All</em></MenuItem>
-                  <MenuItem value="Male">Male</MenuItem>
-                  <MenuItem value="Female">Female</MenuItem>
-                </Select>
-              </FormControl>
+              <Box display="flex" alignItems="center" sx={{marginLeft: '10vw', flexDirection: 'column'}}>
+                <FormControl sx={{width: '110%'}}>
+                  <InputLabel id="size-select-label">Size</InputLabel>
+                  <Select
+                    labelId="size-select-label"
+                    id="size-select"
+                    value={size}
+                    label="Size"
+                    onChange={(e) => setSize(e.target.value)}
+                    style={{ marginBottom: '20px', width: '60%', alignItems: 'center' }}
+                  >
+                    <MenuItem value=""><em>All</em></MenuItem>
+                    <MenuItem value="Small">Small</MenuItem>
+                    <MenuItem value="Medium">Medium</MenuItem>
+                    <MenuItem value="Large">Large</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{width: '110%'}}>
+                  <InputLabel id="gender-select-label">Gender</InputLabel>
+                  <Select
+                    labelId="gender-select-label"
+                    id="gender-select"
+                    value={gender}
+                    label="Gender"
+                    onChange={(e) => setGender(e.target.value)}
+                    style={{ marginBottom: '20px', width:'60%' }}
+                  >
+                    <MenuItem value=""><em>All</em></MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </div>
           </Box>
         </Dialog>

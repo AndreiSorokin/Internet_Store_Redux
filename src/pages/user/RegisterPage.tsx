@@ -85,31 +85,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     );
   }
 
-
-  interface CredentialResponse {
-    credential: string;
-  }
-  
-  const handleGoogleLogin = async (credentialResponse: import("@react-oauth/google").CredentialResponse) => {
-    const token = credentialResponse.credential; 
-    if (!token) {
-      console.error('No credential token received from Google login');
-      return; 
-    }
-    try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { token });
-      localStorage.setItem('userInformation', JSON.stringify(response.data));
-      dispatch(setUser(response.data)); 
-      navigate('/auth/profile'); 
-    } catch (error) {
-      console.error('Error processing Google login', error);
-    }
-  };
-
-  // const handleGoogleLogin = () => {
-  //   window.location.href = "http://localhost:8080/auth/google";
-  // };
-
   return (
     <div style={{
       backgroundColor: theme === "bright" ? "white" : "black",

@@ -18,6 +18,7 @@ export default function ProfilePage() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const userData = user.userData as UserData
+  console.log("Attempting to access localStorage for userInformation");
   const data = localStorage.getItem("userInformation");
   // const userId = userData.id //gives ID and error at the same time
 

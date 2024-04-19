@@ -25,8 +25,6 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
     setSelectedCategory(newCategory);
   };
 
-  //debounce for category search
-
   return (
     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
         <FormControl style={{ margin: "1vh" }}>

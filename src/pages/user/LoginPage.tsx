@@ -69,7 +69,7 @@ export default function LoginPage() {
       return; 
     }
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { token });
+      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
       localStorage.setItem('userInformation', JSON.stringify(response.data));
       dispatch(setUser(response.data)); 
       navigate('http://localhost:3000/auth/profile'); 

@@ -103,7 +103,6 @@ export const userLogin = createAsyncThunk(
          // const login = await dispatch(fetchUserProfile());
 
          // return login.payload;
-         console.log('userLogin', response.data);
          localStorage.setItem('userInformation', JSON.stringify(response.data));
          return response.data
       } catch (error) {
@@ -159,6 +158,27 @@ export const userLogout = createAsyncThunk(
 );
 
 
+// export const handleGoogleLogin = createAsyncThunk(
+//    'handleGoogleLogin',
+//    async (credentialResponse: { credential: string }, { rejectWithValue, dispatch }) => {
+//       const token = credentialResponse;
+//       if (!token) {
+//          console.error('No credential token received from Google login');
+//          return rejectWithValue('No credential token received from Google login');
+//       }
+//       try {
+//          const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
+//          localStorage.setItem('userInformation', JSON.stringify(response.data));
+//          dispatch(setUser(response.data));
+//          return response.data;
+//       } catch (error) {
+//          console.error('Error processing Google login', error);
+//          return rejectWithValue('Error processing Google login');
+//       }
+//    }
+// );
+
+
 const userSlice = createSlice({
    name: 'user',
    initialState,
@@ -175,6 +195,27 @@ const userSlice = createSlice({
       },
    },
    extraReducers(builder) {
+      // builder.addCase(handleGoogleLogin.fulfilled, (state, action) => {
+      //    return {
+      //       user: action.payload,
+      //       loading: false,
+      //       error: null,
+      //    }
+      // })
+      // builder.addCase(handleGoogleLogin.pending, (state) => {
+      //    return {
+      //       ...state,
+      //       loading: true,
+      //       error: null,
+      //    }
+      // })
+      // builder.addCase(handleGoogleLogin.rejected, (state, action) => {
+      //    return {
+      //       user: null,
+      //       loading: false,
+      //       error: action.error.message ?? "error"
+      //    }
+      // })
       builder.addCase(getSingleUser.fulfilled, (state, action) => {
          return {
             user: action.payload,

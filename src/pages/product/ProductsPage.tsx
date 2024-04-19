@@ -43,18 +43,23 @@ export default function ProductsPage() {
   const [gender, setGender] = useState(localStorage.getItem("selectedGender") || "");
 
   const debouncedSearch = useDebounce(searchQuery, 500);
+  const debouncedMinPrice = useDebounce(minPrice, 500)
+  const debouncedMaxPrice = useDebounce(maxPrice, 500)
 
   useEffect(() => {
+    const minPriceValue = typeof debouncedMinPrice === 'number' ? debouncedMinPrice : undefined;
+    const maxPriceValue = typeof debouncedMaxPrice === 'number' ? debouncedMaxPrice : undefined
+
     dispatch(fetchProducts({ 
       limit: 9,
       offset: 0,
       searchQuery: debouncedSearch,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
+      minPrice: minPriceValue,
+      maxPrice: maxPriceValue,
       size,
       gender
     }));
-  }, [dispatch, debouncedSearch, selectedCategory, minPrice, maxPrice, size, gender]);
+  }, [dispatch, debouncedSearch, selectedCategory, debouncedMinPrice, debouncedMaxPrice, size, gender]);
 
   useEffect(() => {
     localStorage.setItem("searchQuery", debouncedSearch);

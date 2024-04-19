@@ -32,7 +32,8 @@ export default function ProductsPage() {
 
   const userData = user?.userData as LoggedInUser
   const isAdmin = user && user?.role === 'ADMIN'
-  const count = useAppSelector((state: AppState) => state.products.totalCount);
+  const count = useAppSelector((state: AppState) => state.products);
+  console.log('count',count)
 
   console.log('ProductPage', productList)
 

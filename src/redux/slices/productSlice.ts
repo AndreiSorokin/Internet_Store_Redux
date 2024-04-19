@@ -123,6 +123,8 @@ export const createProduct = createAsyncThunk(
             }
          });
          
+         dispatch(fetchProducts({ limit: 10, offset: 0, size: '', gender: '' }));
+         
          return response.data;
       } catch (error) {
          if (axios.isAxiosError(error)) {

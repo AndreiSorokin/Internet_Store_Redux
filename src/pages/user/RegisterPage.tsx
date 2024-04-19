@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,12 +13,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useState } from 'react'
-import { User } from '../../misc/type';
+import { Credentials, User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
-import { userRegistration, uploadAvatar } from '../../redux/slices/userSlice'
+import { userRegistration, uploadAvatar, setUser } from '../../redux/slices/userSlice'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
+import axios from 'axios';
 
 export default function RegisterPage() {
   const { theme } = useTheme()
@@ -31,7 +34,6 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [avatar, setAvatar] = useState<File | null>(null)
-
 
 const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   if (event.target.files && event.target.files[0]) {
@@ -82,6 +84,31 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       </Typography>
     );
   }
+
+
+  interface CredentialResponse {
+    credential: string;
+  }
+  
+  const handleGoogleLogin = async (credentialResponse: import("@react-oauth/google").CredentialResponse) => {
+    const token = credentialResponse.credential; 
+    if (!token) {
+      console.error('No credential token received from Google login');
+      return; 
+    }
+    try {
+      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { token });
+      localStorage.setItem('userInformation', JSON.stringify(response.data));
+      dispatch(setUser(response.data)); 
+      navigate('/auth/profile'); 
+    } catch (error) {
+      console.error('Error processing Google login', error);
+    }
+  };
+
+  // const handleGoogleLogin = () => {
+  //   window.location.href = "http://localhost:8080/auth/google";
+  // };
 
   return (
     <div style={{

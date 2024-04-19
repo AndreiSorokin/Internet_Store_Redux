@@ -11,11 +11,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useAppDispatch } from '../../redux/store';
-import { userLogin } from '../../redux/slices/userSlice';
+import { setUser, userLogin } from '../../redux/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput  from '../../hooks/UseInput';
+import axios from 'axios';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
 export default function LoginPage() {
   const { theme } = useTheme();
@@ -59,6 +61,23 @@ export default function LoginPage() {
     );
   }
 
+
+  const handleGoogleLogin = async (credentialResponse: import("@react-oauth/google").CredentialResponse) => {
+    const token = credentialResponse.credential; 
+    if (!token) {
+      console.error('No credential token received from Google login');
+      return; 
+    }
+    try {
+      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { token });
+      localStorage.setItem('userInformation', JSON.stringify(response.data));
+      dispatch(setUser(response.data)); 
+      navigate('http://localhost:3000/auth/profile'); 
+    } catch (error) {
+      console.error('Error processing Google login', error);
+    }
+  };
+
   return (
     <div
       style={{
@@ -69,6 +88,17 @@ export default function LoginPage() {
         transition: '0.5s ease'
       }}
     >
+      <GoogleOAuthProvider clientId="856209738432-ct140b6kuui6cov1cg2c2g8na5fpi3r4.apps.googleusercontent.com">
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            console.log(credentialResponse);
+            handleGoogleLogin(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
+      </GoogleOAuthProvider>
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />

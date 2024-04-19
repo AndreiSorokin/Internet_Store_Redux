@@ -18,21 +18,29 @@ export default function ProfilePage() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const userData = user.userData as UserData
-  const userId = userData.id //gives ID and error at the same time
-  const loading = useAppSelector((state: AppState) => state.userRegister.loading);
-  console.log("userData",userData.id)
+  const data = localStorage.getItem("userInformation");
+  // const userId = userData.id //gives ID and error at the same time
+
+  console.log("data", data)
   console.log("user", user)
+  console.log("userData",userData)
 
 
   const firstNameInput = useInput();
   const lastNameInput = useInput();
   const emailInput = useInput();
 
+  // useEffect(() => {
+  //   if (userData) {
+  //     dispatch(getSingleUser(userId));
+  //   }
+  // }, [userId, dispatch]);
+
   useEffect(() => {
-    if (userId) {
-      dispatch(getSingleUser(user.userData.id));
+    if (user) {
+      dispatch(getSingleUser(user.id));
     }
-  }, [userId, dispatch]);
+  }, [user.id, dispatch]);
 
 
   const handleUpdateUser = (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,17 +52,19 @@ export default function ProfilePage() {
       }
       
       const updatedUser: UserData = {
-        ...user.userData,
+        // ...user.userData,
+        ...user,
         firstName: firstNameInput.value,
         lastName: lastNameInput.value,
         email: emailInput.value,
-        id: user.userData.id
+        // id: user.userData.id
+        id: user.id
       };
       
       dispatch(updateUserProfile(updatedUser));
 
       
-      localStorage.setItem('userInformation', JSON.stringify(userData));// gives old data but changes DB
+      localStorage.setItem('userInformation', JSON.stringify(updatedUser));// gives old data but changes DB
 
       showSuccessMessage('Your information has been changed successfully')
     }
@@ -86,13 +96,13 @@ export default function ProfilePage() {
     >
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
-      {userData && (
+      {user && (
         <div style={{ textAlign: 'center' }}>
-          <img style={{ borderRadius: '5px', width: '150px' }} src={userData.avatar} alt="" />
-          <h1>Hello, {userData.firstName}</h1>
+          <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />
+          <h1>Hello, {user.firstName}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
-              placeholder={userData.firstName}
+              placeholder={user.firstName}
               name="firstName"
               label="First name"
               value={firstNameInput.value}
@@ -110,7 +120,7 @@ export default function ProfilePage() {
                 } }}
             />
             <TextField
-              placeholder={userData.lastName}
+              placeholder={user.lastName}
               name="lasttName"
               label="Last name"
               value={lastNameInput.value}

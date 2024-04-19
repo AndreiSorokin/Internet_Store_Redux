@@ -70,8 +70,8 @@ export type CartState = {
 }
 
 export type Order = {
-   id: number;
-   items: CartItem[];
+   id: string;
+   orderItems: CartItem[];
 }
 
 export type Orders = {
@@ -113,6 +113,7 @@ export type LoggedInUser = User & {
    id: number;
    userData: UserData;
    status: UserStatus;
+   cart: CartState;
    orders: Orders;
 }
 

@@ -20,8 +20,6 @@ const LandingPage = () => {
    const dispatch = useAppDispatch();
    const productList = useAppSelector(state => state.products.products);
 
-   console.log("productList", productList)
-
    useEffect(() => {
       dispatch(fetchAllProducts());
    }, [dispatch]);
@@ -41,8 +39,7 @@ const LandingPage = () => {
    };
 
    const featuredProducts = getOneProductPerCategory();
-   console.log('featuredProducts', featuredProducts) //[]
-
+   
    return (
       <div style={{
          background: `url(${require("../img/background.jpg")}) top / cover no-repeat`,

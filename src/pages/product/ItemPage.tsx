@@ -35,28 +35,28 @@ const ItemPage: React.FC = () => {
   const [openUserInputs, setOpenUserInputs] = useState<boolean>(false);
 
   const userData = user?.userData as LoggedInUser
-  const isAdmin = user && userData?.role === 'ADMIN'
+  const isAdmin = user && user?.role === 'ADMIN'
   
   const handleAddToCart = () => {
     setOpenDialog(true);
   };
 
-  console.log(productItem)
+  console.log(user)
 
-const handleConfirmAddToCart = async () => {
-  if (productItem && quantity && user && user.userData && user.userData.id) {
-    try {
-      await dispatch(addProductToCart({ userId: user.userData.id, productId: productItem.id, quantity: quantity })).unwrap();
-      showSuccessMessage(` ${productItem.name} added to cart!`);
-      setOpenDialog(false);
-      setQuantity(1);
-    } catch (error) {
-      console.error("Failed to add product to cart:", error);
-    }
-  } else {
-    console.error("User ID is undefined");
-  }
-};
+// const handleConfirmAddToCart = async () => {
+//   if (productItem && quantity && user && user && user.id) {
+//     try {
+//       await dispatch(addProductToCart({ userId: user.id, productId: productItem.id, quantity: quantity })).unwrap();
+//       showSuccessMessage(` ${productItem.name} added to cart!`);
+//       setOpenDialog(false);
+//       setQuantity(1);
+//     } catch (error) {
+//       console.error("Failed to add product to cart:", error);
+//     }
+//   } else {
+//     console.error("User ID is undefined");
+//   }
+// };
 
   // const handleConfirmAddToCart = () => {
   //   if (productItem && quantity) {
@@ -79,6 +79,29 @@ const handleConfirmAddToCart = async () => {
   //     setQuantity(1)
   //   }
   // };
+
+  const handleConfirmAddToCart = () => {
+    if (productItem && quantity && user?.id) { // Ensure user.id is available
+      dispatch(addToCart({ product: productItem, quantity: quantity }));
+  
+      const userCartKey = `cartInformation_${user.id}`; // Create a user-specific key
+      const cartItems = JSON.parse(localStorage.getItem(userCartKey) || "[]");
+      const newItem = { productId: productItem.id, quantity: quantity };
+      const existingItemIndex = cartItems.findIndex((item: { productId: number }) => item.productId === productItem.id);
+  
+      if (existingItemIndex !== -1) {
+        cartItems[existingItemIndex].quantity += quantity;
+      } else {
+        cartItems.push(newItem);
+      }
+  
+      setOpenDialog(false);
+      
+      localStorage.setItem(userCartKey, JSON.stringify(cartItems)); // Save using the user-specific key
+      showSuccessMessage(`${quantity} ${productItem.name} added to cart!`);
+      setQuantity(1);
+    }
+  };
 
   const handleDelete = async () => {
     if (productItem) {
@@ -301,7 +324,7 @@ const handleConfirmAddToCart = async () => {
               </DialogActions>
               </Box>
             </Dialog>
-          {userData && isAdmin && (
+          {user && isAdmin && (
             <Grid item>
               <Button onClick={() => setOpenUserInputs(true)} variant="outlined" color="primary">
                 Update Product

@@ -31,7 +31,7 @@ export default function ProductsPage() {
   const productList = useAppSelector(state => state.products.products);
 
   const userData = user?.userData as LoggedInUser
-  const isAdmin = user && userData?.role === 'ADMIN'
+  const isAdmin = user && user?.role === 'ADMIN'
   const count = useAppSelector((state: AppState) => state.products.totalCount);
 
   console.log('ProductPage', productList)
@@ -76,6 +76,8 @@ export default function ProductsPage() {
     });
   }, [productList, searchQuery, selectedCategory]);
 
+  console.log(productList) // I just get category ID instead of the object
+
 
   return (
     <div style={{
@@ -88,7 +90,7 @@ export default function ProductsPage() {
     }} >
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Link style={{marginTop:"10vh", display: userData && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
+        <Link style={{marginTop:"10vh", display: user && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
           <Button>Create new</Button>
         </Link>
 

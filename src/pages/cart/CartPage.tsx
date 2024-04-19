@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { CartItem, LoggedInUser } from '../../misc/type';
@@ -9,6 +11,11 @@ import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import { Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ScrollToTopButton from '../../components/utils/ScrollToTop';
+import { createOrder, fetchOrdersByUserId } from '../../redux/slices/orderSlice';
+import { handlePayment } from '../../redux/slices/paymentSlice';
+import axios from 'axios';
+import { getSingleUser } from '../../redux/slices/userSlice';
+import CheckoutForm from '../../components/utils/CheckoutForm';
 
 const CartPage: React.FC = () => {
   const { theme } = useTheme();
@@ -17,8 +24,17 @@ const CartPage: React.FC = () => {
   const cartItems = useAppSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  const orders = useAppSelector((state: AppState) => state.orders.orders);
   const userData = user?.userData as LoggedInUser
-  const userId = userData?.id
+  const userId =user?.id
+
+  // useEffect(() => {
+  //   if (userId) {
+  //     dispatch(fetchOrdersByUserId(userId));
+  //   }
+  // }, [dispatch, userId]);
+  console.log(orders)
+
 
   useEffect(() => {
     if (userId) {
@@ -26,7 +42,9 @@ const CartPage: React.FC = () => {
     }
   }, [dispatch, userId]);
 
-  console.log(cartItems)
+  useEffect(() => {
+    dispatch(getSingleUser(user.id))
+  }, [dispatch, user.id, orders]);
 
   useEffect(() => {
     const storedCartItems = localStorage.getItem('cartInformation');
@@ -62,6 +80,37 @@ const CartPage: React.FC = () => {
   const totalPrice = cartItems.reduce((total, cartItem) => {
     return total + cartItem.product.price * cartItem.quantity;
   }, 0);
+
+
+  const handleSendOrder = async () => {
+    const orderItems = cartItems.map(item => ({
+      product: item.product,
+      quantity: item.quantity
+    }));
+
+    const orderData = {
+      userId: user.id,
+      order: {
+        items: orderItems
+      }
+    };
+
+    console.log('orderData', orderData)
+
+    try {
+      await dispatch(createOrder( orderData )).unwrap();
+      showSuccessMessage('Order placed successfully!');
+    } catch (error) {
+      console.error('Failed to place order:', error);
+    }
+  };
+
+// Card Number: 4242 4242 4242 4242
+// Expiration Date: 12/34
+// CVC: 123
+// ZIP/Postal Code: 90210
+
+  const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
 
   return (
     <div style={{ backgroundColor: theme === "bright" ? "white" : "black",
@@ -136,12 +185,66 @@ const CartPage: React.FC = () => {
                   </div>
                 </Grid>
               ))}
+              <Grid item xs={12}>
+            <Grid container spacing={2}>
+            </Grid>
+            <p style={{position: 'absolute', top: '10vh', right: '5vw', fontSize: '24px'}}>Total Price: ${totalPrice.toFixed(2)}</p>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSendOrder}
+              style={{ margin: '20px 0' }}
+            >
+              Send Order
+            </Button>
+            <Elements stripe={stripePromise}>
+              <CheckoutForm
+                totalPrice={totalPrice}
+                onSuccess={async (paymentMethodId) => {
+                  console.log('Payment successful with PaymentMethod ID:', paymentMethodId);
+                  const orderItems = cartItems.map(item => ({
+                    product: item.product,
+                    quantity: item.quantity
+                  }));
+                
+                  const orderData = {
+                    userId: user.id,
+                    order: {
+                      items: orderItems
+                    }
+                  };
+                
+                  try {
+                    await dispatch(createOrder(orderData)).unwrap();
+                    showSuccessMessage('Order placed successfully!');
+                  } catch (error) {
+                    console.error('Failed to place order:', error);
+                  }
+                }}
+                onError={(errorMessage) => {
+                  console.error('Payment error:', errorMessage);
+                }}
+              />
+            </Elements>
+          </Grid>
             </Grid>
             <p style={{position: 'absolute', top: '10vh', right: '5vw', fontSize: '24px'}}>Total Price: ${totalPrice.toFixed(2)}</p>
           </Grid>
         </div>
       )}
       <ScrollToTopButton/>
+      <h2>Orders</h2>
+      <div>{orders.map(o=> {
+        return (
+          <div key={o.id}>
+            <div>
+              {o.orderItems.map((item, index) => (
+                  <div key={index}>Quantity: {item.quantity}</div>
+              ))}
+            </div>
+          </div>
+        )
+      })}</div>
     </Grid>
     </div>
   );

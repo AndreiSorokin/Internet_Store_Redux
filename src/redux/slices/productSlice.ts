@@ -20,7 +20,7 @@ export const fetchAllProducts = createAsyncThunk(
    "fetchAllProducts",
    async () => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products`);
+         const response = await axiosInstance.get(`http://localhost:8080/api/v1/products`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -48,7 +48,7 @@ export const fetchSingleProduct = createAsyncThunk(
    "fetchSingleProduct",
    async (id: string) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products/${id}`);
+         const response = await axiosInstance.get(`http://localhost:8080/api/v1/products/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -63,14 +63,11 @@ export const uploadProductImages = createAsyncThunk(
       const formData = new FormData();
       formData.append("image", imageFile);
       try {
-         console.log("Uploading image", imageFile.name);
          const response = await fetch("http://localhost:8080/api/v1/uploads", {
             method: "POST",
             body: formData,
          });
-         console.log(response)
          const data = await response.json();
-         console.log("Response data:", data);
          if (response.status !== 200) {
             throw new Error(data.message || "Failed to upload image");
          }
@@ -110,7 +107,6 @@ export const createProduct = createAsyncThunk(
                }
             }
          }
-         console.log('uploadedImageUrls', uploadedImageUrls);
 
          const response = await axios.post(`http://localhost:8080/api/v1/products`, {
             name,
@@ -175,7 +171,6 @@ export const updateProduct = createAsyncThunk(
          });
          return response.data;
       } catch (error) {
-         console.log(localStorage.getItem('token'))
          return rejectWithValue(error)
       }
    }

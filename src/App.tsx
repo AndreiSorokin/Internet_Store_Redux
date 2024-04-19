@@ -20,7 +20,7 @@ import AdminPage from './pages/user/AdminPage';
 function App() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const userData = user?.userData as LoggedInUser
-  const isAdmin = user && userData?.role === 'ADMIN'
+  const isAdmin = user && user?.role === 'ADMIN'
 
   return (
     <div>
@@ -37,7 +37,7 @@ function App() {
         <Route path="/products/:id" element={<ItemPage/>}/>
         <Route
           path="/createNew"
-          element={userData && isAdmin ? <CreateProductPage /> : <Navigate to="/" replace />}
+          element={user && isAdmin ? <CreateProductPage /> : <Navigate to="/" replace />}
         />
         <Route
           path='cart'
@@ -45,7 +45,7 @@ function App() {
         />
         <Route 
           path='auth/admin'
-          element={userData && isAdmin ? <AdminPage/> : <Navigate to="/" replace />}
+          element={user && isAdmin ? <AdminPage/> : <Navigate to="/" replace />}
         />
         <Route path='*' element={<Navigate to='/' replace/>}/>
       </Routes>

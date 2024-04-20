@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { Gender, NewProduct, Size } from '../../misc/type';
-import { createProduct, fetchAllProducts, uploadProductImages } from '../../redux/slices/productSlice';
+import { createProduct, fetchAllProducts } from '../../redux/slices/productSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
@@ -11,6 +11,7 @@ import { Box, Button, Grid, IconButton, MenuItem, TextField } from '@mui/materia
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from 'react-router-dom';
 import { createCategory, fetchCategories } from '../../redux/slices/categorySlice';
+import { uploadImage } from '../../redux/slices/uploadSlice';
 
 export default function CreateProductPage() {
   const { theme } = useTheme();
@@ -131,7 +132,7 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       try {
         const imageUploadPromises = images.map(image => {
             if (image instanceof File) {
-                return dispatch(uploadProductImages(image)).unwrap();
+                return dispatch(uploadImage(image)).unwrap();
             } else {
                 return Promise.resolve(image);
             }

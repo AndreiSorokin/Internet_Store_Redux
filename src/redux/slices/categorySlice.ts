@@ -68,26 +68,6 @@ export const deleteCategory = createAsyncThunk(
    }
 )
 
-export const uploadCategoryImage = createAsyncThunk(
-   "uploadCategoryImage",
-   async (imageFile: File, { rejectWithValue }) => {
-      const formData = new FormData();
-      formData.append("image", imageFile);
-      try {
-         const response = await axios.post("http://localhost:8080/api/v1/uploads", {
-            body: formData,
-         });
-         const data = await response.data
-         if (!data) {
-            throw new Error(data.message || "Failed to upload image");
-         }
-         return data.url;
-      } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
-      }
-   }
-);
-
 export const createCategory = createAsyncThunk(
    'createCategory',
    async (formData: FormData, { rejectWithValue }) => {

@@ -15,11 +15,12 @@ import Container from '@mui/material/Container';
 import { useState } from 'react'
 import { Credentials, User } from '../../misc/type';
 import { useAppDispatch } from '../../redux/store';
-import { userRegistration, uploadAvatar, setUser } from '../../redux/slices/userSlice'
+import { userRegistration, setUser } from '../../redux/slices/userSlice'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import axios from 'axios';
+import { uploadImage } from '../../redux/slices/uploadSlice';
 
 export default function RegisterPage() {
   const { theme } = useTheme()
@@ -58,7 +59,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   try {
     let avatarUrl = '';
     if (avatar) {
-      const uploadedFileResponse = await dispatch(uploadAvatar(avatar)).unwrap();
+      const uploadedFileResponse = await dispatch(uploadImage(avatar)).unwrap();
       console.log("uploadedFileResponse:", uploadedFileResponse);
       avatarUrl = uploadedFileResponse;
     }

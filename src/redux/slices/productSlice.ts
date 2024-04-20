@@ -3,6 +3,7 @@ import { InitialState, NewProduct } from "../../misc/type";
 import axiosInstance from '../../api/axiosConfig';
 
 import axios from "axios";
+import { uploadImage } from "./uploadSlice";
 
 const initialState: InitialState = {
    products: [],
@@ -57,29 +58,6 @@ export const fetchSingleProduct = createAsyncThunk(
    }
 )
 
-export const uploadProductImages = createAsyncThunk(
-   "uploadCategoryImage",
-   async (imageFile: File, { rejectWithValue }) => {
-      const formData = new FormData();
-      formData.append("image", imageFile);
-      try {
-         const response = await fetch("http://localhost:8080/api/v1/uploads", {
-            method: "POST",
-            body: formData,
-         });
-         const data = await response.json();
-         if (response.status !== 200) {
-            throw new Error(data.message || "Failed to upload image");
-         }
-         console.log("Image uploaded, URL:", data.imageUrl);
-         return data.imageUrl;
-      } catch (error) {
-         console.error("Error uploading image:", error);
-         return rejectWithValue(error);
-      }
-   }
-);
-
 
 
 export const createProduct = createAsyncThunk(
@@ -97,7 +75,7 @@ export const createProduct = createAsyncThunk(
          if(images) {
             for (const image of images) {
                if (isFile(image)) {
-                  const uploadedImageUrl = await dispatch(uploadProductImages(image)).unwrap();
+                  const uploadedImageUrl = await dispatch(uploadImage(image)).unwrap();
                   uploadedImageUrls.push(uploadedImageUrl);
                } else if (typeof image === 'string') {
                   uploadedImageUrls.push(image);

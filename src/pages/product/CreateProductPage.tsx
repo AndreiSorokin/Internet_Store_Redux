@@ -12,6 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from 'react-router-dom';
 import { createCategory, fetchCategories } from '../../redux/slices/categorySlice';
 import { uploadImage } from '../../redux/slices/uploadSlice';
+import CreateCategory from '../../components/categories/CreateCategory';
 
 export default function CreateProductPage() {
   const { theme } = useTheme();
@@ -187,6 +188,7 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       height: '150vh',
       overflow: 'hidden',
       }} container direction="column" alignItems="center" spacing={3}>
+        <h2>Create a new product!</h2>
       <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
           <Link to="/products" style={{ textDecoration: "none" }}>
             <IconButton sx={{ color: theme === 'bright' ? 'black' : 'white' }}>
@@ -333,42 +335,12 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
                 } }}
               />
               <input type="file" onChange={handleNewProductImageChange} accept="image/*" multiple />
-              <Button sx={{ marginTop: '15px' }} type="submit" variant="contained" color="primary">
+              <Button sx={{ marginTop: '15px' }} type="submit" variant="outlined" color="primary">
                 Create Product
               </Button>
             </Box>
           </form>
-          <h2>Category doesn't exist?</h2>
-          <h3>Create new category!</h3>
-          <form onSubmit={handleCreateCategory}>
-          <TextField
-            label="Category Name"
-            value={newCategoryName}
-            onChange={handleNewCategoryNameChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            InputProps={{
-              sx: {
-                color: theme === 'bright' ? 'black' : 'white',
-                '@media (max-width: 768px)': {
-                  maxWidth: '90%',
-                },
-              },
-            }}
-            sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-              color: theme === 'bright' ? 'black' : 'white',
-            } }}
-          />
-          <input
-            type="file"
-            onChange={handleNewCategoryImageChange}
-            accept="image/*"
-          />
-          <Button sx={{ marginTop: '15px' }} type="submit" variant="contained" color="primary">
-            Create Category
-          </Button>
-        </form>
+          <CreateCategory/>
       </Grid>
   </Grid>
   );

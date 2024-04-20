@@ -12,10 +12,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Credentials, User } from '../../misc/type';
-import { useAppDispatch } from '../../redux/store';
-import { userRegistration, setUser } from '../../redux/slices/userSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { userRegistration, setUser, fetchAllUsers } from '../../redux/slices/userSlice'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
@@ -35,6 +35,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [avatar, setAvatar] = useState<File | null>(null)
+
 
 const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   if (event.target.files && event.target.files[0]) {

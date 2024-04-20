@@ -1,13 +1,13 @@
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
-import { getSingleUser, switchRole, updateUserProfile } from '../../redux/slices/userSlice';
+import { getSingleUser, switchRole, updatePassword, updateUserProfile } from '../../redux/slices/userSlice';
 import { LoggedInUser, UserData } from '../../misc/type';
 import  useInput  from '../../hooks/UseInput';
 
-import { Button, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ProfilePage() {
   const { theme } = useTheme();
@@ -30,6 +30,11 @@ export default function ProfilePage() {
   const firstNameInput = useInput();
   const lastNameInput = useInput();
   const emailInput = useInput();
+  const currentPasswordInput = useInput();
+  const newPasswordInput = useInput();
+
+  const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
+
 
   // useEffect(() => {
   //   if (userData) {
@@ -46,40 +51,80 @@ export default function ProfilePage() {
 
   const handleUpdateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (user) {
-      if(!/\S+@\S+\.\S+/.test(emailInput.value)) {
-        return showError('Incorrect email format')
-      }
-      
-      const updatedUser: UserData = {
-        // ...user.userData,
-        ...user,
-        firstName: firstNameInput.value,
-        lastName: lastNameInput.value,
-        email: emailInput.value,
-        // id: user.userData.id
-        id: user.id
-      };
-      
-      dispatch(updateUserProfile(updatedUser));
-
-      
-      localStorage.setItem('userInformation', JSON.stringify(updatedUser));// gives old data but changes DB
-
-      showSuccessMessage('Your information has been changed successfully')
+  
+    type UserChanges = Partial<Pick<UserData, 'firstName' | 'lastName' | 'email'>>;
+    const changes: UserChanges = {};
+  
+    if (firstNameInput.value !== user.firstName && firstNameInput.value !== '') {
+      changes.firstName = firstNameInput.value;
     }
+    if (lastNameInput.value !== user.lastName && lastNameInput.value !== '') {
+      changes.lastName = lastNameInput.value;
+    }
+    if (emailInput.value !== user.email && emailInput.value !== '') {
+      if (!/\S+@\S+\.\S+/.test(emailInput.value)) {
+        return showError('Incorrect email format');
+      }
+      changes.email = emailInput.value;
+    }
+  
+    if (Object.keys(changes).length === 0) {
+      return showError('No changes detected');
+    }
+  
+    const updatedUser: UserData = {
+      ...user,
+      ...changes,
+      id: user.id
+    };
+  
+    dispatch(updateUserProfile(updatedUser));
+  
+    localStorage.setItem('userInformation', JSON.stringify(updatedUser));
+  
+    showSuccessMessage('Your information has been updated successfully');
   };
 
-  const handleSwitchRole = (e: React.FormEvent<HTMLFormElement>) => {
+  // const handleSwitchRole = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   if(user) {
+  //     dispatch(switchRole(user))
+  //     localStorage.setItem('userInformation', JSON.stringify(user));
+  //     showSuccessMessage('You have bocome an admin')
+  //   }
+  // }
+
+  const handleUpdatePassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(user) {
-      dispatch(switchRole(user))
-      localStorage.setItem('userInformation', JSON.stringify(user));
-      showSuccessMessage('You have bocome an admin')
+    if (!newPasswordInput.value || newPasswordInput.value.length < 6) {
+      return showError('New password must be at least 6 characters long');
     }
-  }
+
+    dispatch(updatePassword({
+      id: user.id,
+      oldPassword: currentPasswordInput.value,
+      newPassword: newPasswordInput.value,
+    }))
+    .then((action) => {
+      if (updatePassword.fulfilled.match(action)) {
+        showSuccessMessage('Password updated successfully');
+        currentPasswordInput.reset();
+        newPasswordInput.reset();
+      } else {
+        showError('Failed to update password');
+      }
+    });
+  };
+
+  const handleClickOpenUpdatePasswordDialog = () => {
+    setOpenUpdatePasswordDialog(true);
+  };
+
+  const handleCloseUpdatePasswordDialog = () => {
+    setOpenUpdatePasswordDialog(false);
+  };
 
   return (
     <div
@@ -160,11 +205,48 @@ export default function ProfilePage() {
               Apply Changes
             </Button>
           </form>
-          <form onSubmit={handleSwitchRole} style={{ width: '100%', maxWidth: '400px', marginTop: '15px' }}>
+          {/* <form onSubmit={handleSwitchRole} style={{ width: '100%', maxWidth: '400px', marginTop: '15px' }}>
             <Button type="submit" variant="outlined" color="primary">
               Switch role
             </Button>
-          </form>
+          </form> */}
+          <Button variant="outlined" color="primary" onClick={handleClickOpenUpdatePasswordDialog}>
+            Update Password
+          </Button>
+          <Dialog open={openUpdatePasswordDialog} onClose={handleCloseUpdatePasswordDialog} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Update Password</DialogTitle>
+            <DialogContent>
+              <form onSubmit={handleUpdatePassword}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="currentPassword"
+                  label="Current Password"
+                  type="password"
+                  fullWidth
+                  value={currentPasswordInput.value}
+                  onChange={currentPasswordInput.onChange}
+                />
+                <TextField
+                  margin="dense"
+                  id="newPassword"
+                  label="New Password"
+                  type="password"
+                  fullWidth
+                  value={newPasswordInput.value}
+                  onChange={newPasswordInput.onChange}
+                />
+                <DialogActions>
+                  <Button onClick={handleCloseUpdatePasswordDialog} color="primary">
+                    Cancel
+                  </Button>
+                  <Button type="submit" color="primary">
+                    Update
+                  </Button>
+                </DialogActions>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       )}
     </div>

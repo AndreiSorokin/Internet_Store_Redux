@@ -16,6 +16,29 @@ const initialState: InitialStateUser = {
    error: null,
 };
 
+export const fetchAllUsers = createAsyncThunk(
+   'fetchAllUsers',
+   async (_, { rejectWithValue }) => {
+     try {
+       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users`);
+       const users = response.data;
+       if (users.length === 0) {
+         return rejectWithValue({ message: "Empty User List" });
+       } else {
+         return users;
+       }
+     } catch (error) {
+       if (axios.isAxiosError(error) && error.response) {
+         // If the error comes from the server, we use the server's response
+         return rejectWithValue(error.response.data);
+       } else {
+         // For any other errors, we send a generic error message
+         return rejectWithValue({ message: "Internal error" });
+       }
+     }
+   }
+ );
+
 export const userRegistration = createAsyncThunk(
    'userRegistration',
    async(user: User, {dispatch, rejectWithValue}) => {
@@ -137,6 +160,25 @@ export const userLogout = createAsyncThunk(
 //    }
 // );
 
+export const updatePassword = createAsyncThunk(
+   'updatePassword',
+   async ({ id, oldPassword, newPassword }: { id: number; oldPassword: string; newPassword: string }, { rejectWithValue }) => {
+      try {
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}/update-password`, { oldPassword, newPassword }, {
+            headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+         });
+         return response.data;
+      } catch (error) {
+         if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data.message);
+         } else {
+            return rejectWithValue('An unexpected error occurred');
+         }
+      }
+   }
+);
 
 const userSlice = createSlice({
    name: 'user',
@@ -154,6 +196,52 @@ const userSlice = createSlice({
       },
    },
    extraReducers(builder) {
+      builder
+      .addCase(fetchAllUsers.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         }
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+         return {
+            user: action.payload,
+            loading: false,
+            error: null,
+         }
+      })
+      .addCase(fetchAllUsers.rejected, (state, action) => {
+         return {
+            user: null,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      });
+      builder.addCase(updatePassword.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         }
+      });
+      
+      builder.addCase(updatePassword.fulfilled, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: null,
+            user: { ...state.user, ...action.payload }
+         }
+      });
+      
+      builder.addCase(updatePassword.rejected, (state, action) => {
+         return {
+            user: null,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      });
       // builder.addCase(handleGoogleLogin.fulfilled, (state, action) => {
       //    return {
       //       user: action.payload,

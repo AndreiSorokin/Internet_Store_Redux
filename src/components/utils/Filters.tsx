@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormControl, InputLabel, MenuItem, Select, Button, Box, SelectChangeEvent } from "@mui/material";
 import { AppState } from "../../redux/store";
-import { sortByPrice } from "../../redux/slices/productSlice";
 import { useTheme } from "../contextAPI/ThemeContext";
 import { Products } from "../../misc/type";
 interface FiltersProps {

@@ -58,8 +58,6 @@ export const fetchSingleProduct = createAsyncThunk(
    }
 )
 
-
-
 export const createProduct = createAsyncThunk(
    'createProduct',
    async (product: Partial<NewProduct>, { dispatch, rejectWithValue }) => {
@@ -135,8 +133,6 @@ export const deleteProduct = createAsyncThunk(
    }
 );
 
-
-
 export const updateProduct = createAsyncThunk(
    'updateProduct',
    async ({ id, name, price }: { id: string, name: string, price: number }, { rejectWithValue }) => {
@@ -169,16 +165,6 @@ const productsSlice = createSlice({
          } else {
             state.filteredProducts = state.products.filter(p => p.category.name === category);
          }
-      },
-      sortByPrice: (state, action) => {
-         const sortOrder = action.payload;
-         state.products.sort((a, b) => {
-            if (sortOrder === 'from low to high') {
-               return a.price - b.price;
-            } else {
-               return b.price - a.price;
-            }
-         });
       }
    },
    extraReducers(builder) {
@@ -323,6 +309,6 @@ const productsSlice = createSlice({
    }
 })
 
-export const { filterByCategory, sortByPrice } = productsSlice.actions
+export const { filterByCategory } = productsSlice.actions
 const productsReducer = productsSlice.reducer;
 export default productsReducer;

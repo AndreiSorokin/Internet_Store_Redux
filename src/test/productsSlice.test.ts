@@ -189,7 +189,7 @@ describe("product reducer", () => {
       )
       expect(state.filteredProducts.length).toBe(1)
       expect(state.filteredProducts[0].category.name).toBe("Category 1")
-      });
+    });
   });
 
   describe("pending", () => {

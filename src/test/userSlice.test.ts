@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { InitialStateUser, LoggedInUser, User, UserStatus } from '../misc/type'
-import userReducer, { clearUser, getUserInput, setUser, switchRole, updateUserProfile, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
+import userReducer, { clearUser, fetchAllUsers, getSingleUser, getUserInput, setUser, switchRole, updatePassword, updateUserProfile, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import store from '../redux/store';
 
@@ -48,6 +48,25 @@ const BASE_URL = 'http://localhost:8080/api/v1'
 describe("user reducer", () => {
 
    describe("fulfilled", () => {
+      test("should fetch user list", async () => {
+         const mockUsers = [
+            { id: 1, name: 'User One' },
+            { id: 2, name: 'User Two' }
+         ];
+      
+         jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: mockUsers });
+      
+         const dispatch: Dispatch<UnknownAction> = jest.fn();
+         const getState = () => {};
+      
+         await fetchAllUsers()(dispatch, getState, null);
+      
+         expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({
+            type: fetchAllUsers.fulfilled.type,
+            payload: mockUsers
+         }));
+      });
+      
       test("should register a user", async () => {
       
          const mockApiResponse = {
@@ -65,6 +84,20 @@ describe("user reducer", () => {
       
          expect(state).toEqual({
             user: mockApiResponse,
+            loading: false,
+            error: null,
+         });
+      });
+
+      test("getSingleUser should return user data when fulfilled", async () => {
+         const userId = 1;
+         const mockUserResponse = { id: userId, name: "John Doe", email: "john@example.com" }; // Mocked user data response
+         const action = getSingleUser.fulfilled(mockUserResponse, 'fulfilled', userId);
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            user: mockUserResponse,
             loading: false,
             error: null,
          });
@@ -179,6 +212,20 @@ describe("user reducer", () => {
          expect(stateAfterClearUser.user).toBeNull();
       });
 
+      test("updatePassword should handle fulfilled case", async () => {
+        const updatePayload = { id: 1, oldPassword: "oldPass", newPassword: "newPass" };
+        const mockResponseData = { message: "Password updated successfully" };
+        const action = updatePassword.fulfilled(mockResponseData, 'fulfilled', updatePayload);
+        const state = userReducer(initialState, action);
+      
+        expect(state).toEqual({
+          ...initialState,
+          loading: false,
+          error: null,
+          user: { message: "Password updated successfully" }, 
+        });
+      });
+
       test("should get user input", () => {
          const userInput = {
             email: 'test@example.com',
@@ -227,6 +274,16 @@ describe("user reducer", () => {
    })
 
    describe("pending", () => {
+      test("fetchAllUsers should set loading to true when pending", () => {
+         const action = fetchAllUsers.pending('fetchAllUsers/pending');
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+         });
+      });
       test("should have loading truthy when registration is pending", () => {
 
          const state = userReducer(
@@ -239,6 +296,17 @@ describe("user reducer", () => {
             loading: true,
             error: null,
          })
+      });
+
+      test("getSingleUser should set loading to true when pending", () => {
+         const action = getSingleUser.pending('pending', 1);
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+         });
       });
 
       test("should have loading truthy when logging in is pending", () => {
@@ -311,10 +379,32 @@ describe("user reducer", () => {
             error: null,
          });
       })
+
+      test("updatePassword should set loading to true when pending", () => {
+         const action = updatePassword.pending('pending', { id: 1, oldPassword: "dummyOldPassword", newPassword: "dummyNewPassword" }, '1');
+        const state = userReducer(initialState, action);
+      
+        expect(state).toEqual({
+          ...initialState,
+          loading: true,
+          error: null,
+        });
+      });
    })
 
    describe("rejected", () => {
       const error = new Error("error");
+      test("fetchAllUsers should have error when rejected", () => {
+         const errorMessage = "Network error";
+         const action = fetchAllUsers.rejected(new Error(errorMessage), 'fetchAllUsers/rejected', undefined);
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: errorMessage,
+         });
+      });
 
       test("registration should have error", () => {
          const state = userReducer(
@@ -327,6 +417,19 @@ describe("user reducer", () => {
             loading: false,
             error: error.message,
          });
+      });
+
+      test("getSingleUser should handle rejection", async () => {
+        const userId = 1;
+        const error = new Error("Failed to fetch user");
+        const action = getSingleUser.rejected(error, 'rejected', userId);
+        const state = userReducer(initialState, action);
+      
+        expect(state).toEqual({
+          ...initialState,
+          loading: false,
+          error: error.message,
+        });
       });
 
       test("login should have error", () => {
@@ -420,5 +523,18 @@ describe("user reducer", () => {
             error: error.message
          });
       })
+
+      test("updatePassword should handle rejection", async () => {
+        const updatePayload = { id: 1, oldPassword: "oldPass", newPassword: "newPass" };
+        const error = new Error("Failed to update password");
+        const action = updatePassword.rejected(error, 'rejected', updatePayload);
+        const state = userReducer(initialState, action);
+      
+        expect(state).toEqual({
+          ...initialState,
+          loading: false,
+          error: error.message,
+        });
+      });
    })
 })

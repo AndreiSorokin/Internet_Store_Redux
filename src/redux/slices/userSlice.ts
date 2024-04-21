@@ -29,15 +29,13 @@ export const fetchAllUsers = createAsyncThunk(
        }
      } catch (error) {
        if (axios.isAxiosError(error) && error.response) {
-         // If the error comes from the server, we use the server's response
          return rejectWithValue(error.response.data);
        } else {
-         // For any other errors, we send a generic error message
          return rejectWithValue({ message: "Internal error" });
        }
      }
    }
- );
+);
 
 export const userRegistration = createAsyncThunk(
    'userRegistration',

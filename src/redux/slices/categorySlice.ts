@@ -90,6 +90,28 @@ const categorySlice = createSlice({
    initialState,
    reducers: {},
    extraReducers(builder) {
+      builder.addCase(createCategory.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null
+         }
+      })
+      builder.addCase(createCategory.fulfilled, (state, action) => {
+         return {
+            ...state,
+            categories: [...state.categories, action.payload],
+            loading: false,
+            error: null
+         }
+      })
+      builder.addCase(createCategory.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message?? "error"
+         }
+      })
       builder.addCase(deleteCategory.fulfilled, (state, action) => {
          const id = Number(action.payload);
          return {

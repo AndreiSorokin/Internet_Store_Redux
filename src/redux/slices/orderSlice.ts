@@ -30,7 +30,7 @@ export const fetchOrders = createAsyncThunk(
    "fetchOrders",
    async () => {
       try {
-         const response = await axiosInstance.get("http://localhost:8080/api/v1/orders");
+         const response = await axios.get("http://localhost:8080/api/v1/orders");
          const data = response.data;
          return data;
       } catch (error) {
@@ -43,7 +43,7 @@ export const fetchSingleOrder = createAsyncThunk(
    "fetchSingleOrder",
    async (id: string) => {
       try {
-         const response = await axiosInstance.get(`http://localhost:8080/api/v1/orders/admin/${id}`);
+         const response = await axios.get(`http://localhost:8080/api/v1/orders/admin/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -74,7 +74,7 @@ export const deleteOrder = createAsyncThunk(
    "deleteOrder",
    async (id: string, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.delete(`http://localhost:8080/api/v1/orders/${id}`, {
+         const response = await axios.delete(`http://localhost:8080/api/v1/orders/${id}`, {
             headers: {
                "Content-Type": "application/json"
             }
@@ -84,7 +84,7 @@ export const deleteOrder = createAsyncThunk(
       } catch (error) {
          return rejectWithValue(error)
       }
-   })
+})
 
 const orderSlice = createSlice({
    name: 'order',

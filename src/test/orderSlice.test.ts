@@ -1,5 +1,7 @@
-import orderReducer, { fetchOrders, deleteOrder, createOrder, fetchSingleOrder } from '../redux/slices/orderSlice';
+import orderReducer, { fetchOrders, deleteOrder, createOrder, fetchSingleOrder, fetchOrdersByUserId } from '../redux/slices/orderSlice';
 import { Gender, Order, OrderState, Size } from '../misc/type'
+import store from '../redux/store';
+import axios from 'axios';
 
 const initialState: OrderState = {
   orders: [
@@ -45,6 +47,12 @@ const initialState: OrderState = {
   loading: false,
   error: null,
 };
+
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+const mockError = 'Error fetching orders';
+mockedAxios.get.mockRejectedValueOnce(new Error(mockError));
 
 describe('fulfilled', () => {
    test('should delete an order', () => {

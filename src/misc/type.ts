@@ -70,7 +70,7 @@ export type CartState = {
 }
 
 export type Order = {
-   id: string;
+   id: number;
    orderItems: CartItem[];
 }
 

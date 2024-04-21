@@ -85,15 +85,15 @@ export default function ProfilePage() {
     showSuccessMessage('Your information has been updated successfully');
   };
 
-  // const handleSwitchRole = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
+  const handleSwitchRole = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  //   if(user) {
-  //     dispatch(switchRole(user))
-  //     localStorage.setItem('userInformation', JSON.stringify(user));
-  //     showSuccessMessage('You have bocome an admin')
-  //   }
-  // }
+    if(user) {
+      dispatch(switchRole(user))
+      localStorage.setItem('userInformation', JSON.stringify(user));
+      showSuccessMessage('You have bocome an admin')
+    }
+  }
 
   const handleUpdatePassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

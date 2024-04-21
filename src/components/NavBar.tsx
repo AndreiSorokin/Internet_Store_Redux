@@ -8,6 +8,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { userLogout } from '../redux/slices/userSlice';
 import { LoggedInUser } from '../misc/type';
+import { clearCart } from '../redux/slices/cartSlice';
 
 const Navbar = () => {
    const user = useAppSelector((state) => state.userRegister.user) as LoggedInUser;
@@ -26,6 +27,7 @@ const Navbar = () => {
 
    const handleLogout = () => {
       dispatch(userLogout());
+      dispatch(clearCart());
       navigate('/auth/login');
    };
 

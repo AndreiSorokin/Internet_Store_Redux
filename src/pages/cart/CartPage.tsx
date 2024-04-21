@@ -4,7 +4,7 @@ import { CardElement, Elements } from '@stripe/react-stripe-js';
 
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { CartItem, LoggedInUser } from '../../misc/type';
-import { updateCartItemQuantity, removeFromCart, getCart } from '../../redux/slices/cartSlice';
+import { updateCartItemQuantity, removeFromCart } from '../../redux/slices/cartSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext'
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 
@@ -37,13 +37,6 @@ const CartPage: React.FC = () => {
 
 
   console.log(orders)
-
-
-  useEffect(() => {
-    if (userId) {
-      dispatch(getCart(userId));
-    }
-  }, [dispatch, userId]);
 
   useEffect(() => {
     dispatch(getSingleUser(user.id))

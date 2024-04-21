@@ -52,7 +52,7 @@ export const userRegistration = createAsyncThunk(
 );
 
 export const getSingleUser = createAsyncThunk(
-   'fetchUserProfile',
+   'getSingleUser',
    async (userId: number, { rejectWithValue }) => {
       try {
       const access_token = localStorage.getItem('token');

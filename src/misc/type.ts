@@ -69,6 +69,12 @@ export type CartState = {
    items: CartItem[];
 }
 
+export type CartInitialState = {
+   items: CartItem[];
+   loading: boolean;
+   error: string | null;
+}
+
 export type Order = {
    id: number;
    orderItems: CartItem[];

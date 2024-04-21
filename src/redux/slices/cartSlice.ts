@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartItem, CartState, addProduct } from '../../misc/type';
+import { CartInitialState, CartItem, CartState, addProduct } from '../../misc/type';
 import axios from 'axios';
 
 export const getCartFromLocalStorage = (): CartItem[] => {
@@ -11,8 +11,10 @@ export const getCartFromLocalStorage = (): CartItem[] => {
    }
 };
 
-const initialState: CartState = {
-   items: getCartFromLocalStorage()
+const initialState: CartInitialState = {
+   items: getCartFromLocalStorage(),
+   loading: false,
+   error: null
 };
 
 export const getCart = createAsyncThunk(
@@ -80,6 +82,52 @@ const cartSlice = createSlice({
       localStorage.removeItem("cartInformation");
       },
    },
+   extraReducers(builder) {
+      builder.addCase(addProductToCart.pending, (state) => {
+         return {
+           ...state,
+            loading: true,
+            error: null,
+         }
+        })
+        builder.addCase(addProductToCart.fulfilled, (state, action) => {
+         return {
+           ...state,
+            items: action.payload,
+            loading: false,
+            error: null,
+         }
+        })
+        builder.addCase(addProductToCart.rejected, (state, action) => {
+         return {
+           ...state,
+            loading: false,
+            error: action.error.message ?? "error",
+         }
+        })
+      builder.addCase(getCart.pending, (state) => {
+      return {
+        ...state,
+         loading: true,
+         error: null,
+      }
+     })
+     builder.addCase(getCart.fulfilled, (state, action) => {
+      return {
+        ...state,
+         items: action.payload,
+         loading: false,
+         error: null,
+      }
+     })
+     builder.addCase(getCart.rejected, (state, action) => {
+      return {
+        ...state,
+         loading: false,
+         error: action.error.message ?? "error",
+      }
+     })
+   }
 });
 
 export const { addToCart, removeFromCart, updateCartItemQuantity, clearCart } = cartSlice.actions;

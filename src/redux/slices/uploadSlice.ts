@@ -1,10 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-interface UploadState {
-   loading: boolean;
-   imageUrl: string | null;
-   error: string[] | null;
-}
+import { UploadState } from "../../misc/type";
 
 const initialState: UploadState = {
    loading: false,

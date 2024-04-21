@@ -137,3 +137,9 @@ export type Credentials = {
 export type InlineStyle = {
    [key: string]: string | number;
 };
+
+export type UploadState = {
+   loading: boolean;
+   imageUrl: string | null;
+   error: string[] | null;
+}

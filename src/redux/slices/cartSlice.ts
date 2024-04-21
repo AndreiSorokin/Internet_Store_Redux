@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartItem, CartState, addProduct } from '../../misc/type';
 import axios from 'axios';
 
-const getCartFromLocalStorage = (): CartItem[] => {
+export const getCartFromLocalStorage = (): CartItem[] => {
    const data = localStorage.getItem('cartInformation');
    if (data) {
       return JSON.parse(data);

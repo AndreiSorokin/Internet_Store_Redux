@@ -367,8 +367,20 @@ describe("user reducer", () => {
          await updateUserProfile(updateData)(dispatch, getState, null);
       
          expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({
-            type: updateUserProfile.rejected.type,
-            error: { message: error.message },
+           type: updateUserProfile.rejected.type,
+           error: expect.objectContaining({ message: expect.any(String) }),
+           meta: expect.objectContaining({
+             arg: expect.objectContaining({
+               id: updateData.id,
+               firstName: updateData.firstName,
+               lastName: updateData.lastName,
+               email: updateData.email,
+               password: updateData.password,
+               avatar: updateData.avatar,
+               username: updateData.username,
+             }),
+             rejectedWithValue: true,
+           }),
          }));
       
          const state = userReducer(initialState, updateUserProfile.rejected(error, '', updateData));

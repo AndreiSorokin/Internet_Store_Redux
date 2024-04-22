@@ -28,10 +28,9 @@ export default function ProductsPage() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const productList = useAppSelector(state => state.products.products);
 
-  console.log(productList)
-
   const userData = user?.userData as LoggedInUser
-  const isAdmin = user && user?.role === 'ADMIN'
+  const isAdmin = userData.role === 'ADMIN';
+  console.log(user)
 
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");
   const [selectedCategory, setSelectedCategory] = useState(localStorage.getItem("selectedCategory") || "All");
@@ -92,7 +91,7 @@ export default function ProductsPage() {
     }} >
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Link style={{marginTop:"10vh", display: user && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
+        <Link style={{marginTop:"10vh", display: userData && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
           <Button>Create new</Button>
         </Link>
 

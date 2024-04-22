@@ -20,7 +20,7 @@ import AdminPage from './pages/user/AdminPage';
 function App() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const userData = user?.userData as LoggedInUser
-  const isAdmin = user && user?.role === 'ADMIN'
+  const isAdmin = userData?.role === 'ADMIN';
 
   return (
     <div>

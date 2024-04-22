@@ -21,22 +21,24 @@ const CartPage: React.FC = () => {
   const { theme } = useTheme();
   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage()
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
-
+  const orders = useAppSelector((state: AppState) => state.orders.orders);
   const cartItems = useAppSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  const orders = useAppSelector((state: AppState) => state.orders.orders);
   const userData = user?.userData as LoggedInUser
   const userId =user?.id
 
+  // useEffect(() => {
+  //   if (userId) {
+  //     dispatch(fetchOrdersByUserId(userId));
+  //   }
+  // }, [dispatch]);
+
   useEffect(() => {
-    if (userId) {
-      dispatch(fetchOrdersByUserId(userId));
-    }
-  }, [dispatch, userId]);
+    dispatch(fetchOrdersByUserId(userId))
+  }, [dispatch]);
 
-
-  console.log(orders)
+  console.log('ORDERS:', orders)
 
   useEffect(() => {
     dispatch(getSingleUser(user.id))

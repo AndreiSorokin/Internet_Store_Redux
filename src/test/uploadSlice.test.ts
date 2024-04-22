@@ -33,7 +33,7 @@ describe('uploadImage thunk', () => {
 
   it('should handle rejected state correctly', async () => {
     const error = new Error('Failed to upload image');
-const action = uploadImage.rejected(error, 'rejected', new File([], 'image.jpg'));
+    const action = uploadImage.rejected(error, 'rejected', new File([], 'image.jpg'));
     const state = uploadReducer(initialState, action);
     expect(state).toEqual({
       ...initialState,

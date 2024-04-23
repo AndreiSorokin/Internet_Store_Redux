@@ -22,13 +22,11 @@ const CartPage: React.FC = () => {
   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage()
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
-  const orders = useAppSelector((state: AppState) => state.orders.orders);
   const cartItems = useAppSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const userData = user?.userData as LoggedInUser
   const userId =userData?.id
-  console.log(userData)
 
   useEffect(() => {
     if (userId) {

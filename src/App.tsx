@@ -15,8 +15,9 @@ import CartPage from './pages/cart/CartPage';
 import LandingPage from './pages/LandingPage';
 import { AppState, useAppSelector } from './redux/store';
 import { LoggedInUser } from './misc/type';
-import AdminPage from './pages/user/AdminPage';
+import AdminPage from './pages/admin/AdminPage';
 import Orders from './pages/Orders';
+import SingleUserPage from './pages/user/SingleUserPage';
 
 function App() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
@@ -51,6 +52,10 @@ function App() {
         <Route 
           path='auth/admin'
           element={isAdmin ? <AdminPage/> : <Navigate to="/" replace />}
+        />
+        <Route 
+          path='user/:id'
+          element={isAdmin ? <SingleUserPage/> : <Navigate to="/" replace />}
         />
         <Route path='*' element={<Navigate to='/' replace/>}/>
       </Routes>

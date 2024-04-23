@@ -12,6 +12,7 @@ if (data) {
 
 const initialState: InitialStateUser = {
    user: userState,
+   users: [],
    loading: false,
    error: null,
 };
@@ -51,7 +52,7 @@ export const userRegistration = createAsyncThunk(
 
 export const getSingleUser = createAsyncThunk(
    'getSingleUser',
-   async (userId: number, { rejectWithValue }) => {
+   async (userId: string, { rejectWithValue }) => {
       try {
       const access_token = localStorage.getItem('token');
       if (!access_token) {
@@ -205,14 +206,15 @@ const userSlice = createSlice({
       })
       .addCase(fetchAllUsers.fulfilled, (state, action) => {
          return {
-            user: action.payload,
+            ...state,
+            users: action.payload,
             loading: false,
             error: null,
          }
       })
       .addCase(fetchAllUsers.rejected, (state, action) => {
          return {
-            user: null,
+            ...state,
             loading: false,
             error: action.error.message ?? "error"
          }
@@ -236,7 +238,7 @@ const userSlice = createSlice({
       
       builder.addCase(updatePassword.rejected, (state, action) => {
          return {
-            user: null,
+            ...state,
             loading: false,
             error: action.error.message ?? "error"
          }
@@ -264,6 +266,7 @@ const userSlice = createSlice({
       // })
       builder.addCase(getSingleUser.fulfilled, (state, action) => {
          return {
+            ...state,
             user: action.payload,
             loading: false,
             error: null,
@@ -278,7 +281,7 @@ const userSlice = createSlice({
       })
       builder.addCase(getSingleUser.rejected, (state, action) => {
          return {
-            user: null,
+            ...state,
             loading: false,
             error: action.error.message ?? "error"
          }

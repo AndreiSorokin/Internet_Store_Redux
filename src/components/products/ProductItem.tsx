@@ -5,11 +5,8 @@ import { Link } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { useAppSelector } from "../../redux/store";
 
-// interface ProductItemProps {
-//    currentPageData: Products[];
-// }
 interface ProductItemProps {
-   filteredProducts: Products[]; // Use the Products type for the filteredProducts array
+   filteredProducts: Products[];
 }
 const ProductItem: React.FC<ProductItemProps> = ({filteredProducts}) => {
    const productList = useAppSelector(state => state.products.products);

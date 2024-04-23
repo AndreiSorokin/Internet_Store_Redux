@@ -99,7 +99,14 @@ export type User = {
    username: string;
 }
 
+export enum UserStatus {
+   ACTIVE = "ACTIVE",
+   INACTIVE = "INACTIVE",
+}
+
 export type UserData = {
+   status: UserStatus;
+   role: "CUSTOMER" | "ADMIN";
    email: string;
    password: string;
    firstName: string;
@@ -107,11 +114,6 @@ export type UserData = {
    avatar: string;
    username: string;
    id: number;
-}
-
-export enum UserStatus {
-   ACTIVE = "ACTIVE",
-   INACTIVE = "INACTIVE",
 }
 
 export type LoggedInUser = User & {
@@ -125,9 +127,11 @@ export type LoggedInUser = User & {
 
 export type InitialStateUser = {
    user: User | null;
+   users: UserData[];
    loading: boolean,
    error: string | null,
 }
+
 
 export type Credentials = {
    email: string;

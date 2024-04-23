@@ -40,8 +40,11 @@ export const updateCategory = createAsyncThunk(
    "updateCategory",
    async ({ id, category }: { id: string, category: Category }, { rejectWithValue }) => {
       try {
-         const response = await axios.put(`http://localhost:8080/api/v1/categories/${id}`, {
-            body: JSON.stringify(category),
+         const response = await axios.put(`http://localhost:8080/api/v1/categories/${id}`, JSON.stringify(category), {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`,
+               "Content-Type": "application/json"
+            }
          });
          const data = response.data;
          return data;
@@ -49,7 +52,7 @@ export const updateCategory = createAsyncThunk(
          return rejectWithValue(error)
       }
    }
-)
+);
 
 export const deleteCategory = createAsyncThunk(
    "deleteCategory",
@@ -57,6 +60,7 @@ export const deleteCategory = createAsyncThunk(
       try {
          const response = await axios.delete(`http://localhost:8080/api/v1/categories/${id}`, {
             headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`,
                "Content-Type": "application/json"
             }
          })

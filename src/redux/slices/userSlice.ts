@@ -1,7 +1,7 @@
 import axios from "axios";
 import axiosInstance from '../../api/axiosConfig';
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { InitialStateUser, User, Credentials, LoggedInUser, UserData } from "../../misc/type";
+import { InitialStateUser, User, Credentials, LoggedInUser, UserData, UserStatus } from "../../misc/type";
 
 let userState: User | null = null;
 const data = localStorage.getItem("userInformation");
@@ -206,6 +206,25 @@ export const removeAdminRole = createAsyncThunk(
    }
 );
 
+export const updateUserStatus = createAsyncThunk(
+  'updateUserStatus',
+  async ({ id, status }: { id: number; status: UserStatus }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/changeUserStatus`, { userId: id, status: status }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue('An unexpected error occurred');
+      }
+    }
+  }
+);
 const userSlice = createSlice({
    name: 'user',
    initialState,
@@ -223,6 +242,26 @@ const userSlice = createSlice({
    },
    extraReducers(builder) {
       builder
+      .addCase(updateUserStatus.fulfilled, (state, action) => {
+         const index = state.users.findIndex(user => user.id === action.meta.arg.id);
+         if (index !== -1) {
+            state.users[index].status = action.meta.arg.status;
+         }
+      })
+      .addCase(updateUserStatus.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         }
+      })
+      .addCase(updateUserStatus.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      })
       .addCase(removeAdminRole.pending, (state) => {
          return {
             ...state,

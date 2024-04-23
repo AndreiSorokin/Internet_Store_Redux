@@ -13,11 +13,13 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Modal } from "@mui/material";
+import useErrorMessage from "../../hooks/ErrorMessage";
 
 
 const ItemPage: React.FC = () => {
   const { theme } = useTheme();
   const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
+  const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
@@ -43,6 +45,11 @@ const ItemPage: React.FC = () => {
   };
 
   const handleConfirmAddToCart = () => {
+    if(userData.status === "INACTIVE") {
+      showError('Your account is not active. Please contact the support');
+      return
+    }
+
     if (productItem && quantity) {
       dispatch(addToCart({ productId: productItem, quantity: quantity }));
 
@@ -147,6 +154,7 @@ const ItemPage: React.FC = () => {
       }}
     >
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
+      {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       <Grid item>
         <Link to="/products" style={{ textDecoration: "none" }}>
           <IconButton sx={{ position: 'absolute', top: '15vh', left: '2vw', color: theme === 'bright' ? 'black' : 'white' }}>

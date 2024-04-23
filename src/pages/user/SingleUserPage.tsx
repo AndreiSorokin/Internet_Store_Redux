@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getSingleUser, assignAdminRole, removeAdminRole } from '../../redux/slices/userSlice';
+import { getSingleUser, assignAdminRole, removeAdminRole, updateUserStatus } from '../../redux/slices/userSlice';
 
 import { Avatar, Box, Typography, IconButton, Button } from '@mui/material';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useTheme } from '../../components/contextAPI/ThemeContext';
+import { UserStatus } from '../../misc/type';
 
 export default function SingleUserPage() {
    const { theme } = useTheme();
@@ -32,6 +33,17 @@ export default function SingleUserPage() {
          dispatch(removeAdminRole({ id: viewedUser.id, role: "CUSTOMER" }));
       }
    };
+
+   const handleBanUser = () => {
+   if(viewedUser) {
+      dispatch(updateUserStatus({ id: viewedUser.id, status: UserStatus.INACTIVE }));   }
+   };
+
+const handleUnbanUser = () => {
+   if(viewedUser) {
+      dispatch(updateUserStatus({ id: viewedUser.id, status: UserStatus.ACTIVE }));
+   }
+};
 
    return (
       <div style={{
@@ -83,6 +95,15 @@ export default function SingleUserPage() {
                ) : (
                   <Button onClick={handleAssignAdmin} variant="outlined" color="primary">
                      Assign Admin Role
+                  </Button>
+               )}
+               {viewedUser.status === "INACTIVE" ? (
+                  <Button onClick={handleUnbanUser} variant="outlined" color="secondary" style={{marginTop: '10px'}}>
+                     Unban User
+                  </Button>
+               ) : (
+                  <Button onClick={handleBanUser} variant="outlined" color="secondary" style={{marginTop: '10px'}}>
+                     Ban User
                   </Button>
                )}
             </Box>

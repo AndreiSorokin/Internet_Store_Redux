@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { getSingleUser } from '../../redux/slices/userSlice';
+import { getSingleUser, assignAdminRole, removeAdminRole } from '../../redux/slices/userSlice';
 
-import { Avatar, Box, Typography, IconButton  } from '@mui/material';
+import { Avatar, Box, Typography, IconButton, Button } from '@mui/material';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 
@@ -11,8 +11,7 @@ export default function SingleUserPage() {
    const { theme } = useTheme();
    const { id } = useParams<{ id: string }>();
    const dispatch = useAppDispatch();
-   // Removed the line that selects the logged-in user's information
-   const users = useAppSelector((state) => state.userRegister.users); // Assuming this is an array of users
+   const users = useAppSelector((state) => state.userRegister.users);
 
    useEffect(() => {
       if (id && !isNaN(Number(id))) {
@@ -20,9 +19,19 @@ export default function SingleUserPage() {
       } 
    }, [dispatch, id]);
 
-   // Find the user based on the id parameter from the URL
    const viewedUser = users.find(user => user.id.toString() === id);
-   console.log(viewedUser)
+
+   const handleAssignAdmin = () => {
+      if(viewedUser) {
+         dispatch(assignAdminRole({ id: viewedUser.id, role: "ADMIN" }));
+      }
+   };
+
+   const handleRemoveAdmin = () => {
+      if(viewedUser) {
+         dispatch(removeAdminRole({ id: viewedUser.id, role: "CUSTOMER" }));
+      }
+   };
 
    return (
       <div style={{
@@ -63,13 +72,22 @@ export default function SingleUserPage() {
                      height: { xs: '70%', sm: '80%', md: '90%' }
                   }}
                />
-               <Typography variant="h4" sx={{ fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem', lg: '2.5rem' } }}>Name: {viewedUser.firstName} {viewedUser.lastName}</Typography>
-               <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' } }}>Email: {viewedUser.email}</Typography>
-               <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' } }}>Status: {viewedUser.status}</Typography>
-               <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' } }}>Role: {viewedUser.role}</Typography>
+               <Typography variant="h4">Name: {viewedUser.firstName} {viewedUser.lastName}</Typography>
+               <Typography variant="h6">Email: {viewedUser.email}</Typography>
+               <Typography variant="h6">Status: {viewedUser.status}</Typography>
+               <Typography variant="h6">Role: {viewedUser.role}</Typography>
+               {viewedUser.role === "ADMIN" ? (
+                  <Button onClick={handleRemoveAdmin} variant="outlined" color="primary">
+                     Remove Admin Role
+                  </Button>
+               ) : (
+                  <Button onClick={handleAssignAdmin} variant="outlined" color="primary">
+                     Assign Admin Role
+                  </Button>
+               )}
             </Box>
          ) : (
-            <Typography variant="h5" sx={{ fontSize: { xs: '1rem', sm: '1.125rem', md: '1.5rem' } }}>Loading user information...</Typography>
+            <Typography>Loading user information...</Typography>
          )}
       </div>
    );

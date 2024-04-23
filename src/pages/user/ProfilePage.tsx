@@ -1,13 +1,16 @@
+import { useState } from 'react';
+
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
-import { getSingleUser, switchRole, updatePassword, updateUserProfile } from '../../redux/slices/userSlice';
+import { updatePassword, updateUserProfile } from '../../redux/slices/userSlice';
 import { LoggedInUser, UserData } from '../../misc/type';
 import  useInput  from '../../hooks/UseInput';
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
-import { useEffect, useState } from 'react';
+
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+
 
 export default function ProfilePage() {
   const { theme } = useTheme();
@@ -63,16 +66,6 @@ export default function ProfilePage() {
     showSuccessMessage('Your information has been updated successfully');
     console.log('user', user)
   };
-  
-  const handleSwitchRole = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if(user) {
-      dispatch(switchRole(user))
-      localStorage.setItem('userInformation', JSON.stringify(user));
-      showSuccessMessage('You have bocome an admin')
-    }
-  }
 
   const handleUpdatePassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -184,11 +177,6 @@ export default function ProfilePage() {
               Apply Changes
             </Button>
           </form>
-          {/* <form onSubmit={handleSwitchRole} style={{ width: '100%', maxWidth: '400px', marginTop: '15px' }}>
-            <Button type="submit" variant="outlined" color="primary">
-              Switch role
-            </Button>
-          </form> */}
           <Button variant="outlined" color="primary" onClick={handleClickOpenUpdatePasswordDialog}>
             Update Password
           </Button>
@@ -230,7 +218,5 @@ export default function ProfilePage() {
       )}
     </div>
   );
-  
-  
 }
 

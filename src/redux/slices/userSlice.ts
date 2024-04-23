@@ -113,20 +113,6 @@ export const updateUserProfile = createAsyncThunk(
    }
 );
 
-export const switchRole = createAsyncThunk(
-   'switchRole',
-   async ({ id }: LoggedInUser, { rejectWithValue, dispatch }) => {
-      try {
-         const response = await axiosInstance.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, {role: 'admin'} );
-         const switchedUser = response.data;
-         dispatch(setUser(switchedUser))
-         return switchedUser;
-      } catch (error) {
-      return rejectWithValue('An error occurred during login');
-      }
-   }
-)
-
 export const userLogout = createAsyncThunk(
    'userLogout',
    async (_, { rejectWithValue }) => {
@@ -180,6 +166,46 @@ export const updatePassword = createAsyncThunk(
    }
 );
 
+export const assignAdminRole = createAsyncThunk(
+   'assignAdminRole',
+   async ({ id, role }: { id: number; role: string }, { rejectWithValue }) => {
+      try {
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}/userInformation`, { role }, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`,
+               }
+         });
+      return response.data;
+      } catch (error) {
+         if (axios.isAxiosError(error) && error.response) {
+         return rejectWithValue(error.response.data);
+      } else {
+         return rejectWithValue(error);
+      }
+      }
+   }
+);
+
+export const removeAdminRole = createAsyncThunk(
+   'removeAdminRole',
+   async ({ id, role }: { id: number; role: string }, { rejectWithValue }) => {
+      try {
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}/userInformation`, { role }, {
+         headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+         }
+      });
+      return response.data;
+      } catch (error) {
+         if (axios.isAxiosError(error) && error.response) {
+         return rejectWithValue(error.response.data);
+      } else {
+         return rejectWithValue('An unexpected error occurred while removing admin role');
+      }
+      }
+   }
+);
+
 const userSlice = createSlice({
    name: 'user',
    initialState,
@@ -197,6 +223,50 @@ const userSlice = createSlice({
    },
    extraReducers(builder) {
       builder
+      .addCase(removeAdminRole.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         }
+      })
+      .addCase(removeAdminRole.fulfilled, (state, action) => {
+         state.loading = false;
+         state.error = null;
+         const index = state.users.findIndex(user => user.id === action.payload.id);
+         if (index !== -1) {
+            state.users[index].role = action.payload.role;
+         }
+      })
+      .addCase(removeAdminRole.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      })
+      .addCase(assignAdminRole.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         }
+      })
+      .addCase(assignAdminRole.fulfilled, (state, action) => {
+         state.loading = false;
+         state.error = null;
+         const index = state.users.findIndex(user => user.id === action.payload.id);
+         if (index !== -1) {
+            state.users[index] = action.payload;
+         }
+      })
+      .addCase(assignAdminRole.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "error"
+         }
+      })
       .addCase(fetchAllUsers.pending, (state) => {
          return {
             ...state,
@@ -346,28 +416,6 @@ const userSlice = createSlice({
          };
       });
       builder.addCase(updateUserProfile.rejected, (state, action) => {
-         return {
-            ...state,
-            loading: false,
-            error: action.error.message ?? "error",
-         };
-      });
-      builder.addCase(switchRole.fulfilled, (state, action) => {
-         return {
-            ...state,
-            loading: false,
-            error: null,
-            user: action.payload
-         };
-      });
-      builder.addCase(switchRole.pending, (state) => {
-         return {
-            ...state,
-            loading: true,
-            error: null,
-         };
-      });
-      builder.addCase(switchRole.rejected, (state, action) => {
          return {
             ...state,
             loading: false,

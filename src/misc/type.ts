@@ -61,7 +61,7 @@ export type InitialState = {
 };
 
 export type CartItem = {
-   product: Products;
+   productId: Products;
    quantity: number;
 }
 

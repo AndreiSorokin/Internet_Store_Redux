@@ -16,6 +16,7 @@ import LandingPage from './pages/LandingPage';
 import { AppState, useAppSelector } from './redux/store';
 import { LoggedInUser } from './misc/type';
 import AdminPage from './pages/user/AdminPage';
+import Orders from './pages/Orders';
 
 function App() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
@@ -29,7 +30,7 @@ function App() {
         <Route path='/' element={<LandingPage/>}></Route>
         <Route
           path='/auth/profile'
-          element={user ? <ProfilePage/> : <Navigate to="/" replace />}
+          element={userData ? <ProfilePage/> : <Navigate to="/" replace />}
         />
         <Route path="/auth/login" element={<LoginPage/>}/>
         <Route path="/registration" element={<RegisterPage/>}/>
@@ -37,15 +38,19 @@ function App() {
         <Route path="/products/:id" element={<ItemPage/>}/>
         <Route
           path="/createNew"
-          element={user && isAdmin ? <CreateProductPage /> : <Navigate to="/" replace />}
+          element={isAdmin ? <CreateProductPage /> : <Navigate to="/" replace />}
         />
         <Route
           path='cart'
-          element={user ? <CartPage/> : <Navigate to="/" replace />}
+          element={userData ? <CartPage/> : <Navigate to="/" replace />}
+        />
+        <Route
+          path='orders'
+          element={userData ? <Orders/> : <Navigate to="/" replace />}
         />
         <Route 
           path='auth/admin'
-          element={user && isAdmin ? <AdminPage/> : <Navigate to="/" replace />}
+          element={isAdmin ? <AdminPage/> : <Navigate to="/" replace />}
         />
         <Route path='*' element={<Navigate to='/' replace/>}/>
       </Routes>

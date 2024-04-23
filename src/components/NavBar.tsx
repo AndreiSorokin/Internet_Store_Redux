@@ -16,7 +16,7 @@ const Navbar = () => {
    const navigate = useNavigate();
 
    const userData = user?.userData as LoggedInUser
-   const isAdmin = user && userData?.role === 'ADMIN'
+   const isAdmin = userData?.role === 'ADMIN';
    
    const [showMenu, setShowMenu] = useState(false);
    const { toggleTheme, theme } = useTheme();
@@ -54,7 +54,7 @@ const Navbar = () => {
                      Menu
                   </Button>
                   <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
-                     {user &&
+                     {userData &&
                         <Link to="/auth/profile">
                            <Button>Profile</Button>
                         </Link>   
@@ -62,18 +62,23 @@ const Navbar = () => {
                      <Link to="/products">
                         <Button>Products</Button>
                      </Link>
-                     {user &&
+                     {userData &&
                         <Link to="/cart">
                            <Button>Cart</Button>
                         </Link>
                      }
-                     {user && isAdmin &&
+                     {userData &&
+                        <Link to="/orders">
+                           <Button>Orders</Button>
+                        </Link>
+                     }
+                     {isAdmin &&
                         <Link to="auth/admin">
                            <Button>Admin</Button>
                         </Link>
                      }
                   </ButtonGroup>
-                  {user ? (
+                  {userData ? (
                      <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <Button onClick={handleLogout} sx={{ display: { xs: 'none', md: 'block' } }}>Log out</Button>
                      </ButtonGroup>
@@ -90,7 +95,7 @@ const Navbar = () => {
                </Toolbar>
                {showMenu && (
                   <div style={{ backgroundColor: theme === "bright" ? "white" : "black", padding: '10px', textAlign: 'center', borderTop: '1px solid black' }}>
-                     {user &&
+                     {userData &&
                         <Link to="/auth/profile">
                            <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
                               Profile
@@ -102,19 +107,19 @@ const Navbar = () => {
                            Products
                         </Button>
                      </Link>
-                     {user &&
+                     {userData &&
                         <Link to="/cart">
                            <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
                               Cart
                            </Button>
                         </Link>
                      }
-                     {user && user.role === 'ADMIN' &&
+                     {isAdmin &&
                         <Link to="auth/admin">
                            <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>Admin</Button>
                         </Link>
                      }
-                     {user ? (
+                     {userData ? (
                         <Link to="/auth/login">
                            <Button variant="outlined" onClick={handleLogout} style={{ color: theme === "bright" ? "black" : "white" }}>
                               Log out

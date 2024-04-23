@@ -35,71 +35,32 @@ const ItemPage: React.FC = () => {
   const [openUserInputs, setOpenUserInputs] = useState<boolean>(false);
 
   const userData = user?.userData as LoggedInUser
-  const isAdmin = user && user?.role === 'ADMIN'
+  console.log(userData)
+  const isAdmin = userData && userData?.role === 'ADMIN'
   
   const handleAddToCart = () => {
     setOpenDialog(true);
   };
 
-  console.log(user)
-
-// const handleConfirmAddToCart = async () => {
-//   if (productItem && quantity && user && user && user.id) {
-//     try {
-//       await dispatch(addProductToCart({ userId: user.id, productId: productItem.id, quantity: quantity })).unwrap();
-//       showSuccessMessage(` ${productItem.name} added to cart!`);
-//       setOpenDialog(false);
-//       setQuantity(1);
-//     } catch (error) {
-//       console.error("Failed to add product to cart:", error);
-//     }
-//   } else {
-//     console.error("User ID is undefined");
-//   }
-// };
-
-  // const handleConfirmAddToCart = () => {
-  //   if (productItem && quantity) {
-  //     dispatch(addToCart({ product: productItem, quantity: quantity }));
-
-  //     const cartItems = JSON.parse(localStorage.getItem("cartInformation") || "[]");
-  //     const newItem = { productId: productItem.id, quantity: quantity };
-  //     const existingItemIndex = cartItems.findIndex((item: { productId: number }) => item.productId === productItem.id);
-
-  //     if (existingItemIndex !== -1) {
-  //       cartItems[existingItemIndex].quantity += quantity;
-  //     } else {
-  //       cartItems.push(newItem);
-  //     }
-
-  //     setOpenDialog(false);
-      
-  //     localStorage.setItem("cartInformation", JSON.stringify(cartItems));
-  //     showSuccessMessage(`${quantity} ${productItem.name} added to cart!`);
-  //     setQuantity(1)
-  //   }
-  // };
-
   const handleConfirmAddToCart = () => {
-    if (productItem && quantity && user?.id) { // Ensure user.id is available
-      dispatch(addToCart({ product: productItem, quantity: quantity }));
-  
-      const userCartKey = `cartInformation_${user.id}`; // Create a user-specific key
-      const cartItems = JSON.parse(localStorage.getItem(userCartKey) || "[]");
+    if (productItem && quantity) {
+      dispatch(addToCart({ productId: productItem, quantity: quantity }));
+
+      const cartItems = JSON.parse(localStorage.getItem("cartInformation") || "[]");
       const newItem = { productId: productItem.id, quantity: quantity };
       const existingItemIndex = cartItems.findIndex((item: { productId: number }) => item.productId === productItem.id);
-  
+
       if (existingItemIndex !== -1) {
         cartItems[existingItemIndex].quantity += quantity;
       } else {
         cartItems.push(newItem);
       }
-  
+
       setOpenDialog(false);
       
-      localStorage.setItem(userCartKey, JSON.stringify(cartItems)); // Save using the user-specific key
+      localStorage.setItem("cartInformation", JSON.stringify(cartItems));
       showSuccessMessage(`${quantity} ${productItem.name} added to cart!`);
-      setQuantity(1);
+      setQuantity(1)
     }
   };
 

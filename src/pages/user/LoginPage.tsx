@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,13 +11,14 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useAppDispatch } from '../../redux/store';
-import { setUser, userLogin } from '../../redux/slices/userSlice';
+import { forgotPassword, setUser, userLogin } from '../../redux/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput  from '../../hooks/UseInput';
 import axios from 'axios';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 export default function LoginPage() {
   const { theme } = useTheme();
@@ -25,6 +26,9 @@ export default function LoginPage() {
 
   const emailInput = useInput();
   const passwordInput = useInput();
+  const forgotEmailInput = useInput();
+
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -71,12 +75,27 @@ export default function LoginPage() {
     try {
       const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userInformation', JSON.stringify(response.data));
+      // localStorage.setItem('userInformation', JSON.stringify(response.data));
       dispatch(setUser(response.data)); 
       console.log('response.data', response.data);
       navigate('http://localhost:3000/auth/profile'); 
     } catch (error) {
       console.error('Error processing Google login', error);
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch(forgotPassword(forgotEmailInput.value));
+      if (forgotPassword.fulfilled.match(response)) {
+        showError('Please check your email to reset your password.');
+        setOpenForgotPassword(false);
+      } else {
+        showError('Failed to send reset password email.');
+      }
+    } catch (error) {
+      showError('An unexpected error occurred');
     }
   };
 
@@ -172,10 +191,39 @@ export default function LoginPage() {
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
+            <Button onClick={() => setOpenForgotPassword(true)} color="primary">
+              Forgot Password?
+            </Button>
+              <Dialog open={openForgotPassword} onClose={() => setOpenForgotPassword(false)}>
+              <DialogTitle  sx={{backgroundColor: theme === 'bright' ? 'white' : 'black', color: theme === 'bright' ? 'black' : 'white'}}>Forgot Password</DialogTitle>
+              <DialogContent sx={{backgroundColor: theme === 'bright' ? 'white' : 'black'}}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="forgotEmail"
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                  value={forgotEmailInput.value}
+                  onChange={forgotEmailInput.onChange}
+                  sx={{border: '1px solid white'}}
+                  InputProps={{
+                    style: {
+                        color: theme === 'bright' ? 'black' : 'white',
+                    },
+                  }}
+                />
+              </DialogContent>
+              <DialogActions sx={{backgroundColor: theme === 'bright' ? 'white' : 'black'}}>
+                <Button onClick={() => setOpenForgotPassword(false)} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleForgotPassword} color="primary">
+                  Send Email
+                </Button>
+              </DialogActions>
+            </Dialog>
             <Grid container>
-              <Grid item xs>
-                <Link to="#">Forgot password?</Link>
-              </Grid>
               <Grid item>
                 <Link to="/registration">Don't have an account? Sign Up</Link>
               </Grid>

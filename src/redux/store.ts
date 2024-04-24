@@ -29,7 +29,7 @@ store.subscribe(() => {
    const orderInformation = currentState.orders.orders;
    const categoryInformation = currentState.categories.categories;
 
-   localStorage.setItem("userInformation", JSON.stringify(userInformation));
+   // localStorage.setItem("userInformation", JSON.stringify(userInformation));
    localStorage.setItem("cartInformation", JSON.stringify(cartInformation));
    localStorage.setItem("orderInformation", JSON.stringify(orderInformation));
    localStorage.setItem("categoryInformation", JSON.stringify(categoryInformation));

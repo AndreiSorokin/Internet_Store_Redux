@@ -14,6 +14,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Typography, Grid, CardContent, CardMedia, IconButton, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Modal } from "@mui/material";
 import useErrorMessage from "../../hooks/ErrorMessage";
+import parseJwt from "../../helpers/decode";
 
 
 const ItemPage: React.FC = () => {
@@ -36,7 +37,7 @@ const ItemPage: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [openUserInputs, setOpenUserInputs] = useState<boolean>(false);
 
-  const userData = user?.userData as LoggedInUser
+  const userData = parseJwt(localStorage.getItem('token'));
   console.log(userData)
   const isAdmin = userData && userData?.role === 'ADMIN'
   
@@ -265,7 +266,7 @@ const ItemPage: React.FC = () => {
             </Grid>
           )}
           <Grid item>
-            {user
+            {userData
               ? <Button onClick={handleAddToCart} variant="outlined" color="primary">
                   Add to Cart
                 </Button>
@@ -293,7 +294,7 @@ const ItemPage: React.FC = () => {
               </DialogActions>
               </Box>
             </Dialog>
-          {user && isAdmin && (
+          {isAdmin && (
             <Grid item>
               <Button onClick={() => setOpenUserInputs(true)} variant="outlined" color="primary">
                 Update Product

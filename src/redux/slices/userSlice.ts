@@ -84,7 +84,7 @@ export const userLogin = createAsyncThunk(
       try {
          const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login/`, credentials);
          localStorage.setItem('token', response.data.token);
-         localStorage.setItem('userInformation', JSON.stringify(response.data));
+         // localStorage.setItem('userInformation', JSON.stringify(response.data));
          return response.data
       } catch (error) {
          return rejectWithValue('An error occurred during login');
@@ -226,6 +226,24 @@ export const updateUserStatus = createAsyncThunk(
     }
   }
 );
+
+export const forgotPassword = createAsyncThunk(
+  'forgotPassword',
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/forgot-password`, { email });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: "Failed to send verification email." });
+      }
+    }
+  }
+);
+
+
 const userSlice = createSlice({
    name: 'user',
    initialState,
@@ -243,6 +261,27 @@ const userSlice = createSlice({
    },
    extraReducers(builder) {
       builder
+      .addCase(forgotPassword.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         };
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+         return {
+            ...state,
+            loading: false,
+            error: null,
+         };
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "Failed to send verification email.",
+         };
+      })
       .addCase(updateUserStatus.fulfilled, (state, action) => {
          const index = state.users.findIndex(user => user.id === action.meta.arg.id);
          if (index !== -1) {

@@ -65,7 +65,7 @@ export default function ProfilePage() {
   
     dispatch(updateUserProfile(updatedUser));
   
-    localStorage.setItem('userInformation', JSON.stringify(updatedUser));
+    // localStorage.setItem('userInformation', JSON.stringify(updatedUser));
   
     showSuccessMessage('Your information has been updated successfully');
     console.log('user', user)

@@ -52,7 +52,7 @@ export default function Orders() {
                            <Grid item xs={4}>
                               <CardMedia
                                  component="img"
-                                 image={item.productId.images[0]}
+                                 image={item.productId.images?.[0] || ''}
                                  alt={item.productId.name}
                                  style={{ width: '100%', height: 'auto', backgroundColor: theme === "bright" ? "white" : "black" }}
                               />

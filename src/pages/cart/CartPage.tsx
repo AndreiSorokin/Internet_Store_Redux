@@ -172,6 +172,7 @@ const CartPage: React.FC = () => {
                       items: orderItems
                     }
                   };
+                  console.log(orderData)
                 
                   try {
                     await dispatch(createOrder(orderData)).unwrap();

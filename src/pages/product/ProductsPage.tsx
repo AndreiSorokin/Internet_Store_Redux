@@ -19,18 +19,19 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import parseJwt from "../../helpers/decode";
 
 
 export default function ProductsPage() {
   const { theme } = useTheme()
   
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  // const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const productList = useAppSelector(state => state.products.products);
 
-  const userData = user?.userData as LoggedInUser
+  const userData = parseJwt(localStorage.getItem('token'));
   const isAdmin = userData.role === 'ADMIN';
-  console.log(user)
+  // console.log(user)
 
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");
   const [selectedCategory, setSelectedCategory] = useState(localStorage.getItem("selectedCategory") || "All");

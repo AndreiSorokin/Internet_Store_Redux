@@ -70,8 +70,10 @@ export default function LoginPage() {
     }
     try {
       const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
+      localStorage.setItem('token', response.data.token);
       localStorage.setItem('userInformation', JSON.stringify(response.data));
       dispatch(setUser(response.data)); 
+      console.log('response.data', response.data);
       navigate('http://localhost:3000/auth/profile'); 
     } catch (error) {
       console.error('Error processing Google login', error);
@@ -91,7 +93,6 @@ export default function LoginPage() {
       <GoogleOAuthProvider clientId="856209738432-ct140b6kuui6cov1cg2c2g8na5fpi3r4.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={credentialResponse => {
-            console.log(credentialResponse);
             handleGoogleLogin(credentialResponse);
           }}
           onError={() => {

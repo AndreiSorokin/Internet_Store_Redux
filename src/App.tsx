@@ -18,11 +18,17 @@ import { LoggedInUser } from './misc/type';
 import AdminPage from './pages/admin/AdminPage';
 import Orders from './pages/Orders';
 import SingleUserPage from './pages/user/SingleUserPage';
+import parseJwt from './helpers/decode';
 
 function App() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  const userData = user?.userData as LoggedInUser
+
+  const userData = parseJwt(localStorage.getItem('token'));
+  console.log('userData', userData)
+
+  // const userData = user?.userData as LoggedInUser
   const isAdmin = userData?.role === 'ADMIN';
+  console.log(isAdmin)
 
   return (
     <div>

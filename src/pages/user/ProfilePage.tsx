@@ -10,6 +10,7 @@ import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
 
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import parseJwt from '../../helpers/decode';
 
 
 export default function ProfilePage() {
@@ -26,9 +27,10 @@ export default function ProfilePage() {
   const emailInput = useInput();
   const currentPasswordInput = useInput();
   const newPasswordInput = useInput();
-  const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  // const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  const user = parseJwt(localStorage.getItem('token'));
+  console.log('userAUTH', user)
   const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
-
 
   const handleUpdateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,11 +54,13 @@ export default function ProfilePage() {
     if (Object.keys(changes).length === 0) {
       return showError('No changes detected');
     }
+
+    console.log(user)
   
     const updatedUser: UserData = {
       ...user,
       ...changes,
-      id: user.userData.id
+      id: user.id
     };
   
     dispatch(updateUserProfile(updatedUser));
@@ -116,11 +120,11 @@ export default function ProfilePage() {
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       {user && (
         <div style={{ textAlign: 'center' }}>
-          <img style={{ borderRadius: '5px', width: '150px' }} src={user.userData.avatar} alt="" />
-          <h1>Hello, {user.userData.firstName}</h1>
+          <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />
+          <h1>Hello, {user.firstName}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField
-              placeholder={user.userData.firstName}
+              placeholder={user.firstName}
               name="firstName"
               label="First name"
               value={firstNameInput.value}
@@ -138,7 +142,7 @@ export default function ProfilePage() {
                 } }}
             />
             <TextField
-              placeholder={user.userData.lastName}
+              placeholder={user.lastName}
               name="lasttName"
               label="Last name"
               value={lastNameInput.value}
@@ -156,7 +160,7 @@ export default function ProfilePage() {
                 } }}
             />
             <TextField
-              placeholder={user.userData.email}
+              placeholder={user.email}
               name="email"
               label="Email"
               value={emailInput.value}

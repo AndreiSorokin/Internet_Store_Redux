@@ -9,13 +9,14 @@ import { useAppDispatch, useAppSelector } from '../redux/store';
 import { userLogout } from '../redux/slices/userSlice';
 import { LoggedInUser } from '../misc/type';
 import { clearCart } from '../redux/slices/cartSlice';
+import parseJwt from '../helpers/decode';
 
 const Navbar = () => {
-   const user = useAppSelector((state) => state.userRegister.user) as LoggedInUser;
+   const userData = parseJwt(localStorage.getItem('token'));
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
 
-   const userData = user?.userData as LoggedInUser
+   // const userData = user?.userData as LoggedInUser
    const isAdmin = userData?.role === 'ADMIN';
    
    const [showMenu, setShowMenu] = useState(false);

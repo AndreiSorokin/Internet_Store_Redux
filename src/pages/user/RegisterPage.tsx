@@ -27,6 +27,7 @@ export default function RegisterPage() {
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
   const dispatch = useAppDispatch()
+  const users = useAppSelector((state) => state.userRegister.users)
   const navigate = useNavigate()
 
   const [firstName, setFirstName] = useState('')
@@ -35,6 +36,12 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [avatar, setAvatar] = useState<File | null>(null)
+
+  useEffect(() => {
+    dispatch(fetchAllUsers())
+  })
+
+  const existedEmail = users.map(user=> user.email).includes(email)
 
 
 const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +61,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     return showError('Incorrect email format')
   }
 
+  if(existedEmail) {
+    return showError('A user with this email already exists')
+  }
+
   const formData = new FormData();
   formData.append('avatar', avatar);
 
@@ -70,22 +81,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     alert('Your account has been created successfully')
     navigate('/auth/profile');
   } catch (error) {
-    return showError('Something went wrong')
+    showError('Something went wrong')
+    return
   }
 };
-
-  function Copyright(props: any) {
-    return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" to="https://mui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
 
   return (
     <div style={{
@@ -250,7 +249,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </div>
   );

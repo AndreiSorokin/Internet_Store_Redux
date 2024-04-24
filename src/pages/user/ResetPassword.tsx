@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { resetPassword } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/store';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
+
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
 
 const ResetPassword = () => {
    const { theme } = useTheme();
@@ -16,7 +16,7 @@ const ResetPassword = () => {
    const navigate = useNavigate();
 
    const [newPassword, setNewPassword] = useState('');
-   const [resetStatus, setResetStatus] = useState('');
+
    const dispatch = useAppDispatch();
    const location = useLocation();
    const queryParams = new URLSearchParams(location.search);
@@ -104,7 +104,6 @@ const ResetPassword = () => {
                >
                   Reset Password
                </Button>
-               {resetStatus && <Typography color="error">{resetStatus}</Typography>}
                </Box>
             </Box>
          </Container>

@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useAppDispatch } from '../../redux/store';
-import { forgotPassword, setUser, userLogin } from '../../redux/slices/userSlice';
+import { forgotPassword, handleGoogleLogin, setUser, userLogin } from '../../redux/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
@@ -54,21 +54,21 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = async (credentialResponse: import("@react-oauth/google").CredentialResponse) => {
-    const token = credentialResponse.credential; 
-    if (!token) {
-      console.error('No credential token received from Google login');
-      return; 
-    }
-    try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
-      localStorage.setItem('token', response.data.token);
-      dispatch(setUser(response.data)); 
-      console.log('response.data', response.data);
-    } catch (error) {
-      console.error('Error processing Google login', error);
-    }
-  };
+  // const handleGoogleLogin = async (credentialResponse: import("@react-oauth/google").CredentialResponse) => {
+  //   const token = credentialResponse.credential; 
+  //   if (!token) {
+  //     console.error('No credential token received from Google login');
+  //     return; 
+  //   }
+  //   try {
+  //     const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
+  //     localStorage.setItem('token', response.data.token);
+  //     dispatch(setUser(response.data)); 
+  //     console.log('response.data', response.data);
+  //   } catch (error) {
+  //     console.error('Error processing Google login', error);
+  //   }
+  // };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +98,12 @@ export default function LoginPage() {
       <GoogleOAuthProvider clientId="856209738432-ct140b6kuui6cov1cg2c2g8na5fpi3r4.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={credentialResponse => {
-            handleGoogleLogin(credentialResponse);
+          if (credentialResponse.credential) {
+            dispatch(handleGoogleLogin({credential: credentialResponse.credential}));
+            navigate('/');
+          } else {
+            showError('Credential is undefined');
+          }
           }}
           onError={() => {
             console.log('Login Failed');

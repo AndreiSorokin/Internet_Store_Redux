@@ -127,25 +127,25 @@ export const userLogout = createAsyncThunk(
 );
 
 
-// export const handleGoogleLogin = createAsyncThunk(
-//    'handleGoogleLogin',
-//    async (credentialResponse: { credential: string }, { rejectWithValue, dispatch }) => {
-//       const token = credentialResponse;
-//       if (!token) {
-//          console.error('No credential token received from Google login');
-//          return rejectWithValue('No credential token received from Google login');
-//       }
-//       try {
-//          const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
-//          localStorage.setItem('userInformation', JSON.stringify(response.data));
-//          dispatch(setUser(response.data));
-//          return response.data;
-//       } catch (error) {
-//          console.error('Error processing Google login', error);
-//          return rejectWithValue('Error processing Google login');
-//       }
-//    }
-// );
+export const handleGoogleLogin = createAsyncThunk(
+  'handleGoogleLogin',
+  async (credentialResponse: { credential: string }, { dispatch, rejectWithValue }) => {
+    const token = credentialResponse.credential;
+    if (!token) {
+      console.error('No credential token received from Google login');
+      return rejectWithValue('No credential token received from Google login');
+    }
+    try {
+      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
+      localStorage.setItem('token', response.data.token);
+      dispatch(setUser(response.data));
+      return response.data;
+    } catch (error) {
+      console.error('Error processing Google login', error);
+      return rejectWithValue('Error processing Google login');
+    }
+  }
+);
 
 export const updatePassword = createAsyncThunk(
    'updatePassword',
@@ -430,28 +430,20 @@ const userSlice = createSlice({
             loading: false,
             error: action.error.message ?? "error"
          }
+      })
+      builder.addCase(handleGoogleLogin.pending, (state) => {
+         state.loading = true;
+         state.error = null;
+      })
+      .addCase(handleGoogleLogin.fulfilled, (state, action) => {
+         state.user = action.payload;
+         state.loading = false;
+         state.error = null;
+      })
+      .addCase(handleGoogleLogin.rejected, (state, action) => {
+         state.loading = false;
+         state.error = action.error.message ?? "Failed to login with Google";
       });
-      // builder.addCase(handleGoogleLogin.fulfilled, (state, action) => {
-      //    return {
-      //       user: action.payload,
-      //       loading: false,
-      //       error: null,
-      //    }
-      // })
-      // builder.addCase(handleGoogleLogin.pending, (state) => {
-      //    return {
-      //       ...state,
-      //       loading: true,
-      //       error: null,
-      //    }
-      // })
-      // builder.addCase(handleGoogleLogin.rejected, (state, action) => {
-      //    return {
-      //       user: null,
-      //       loading: false,
-      //       error: action.error.message ?? "error"
-      //    }
-      // })
       builder.addCase(getSingleUser.fulfilled, (state, action) => {
          return {
             ...state,

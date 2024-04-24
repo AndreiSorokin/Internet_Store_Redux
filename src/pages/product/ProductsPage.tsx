@@ -30,7 +30,7 @@ export default function ProductsPage() {
   const productList = useAppSelector(state => state.products.products);
 
   const userData = parseJwt(localStorage.getItem('token'));
-  const isAdmin = userData.role === 'ADMIN';
+  const isAdmin = userData?.role === 'ADMIN';
   // console.log(user)
 
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");

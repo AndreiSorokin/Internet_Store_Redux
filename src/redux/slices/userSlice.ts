@@ -243,6 +243,24 @@ export const forgotPassword = createAsyncThunk(
   }
 );
 
+export const resetPassword = createAsyncThunk(
+  'resetPassword',
+  async ({ newPassword, token }: { newPassword: string; token: string }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/reset-password`, { newPassword }, {
+        params: { token }
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: "Failed to reset password." });
+      }
+    }
+  }
+);
+
 
 const userSlice = createSlice({
    name: 'user',
@@ -261,6 +279,27 @@ const userSlice = createSlice({
    },
    extraReducers(builder) {
       builder
+      .addCase(resetPassword.pending, (state) => {
+         return {
+            ...state,
+            loading: true,
+            error: null,
+         };
+       })
+       .addCase(resetPassword.fulfilled, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: null,
+         };
+       })
+       .addCase(resetPassword.rejected, (state, action) => {
+         return {
+            ...state,
+            loading: false,
+            error: action.error.message ?? "Failed to send verification email.",
+         };
+       })
       .addCase(forgotPassword.pending, (state) => {
          return {
             ...state,

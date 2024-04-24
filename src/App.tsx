@@ -19,6 +19,7 @@ import AdminPage from './pages/admin/AdminPage';
 import Orders from './pages/Orders';
 import SingleUserPage from './pages/user/SingleUserPage';
 import parseJwt from './helpers/decode';
+import ResetPassword from './pages/user/ResetPassword';
 
 function App() {
   const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
@@ -62,6 +63,10 @@ function App() {
         <Route 
           path='user/:id'
           element={isAdmin ? <SingleUserPage/> : <Navigate to="/" replace />}
+        />
+        <Route 
+          path='reset-password'
+          element={<ResetPassword/>}  
         />
         <Route path='*' element={<Navigate to='/' replace/>}/>
       </Routes>

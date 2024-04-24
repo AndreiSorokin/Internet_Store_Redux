@@ -19,9 +19,11 @@ import useInput  from '../../hooks/UseInput';
 import axios from 'axios';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import useSuccsessMessage from '../../hooks/SuccsessMessage';
 
 export default function LoginPage() {
   const { theme } = useTheme();
+  const { succsessMessage, showSuccessMessage, succsessMessageStyle } = useSuccsessMessage();
   const { errorMessage, showError, errorMessageStyle } = useErrorMessage();
 
   const emailInput = useInput();
@@ -52,20 +54,6 @@ export default function LoginPage() {
     }
   };
 
-  function Copyright(props: any) {
-    return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" to="https://mui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
-
-
   const handleGoogleLogin = async (credentialResponse: import("@react-oauth/google").CredentialResponse) => {
     const token = credentialResponse.credential; 
     if (!token) {
@@ -75,10 +63,8 @@ export default function LoginPage() {
     try {
       const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
       localStorage.setItem('token', response.data.token);
-      // localStorage.setItem('userInformation', JSON.stringify(response.data));
       dispatch(setUser(response.data)); 
       console.log('response.data', response.data);
-      navigate('http://localhost:3000/auth/profile'); 
     } catch (error) {
       console.error('Error processing Google login', error);
     }
@@ -89,7 +75,7 @@ export default function LoginPage() {
     try {
       const response = await dispatch(forgotPassword(forgotEmailInput.value));
       if (forgotPassword.fulfilled.match(response)) {
-        showError('Please check your email to reset your password.');
+        showSuccessMessage('Please check your email to reset your password.');
         setOpenForgotPassword(false);
       } else {
         showError('Failed to send reset password email.');
@@ -119,6 +105,7 @@ export default function LoginPage() {
           }}
         />
       </GoogleOAuthProvider>
+      {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -230,7 +217,6 @@ export default function LoginPage() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </div>
   );

@@ -44,6 +44,7 @@ export const userRegistration = createAsyncThunk(
    async(user: User, {dispatch, rejectWithValue}) => {
       try {
          const response = await axiosInstance.post(`${process.env.REACT_APP_BASE_URL}/users/registration`, user)
+         console.log(response.data)
          return response.data
       } catch (error) {
          return rejectWithValue(error)
@@ -85,7 +86,6 @@ export const userLogin = createAsyncThunk(
       try {
          const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login/`, credentials);
          localStorage.setItem('token', response.data.token);
-         // localStorage.setItem('userInformation', JSON.stringify(response.data));
          return response.data
       } catch (error) {
          return rejectWithValue('An error occurred during login');
@@ -95,9 +95,9 @@ export const userLogin = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
-   async ({ id, firstName, lastName, email }: UserData, { rejectWithValue }) => {
+   async ({ id, username, firstName, lastName, email }: UserData, { rejectWithValue }) => {
      try {
-       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { firstName, lastName, email }, {
+       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { username, firstName, lastName, email }, {
          headers: {
            Authorization: `Bearer ${localStorage.getItem('token')}`,
          }

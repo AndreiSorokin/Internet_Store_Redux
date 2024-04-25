@@ -5,9 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import ThemeProvider, { useTheme } from './contextAPI/ThemeContext';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useAppDispatch, useAppSelector } from '../redux/store';
+import { useAppDispatch } from '../redux/store';
 import { userLogout } from '../redux/slices/userSlice';
-import { LoggedInUser } from '../misc/type';
 import { clearCart } from '../redux/slices/cartSlice';
 import parseJwt from '../helpers/decode';
 
@@ -16,7 +15,6 @@ const Navbar = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
 
-   // const userData = user?.userData as LoggedInUser
    const isAdmin = userData?.role === 'ADMIN';
    
    const [showMenu, setShowMenu] = useState(false);
@@ -41,8 +39,8 @@ const Navbar = () => {
       <ThemeProvider>
          <div>
             <AppBar style={{
-               backgroundColor: theme === "bright" ? "white" : "black",
-               color: theme === "bright" ? "black" : "white", boxShadow,
+      background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)',
+      color: theme === "bright" ? "black" : "white", boxShadow,
                transition: '0.5s ease'
                }} >
                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

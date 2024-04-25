@@ -39,7 +39,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     dispatch(fetchAllUsers())
-  })
+  }, [dispatch])
 
   const existedEmail = users.map(user=> user.email).includes(email)
 
@@ -77,9 +77,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     }
 
     const newUser: User = { firstName, lastName, username, email, password, avatar: avatarUrl };
-    dispatch(userRegistration(newUser));
+    await dispatch(userRegistration(newUser));
     alert('Your account has been created successfully')
-    navigate('/auth/profile');
+    navigate('/auth/login');
   } catch (error) {
     showError('Something went wrong')
     return

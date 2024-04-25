@@ -23,6 +23,9 @@ const Search: React.FC<SearchProps> = ({ searchQuery, setSearchQuery, theme }) =
          }}
          sx={{ margin: "15vh", width: "80%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
             color: theme === 'bright' ? 'black' : 'white',
+            '&:hover': {
+               borderColor: 'black'
+            }
          } }}
       />
    );

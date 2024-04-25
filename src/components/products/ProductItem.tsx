@@ -4,12 +4,14 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { useAppSelector } from "../../redux/store";
+import { useTheme } from "../contextAPI/ThemeContext";
 
 interface ProductItemProps {
    filteredProducts: Products[];
 }
 const ProductItem: React.FC<ProductItemProps> = ({filteredProducts}) => {
-   const productList = useAppSelector(state => state.products.products);
+   const { theme } = useTheme()
+
    return (
       <div style={{ padding: '0 10vw' }}>
          <Grid container spacing={3}>
@@ -21,7 +23,7 @@ const ProductItem: React.FC<ProductItemProps> = ({filteredProducts}) => {
                   <div>
                   <img style={{ width: '100%', height: 'auto' }} src={product.category.image} alt={`a picture of ${product.name} not available`} />
                      <Link to={`/products/${product.id}`}>
-                        <Button variant="outlined">
+                        <Button variant="outlined" sx={{color:"red" ,background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)'}}>
                            View
                         </Button>
                      </Link>

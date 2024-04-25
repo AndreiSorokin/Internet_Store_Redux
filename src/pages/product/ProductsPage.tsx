@@ -26,12 +26,10 @@ export default function ProductsPage() {
   const { theme } = useTheme()
   
   const dispatch = useAppDispatch();
-  // const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const productList = useAppSelector(state => state.products.products);
 
   const userData = parseJwt(localStorage.getItem('token'));
   const isAdmin = userData?.role === 'ADMIN';
-  // console.log(user)
 
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "");
   const [selectedCategory, setSelectedCategory] = useState(localStorage.getItem("selectedCategory") || "All");
@@ -82,14 +80,17 @@ export default function ProductsPage() {
 
 
   return (
-    <div style={{
-      backgroundColor: theme === "bright" ? "white" : "black",
+    <Box sx={{
+      background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
       color: theme === "bright" ? "black" : "white",
-      height: '400vh',
+      height: '250vh',
       paddingTop: '20vh',
       padding:'25px',
-      transition: '0.5s ease'
-    }} >
+      transition: '0.5s ease',
+      '@media (max-width: 600px)': {
+        height: '550vh', 
+      },
+    }}>
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
         <Link style={{marginTop:"10vh", display: userData && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
@@ -100,7 +101,7 @@ export default function ProductsPage() {
 
         <Button style={{transform: 'translate(0,-10vh)'}} onClick={() => setDialog(true)}>Filters</Button>
         <Dialog open={dialog} onClose={() => setDialog(false)}>
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '55vh', borderRadius: '5px', backgroundColor: theme === "bright" ? "white" : "black", border: theme === "bright" ? "1px solid black" : "1px solid white", '@media (max-width: 900px)': { width: '45vw', height: '60vh' } }}>
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '55vh', borderRadius: '5px', background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)', border: theme === "bright" ? "1px solid black" : "1px solid white", '@media (max-width: 900px)': { width: '45vw', height: '60vh' } }}>
             <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(14vw, -2vh)', color: theme === 'bright' ? 'black' : 'white' }}><CloseIcon /></Button>
             <div style={{ height: '40vh', width:'35vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
@@ -160,6 +161,6 @@ export default function ProductsPage() {
         <ScrollToTopButton/>
         <Pagination searchQuery={searchQuery} minPrice={minPrice || 0} maxPrice={maxPrice || Number.MAX_SAFE_INTEGER} size={size} gender={gender} />
     </Box>
-    </div>
+    </Box>
   );
 }

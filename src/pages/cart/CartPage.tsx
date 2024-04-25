@@ -5,7 +5,7 @@ import { CardElement, Elements } from '@stripe/react-stripe-js';
 
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { CartItem, LoggedInUser } from '../../misc/type';
-import { updateCartItemQuantity, removeFromCart } from '../../redux/slices/cartSlice';
+import { updateCartItemQuantity, removeFromCart, clearCart } from '../../redux/slices/cartSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext'
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import ScrollToTopButton from '../../components/utils/ScrollToTop';
@@ -15,6 +15,7 @@ import CheckoutForm from '../../components/utils/CheckoutForm';
 import useErrorMessage from '../../hooks/ErrorMessage';
 
 import { Button, Grid } from '@mui/material';
+import parseJwt from '../../helpers/decode';
 
 const CartPage: React.FC = () => {
   const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
@@ -24,8 +25,8 @@ const CartPage: React.FC = () => {
 
   const cartItems = useAppSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
-  const userData = user?.userData as LoggedInUser
+  // const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  const userData = parseJwt(localStorage.getItem('token'));
   const userId =userData?.id
 
   useEffect(() => {
@@ -176,6 +177,7 @@ const CartPage: React.FC = () => {
                 
                   try {
                     await dispatch(createOrder(orderData)).unwrap();
+                    // await dispatch(clearCart());
                     showSuccessMessage('Order placed successfully!');
                   } catch (error) {
                     console.error('Failed to place order:', error);

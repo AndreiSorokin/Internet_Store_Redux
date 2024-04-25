@@ -28,6 +28,7 @@ export default function ProfilePage() {
   const currentPasswordInput = useInput();
   const newPasswordInput = useInput();
   // const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
+  // const user = u?.user as LoggedInUser;
   const user = parseJwt(localStorage.getItem('token'));
   console.log('userAUTH', user)
   const [openUpdatePasswordDialog, setOpenUpdatePasswordDialog] = useState(false);
@@ -48,6 +49,7 @@ export default function ProfilePage() {
       if (!/\S+@\S+\.\S+/.test(emailInput.value)) {
         return showError('Incorrect email format');
       }
+
       changes.email = emailInput.value;
     }
   
@@ -65,7 +67,9 @@ export default function ProfilePage() {
   
     dispatch(updateUserProfile(updatedUser));
   
-    // localStorage.setItem('userInformation', JSON.stringify(updatedUser));
+    if(user.status === 'INACTIVE') {
+      return showError('Your account is inactive. Please contact the administrator')
+    }
   
     showSuccessMessage('Your information has been updated successfully');
     console.log('user', user)
@@ -121,6 +125,7 @@ export default function ProfilePage() {
       {user && (
         <div style={{ textAlign: 'center' }}>
           <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar} alt="" />
+          {user.status === 'INACTIVE' && <div>Your account is inactive, please contact administrator</div>}
           <h1>Hello, {user.firstName}</h1>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
             <TextField

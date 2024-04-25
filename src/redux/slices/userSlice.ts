@@ -2,12 +2,13 @@ import axios from "axios";
 import axiosInstance from '../../api/axiosConfig';
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { InitialStateUser, User, Credentials, LoggedInUser, UserData, UserStatus } from "../../misc/type";
+import parseJwt from "../../helpers/decode";
 
 let userState: User | null = null;
-const data = localStorage.getItem("userInformation");
+const data = parseJwt(localStorage.getItem('token'));
 
 if (data) {
-   userState = JSON.parse(data);
+   userState = data;
 }
 
 const initialState: InitialStateUser = {
@@ -95,23 +96,31 @@ export const userLogin = createAsyncThunk(
 export const updateUserProfile = createAsyncThunk(
    'updateUserProfile',
    async ({ id, firstName, lastName, email }: UserData, { rejectWithValue }) => {
-      try {
-         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { firstName, lastName, email }, {
-            headers: {
-               Authorization: `Bearer ${localStorage.getItem('token')}`,
-            }
-         });
-         console.log('updateUserProfile', response.data);
-         return response.data;
-      } catch (error) {
-         if (axios.isAxiosError(error) && error.response) {
-            return rejectWithValue(error.response.data);
-         } else {
-            return rejectWithValue('An unexpected error occurred');
+     try {
+       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/users/${id}`, { firstName, lastName, email }, {
+         headers: {
+           Authorization: `Bearer ${localStorage.getItem('token')}`,
          }
-      }
+       });
+ 
+       const { token, refreshToken } = response.data;
+ 
+       if (token && refreshToken) {
+         localStorage.setItem('token', token);
+         localStorage.setItem('refreshToken', refreshToken);
+       }
+ 
+       console.log('updateUserProfile', response.data);
+       return response.data;
+     } catch (error) {
+       if (axios.isAxiosError(error) && error.response) {
+         return rejectWithValue(error.response.data);
+       } else {
+         return rejectWithValue('An unexpected error occurred');
+       }
+     }
    }
-);
+ );
 
 export const userLogout = createAsyncThunk(
    'userLogout',
@@ -278,77 +287,76 @@ const userSlice = createSlice({
       },
    },
    extraReducers(builder) {
-      builder
-      .addCase(resetPassword.pending, (state) => {
+      builder.addCase(resetPassword.pending, (state) => {
          return {
             ...state,
             loading: true,
             error: null,
          };
        })
-       .addCase(resetPassword.fulfilled, (state, action) => {
+       builder.addCase(resetPassword.fulfilled, (state, action) => {
          return {
             ...state,
             loading: false,
             error: null,
          };
        })
-       .addCase(resetPassword.rejected, (state, action) => {
+       builder.addCase(resetPassword.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "Failed to send verification email.",
          };
        })
-      .addCase(forgotPassword.pending, (state) => {
+       builder.addCase(forgotPassword.pending, (state) => {
          return {
             ...state,
             loading: true,
             error: null,
          };
       })
-      .addCase(forgotPassword.fulfilled, (state) => {
+      builder.addCase(forgotPassword.fulfilled, (state) => {
          return {
             ...state,
             loading: false,
             error: null,
          };
       })
-      .addCase(forgotPassword.rejected, (state, action) => {
+      builder.addCase(forgotPassword.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "Failed to send verification email.",
          };
       })
-      .addCase(updateUserStatus.fulfilled, (state, action) => {
+      builder.addCase(updateUserStatus.fulfilled, (state, action) => {
          const index = state.users.findIndex(user => user.id === action.meta.arg.id);
          if (index !== -1) {
             state.users[index].status = action.meta.arg.status;
          }
       })
-      .addCase(updateUserStatus.pending, (state) => {
+      builder.addCase(updateUserStatus.pending, (state) => {
          return {
             ...state,
             loading: true,
             error: null,
          }
       })
-      .addCase(updateUserStatus.rejected, (state, action) => {
+      builder.addCase(updateUserStatus.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "error"
          }
       })
-      .addCase(removeAdminRole.pending, (state) => {
+      builder.addCase(removeAdminRole.pending, (state) => {
          return {
             ...state,
             loading: true,
             error: null,
          }
       })
-      .addCase(removeAdminRole.fulfilled, (state, action) => {
+      builder.addCase(removeAdminRole.fulfilled, (state, action) => {
          state.loading = false;
          state.error = null;
          const index = state.users.findIndex(user => user.id === action.payload.id);
@@ -356,21 +364,21 @@ const userSlice = createSlice({
             state.users[index].role = action.payload.role;
          }
       })
-      .addCase(removeAdminRole.rejected, (state, action) => {
+      builder.addCase(removeAdminRole.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "error"
          }
       })
-      .addCase(assignAdminRole.pending, (state) => {
+      builder.addCase(assignAdminRole.pending, (state) => {
          return {
             ...state,
             loading: true,
             error: null,
          }
       })
-      .addCase(assignAdminRole.fulfilled, (state, action) => {
+      builder.addCase(assignAdminRole.fulfilled, (state, action) => {
          state.loading = false;
          state.error = null;
          const index = state.users.findIndex(user => user.id === action.payload.id);
@@ -378,21 +386,21 @@ const userSlice = createSlice({
             state.users[index] = action.payload;
          }
       })
-      .addCase(assignAdminRole.rejected, (state, action) => {
+      builder.addCase(assignAdminRole.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
             error: action.error.message ?? "error"
          }
       })
-      .addCase(fetchAllUsers.pending, (state) => {
+      builder.addCase(fetchAllUsers.pending, (state) => {
          return {
             ...state,
             loading: true,
             error: null,
          }
       })
-      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+      builder.addCase(fetchAllUsers.fulfilled, (state, action) => {
          return {
             ...state,
             users: action.payload,
@@ -400,7 +408,7 @@ const userSlice = createSlice({
             error: null,
          }
       })
-      .addCase(fetchAllUsers.rejected, (state, action) => {
+      builder.addCase(fetchAllUsers.rejected, (state, action) => {
          return {
             ...state,
             loading: false,
@@ -435,12 +443,12 @@ const userSlice = createSlice({
          state.loading = true;
          state.error = null;
       })
-      .addCase(handleGoogleLogin.fulfilled, (state, action) => {
+      builder.addCase(handleGoogleLogin.fulfilled, (state, action) => {
          state.user = action.payload;
          state.loading = false;
          state.error = null;
       })
-      .addCase(handleGoogleLogin.rejected, (state, action) => {
+      builder.addCase(handleGoogleLogin.rejected, (state, action) => {
          state.loading = false;
          state.error = action.error.message ?? "Failed to login with Google";
       });

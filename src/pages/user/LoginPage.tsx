@@ -16,7 +16,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput  from '../../hooks/UseInput';
-import axios from 'axios';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
@@ -53,22 +52,6 @@ export default function LoginPage() {
       showError('An unexpected error occurred');
     }
   };
-
-  // const handleGoogleLogin = async (credentialResponse: import("@react-oauth/google").CredentialResponse) => {
-  //   const token = credentialResponse.credential; 
-  //   if (!token) {
-  //     console.error('No credential token received from Google login');
-  //     return; 
-  //   }
-  //   try {
-  //     const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
-  //     localStorage.setItem('token', response.data.token);
-  //     dispatch(setUser(response.data)); 
-  //     console.log('response.data', response.data);
-  //   } catch (error) {
-  //     console.error('Error processing Google login', error);
-  //   }
-  // };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();

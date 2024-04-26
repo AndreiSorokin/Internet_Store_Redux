@@ -120,7 +120,7 @@ export const updateUserProfile = createAsyncThunk(
        }
      }
    }
- );
+);
 
 export const userLogout = createAsyncThunk(
    'userLogout',
@@ -134,7 +134,6 @@ export const userLogout = createAsyncThunk(
       }
    }
 );
-
 
 export const handleGoogleLogin = createAsyncThunk(
   'handleGoogleLogin',

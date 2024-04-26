@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { InitialStateUser, LoggedInUser, User, UserStatus } from '../misc/type'
-import userReducer, { clearUser, fetchAllUsers, getSingleUser, getUserInput, setUser, updatePassword, updateUserProfile, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
-import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
-import store from '../redux/store';
+import userReducer, { assignAdminRole, clearUser, fetchAllUsers, forgotPassword, getSingleUser, getUserInput, removeAdminRole, resetPassword, setUser, updatePassword, updateUserProfile, updateUserStatus, userLogin, userLogout, userRegistration } from '../redux/slices/userSlice'
+import { configureStore, Dispatch, UnknownAction } from '@reduxjs/toolkit';
 
 const userState: User | null = null;
 
@@ -167,7 +166,7 @@ describe("user reducer", () => {
       
          expect(axios.put).toHaveBeenCalledWith(
             `${process.env.REACT_APP_BASE_URL}/users/${updateData.id}`,
-            { firstName: updateData.firstName, lastName: updateData.lastName, email: updateData.email },
+            { firstName: updateData.firstName, lastName: updateData.lastName, email: updateData.email, username: updateData.username },
             {
                headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -216,6 +215,69 @@ describe("user reducer", () => {
         });
       });
 
+      test('should fulfill removeAdminRole', async () => {
+         const mockResponseData = { message: 'Admin role removed successfully' };
+         jest.spyOn(axios, 'put').mockResolvedValue({ data: mockResponseData });
+         const store = configureStore({
+           reducer: {
+             user: userReducer,
+           },
+         });
+      
+         const result = await store.dispatch(removeAdminRole({ id: 1, role: 'CUSTOMER' }));
+      
+         expect(result.type).toBe('removeAdminRole/fulfilled');
+         expect(result.payload).toEqual(mockResponseData);
+         expect(store.getState().user.error).toBeNull();
+         expect(store.getState().user.loading).toBe(false);
+      });
+
+      test('should fulfill assignAdminRole', async () => {
+         const mockResponseData = { message: 'Admin role assigned successfully' };
+         jest.spyOn(axios, 'put').mockResolvedValue({ data: mockResponseData });
+         const store = configureStore({
+           reducer: {
+             user: userReducer,
+           },
+         });
+      
+         const result = await store.dispatch(assignAdminRole({ id: 1, role: 'ADMIN' }));
+      
+         expect(result.type).toBe('assignAdminRole/fulfilled');
+         expect(result.payload).toEqual(mockResponseData);
+         expect(store.getState().user.error).toBeNull();
+         expect(store.getState().user.loading).toBe(false);
+      });
+
+      test("updateUserStatus should update user status on fulfilled", async () => {
+         const mockResponse = { id: 1, status: 'ACTIVE' };
+         const action = updateUserStatus.fulfilled(mockResponse, 'updateUserStatus/fulfilled', { id: 1, status: UserStatus.ACTIVE });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: null,
+            users: state.users.map(user => user.id === action.meta.arg.id ? { ...user, status: action.meta.arg.status } : user),
+         });
+      });
+
+      test("forgotPassword should handle fulfilled case", async () => {
+         const mockEmail = "test@example.com";
+         const mockResponseData = { message: "Verification email sent successfully." };
+         jest.spyOn(axios, 'post').mockResolvedValueOnce({ data: mockResponseData });
+      
+         const dispatch: Dispatch<UnknownAction> = jest.fn();
+         const getState = () => {};
+      
+         await forgotPassword(mockEmail)(dispatch, getState, null);
+      
+         expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({
+            type: forgotPassword.fulfilled.type,
+            payload: mockResponseData,
+         }));
+      });
+
       test("should get user input", () => {
          const userInput = {
             email: 'test@example.com',
@@ -261,6 +323,18 @@ describe("user reducer", () => {
             loading: false,
             error: null,
             users: []
+         });
+      });
+
+      test("resetPassword should update state on fulfilled", () => {
+         const mockResponseData = { message: "Password reset successfully." };
+         const action = resetPassword.fulfilled(mockResponseData, 'resetPassword/fulfilled', { newPassword: "newDummyPassword", token: "dummyToken" });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: null,
          });
       });
    })
@@ -364,6 +438,62 @@ describe("user reducer", () => {
           loading: true,
           error: null,
         });
+      });
+
+      test("removeAdminRole should set loading to true when pending", () => {
+         const action = removeAdminRole.pending('removeAdminRole/pending', { id: 1, role: 'CUSTOMER' });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+         });
+      });
+
+      test("assignAdminRole should set loading to true when pending", () => {
+         const action = assignAdminRole.pending('assignAdminRole/pending', { id: 1, role: 'ADMIN' });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+         });
+      });
+
+      test("updateUserStatus should set loading to true when pending", () => {
+         const action = updateUserStatus.pending('updateUserStatus/pending', { id: 1, status: UserStatus.ACTIVE });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+         });
+      });
+
+      test("forgotPassword should set loading to true when pending", () => {
+         const email = "user@example.com";
+         const action = forgotPassword.pending('forgotPassword/pending', email);
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+         });
+      });
+
+      test("resetPassword should set loading to true when pending", () => {
+         const action = resetPassword.pending('resetPassword/pending', { newPassword: "newDummyPassword", token: "dummyToken" });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: true,
+            error: null,
+         });
       });
    })
 
@@ -476,11 +606,10 @@ describe("user reducer", () => {
       });
 
       test("logout should have error", () => {
-   const error = new Error("error"); // Ensure this is defined if not already
-   const state = userReducer(
-      initialState,
-      userLogout.rejected(error, "error")
-   );
+      const state = userReducer(
+         initialState,
+         userLogout.rejected(error, "error")
+      );
 
    expect(state).toEqual({
       user: null,
@@ -488,7 +617,7 @@ describe("user reducer", () => {
       error: error.message,
       users: []
    });
-});
+      });
 
       test("updatePassword should handle rejection", async () => {
          const updatePayload = { id: 1, oldPassword: "oldPass", newPassword: "newPass" };
@@ -501,6 +630,65 @@ describe("user reducer", () => {
             loading: false,
             error: error.message,
             users: [],
+         });
+      });
+
+      test("removeAdminRole should handle rejection", async () => {
+         const error = new Error("Failed to remove admin role");
+         const action = removeAdminRole.rejected(error, 'rejected', { id: 1, role: 'CUSTOMER' });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: error.message,
+         });
+      });
+
+      test("assignAdminRole should handle rejection", async () => {
+         const error = new Error("Failed to assign admin role");
+         const action = assignAdminRole.rejected(error, 'rejected', { id: 1, role: 'ADMIN' });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: error.message,
+         });
+      });
+
+      test("updateUserStatus should handle rejection", async () => {
+         const action = updateUserStatus.rejected(error, 'rejected', { id: 1, status: UserStatus.ACTIVE });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: error.message,
+         });
+      });
+
+      test("forgotPassword should handle rejection", async () => {
+         const error = new Error("Failed to send verification email");
+         const action = forgotPassword.rejected(error, 'forgotPassword/rejected', "user@example.com");
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: error.message,
+         });
+      });
+
+      test("resetPassword should handle rejection", async () => {
+         const error = new Error("Failed to reset password");
+         const action = resetPassword.rejected(error, 'resetPassword/rejected', { newPassword: "newDummyPassword", token: "dummyToken" });
+         const state = userReducer(initialState, action);
+      
+         expect(state).toEqual({
+            ...initialState,
+            loading: false,
+            error: error.message,
          });
       });
    })

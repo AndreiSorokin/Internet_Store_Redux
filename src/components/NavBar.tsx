@@ -30,23 +30,18 @@ const Navbar = () => {
       navigate('/auth/login');
    };
 
-   const boxShadowLight = '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)';
-   const boxShadowDark = '0px 2px 4px -1px rgba(255,255,255,0.2), 0px 4px 5px 0px rgba(255,255,255,0.14), 0px 1px 10px 0px rgba(255,255,255,0.12)';
-
-   const boxShadow = theme === 'dark' ? boxShadowDark : boxShadowLight;
-
    return (
       <ThemeProvider>
          <div>
             <AppBar style={{
-      background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)',
-      color: theme === "bright" ? "black" : "white", boxShadow,
+               backgroundColor: theme === 'bright' ? '#8F5E4E' : "#694134",
+               color: theme === "bright" ? "black" : "white",
                transition: '0.5s ease'
                }} >
                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="h6" component="div">
-                     <div style={{ fontSize: '30px' }}>
-                        <span>T</span>he <span>S</span>tore
+                     <div style={{ fontSize: '23px' }}>
+                        <span style={{fontFamily: '"Noto Serif Grantha", serif', fontSize: '40px' }}>T</span>he store
                      </div>
                   </Typography>
                   <Button onClick={toggleMenu} sx={{ display: { xs: 'block', md: 'none' } }}>

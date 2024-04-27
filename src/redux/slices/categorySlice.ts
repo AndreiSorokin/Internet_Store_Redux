@@ -76,7 +76,7 @@ export const createCategory = createAsyncThunk(
    'createCategory',
    async (formData: FormData, { rejectWithValue }) => {
       try {
-         const response = await axios.post('http://localhost:8080/api/v1/categories', formData, {
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/categories`, formData, {
          headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'multipart/form-data',

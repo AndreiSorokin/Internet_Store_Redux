@@ -40,7 +40,13 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
                 minWidth: "100px",
                 color: theme === 'bright' ? 'black' : 'white',
                 border: theme === 'bright' ? '1px solid white' : '1px solid white',
-              }
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                border: 'none',
+              },
+              '&:focus .MuiOutlinedInput-notchedOutline': {
+                border: 'none',
+              },
             }}
           >
             {uniqueCategories.map(category => (

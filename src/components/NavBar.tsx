@@ -35,7 +35,7 @@ const Navbar = () => {
          <div>
             <AppBar style={{
                backgroundColor: theme === 'bright' ? '#8F5E4E' : "#694134",
-               color: theme === "bright" ? "black" : "white",
+               color: theme === "bright" ? "black" : "#E9E9E9",
                transition: '0.5s ease'
                }} >
                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -44,84 +44,84 @@ const Navbar = () => {
                         <span style={{fontFamily: '"Noto Serif Grantha", serif', fontSize: '40px' }}>T</span>he store
                      </div>
                   </Typography>
-                  <Button onClick={toggleMenu} sx={{ display: { xs: 'block', md: 'none' } }}>
+                  <Button onClick={toggleMenu} sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', display: { xs: 'block', md: 'none' } }}>
                      Menu
                   </Button>
-                  <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
+                  <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{display: { xs: 'none', md: 'flex' } }}>
                      {userData &&
                         <Link to="/auth/profile">
-                           <Button>Profile</Button>
+                           <Button sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>Profile</Button>
                         </Link>   
                      }
                      <Link to="/products">
-                        <Button>Products</Button>
+                        <Button sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>Products</Button>
                      </Link>
                      {userData &&
                         <Link to="/cart">
-                           <Button>Cart</Button>
+                           <Button sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>Cart</Button>
                         </Link>
                      }
                      {userData &&
                         <Link to="/orders">
-                           <Button>Orders</Button>
+                           <Button sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>Orders</Button>
                         </Link>
                      }
                      {isAdmin &&
                         <Link to="auth/admin">
-                           <Button>Admin</Button>
+                           <Button sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>Admin</Button>
                         </Link>
                      }
                   </ButtonGroup>
                   {userData ? (
                      <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <Button onClick={handleLogout} sx={{ display: { xs: 'none', md: 'block' } }}>Log out</Button>
+                        <Button onClick={handleLogout} sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', display: { xs: 'none', md: 'block' } }}>Log out</Button>
                      </ButtonGroup>
                      ) : (
                         <ButtonGroup variant="elevated" aria-label="Basic button group" sx={{ display: { xs: 'none', md: 'flex' } }}>
                            <Link to="/auth/login" style={{textDecoration: 'none'}}>
-                              <Button sx={{ display: { xs: 'none', md: 'block' } }}>Log in</Button>
+                              <Button sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', display: { xs: 'none', md: 'block' } }}>Log in</Button>
                            </Link>
                         </ButtonGroup>
                   )}
                   <IconButton onClick={toggleTheme}>
-                     {theme === 'bright' ? <Brightness4Icon /> : <Brightness7Icon sx={{ color: 'white' }} />}
+                     {theme === 'bright' ? <Brightness4Icon /> : <Brightness7Icon sx={{ color: '#E9E9E9' }} />}
                   </IconButton>
                </Toolbar>
                {showMenu && (
-                  <div style={{ backgroundColor: theme === "bright" ? "white" : "black", padding: '10px', textAlign: 'center', borderTop: '1px solid black' }}>
+                  <div style={{ backgroundColor: theme === 'bright' ? '#8F5E4E' : "#694134", padding: '10px', textAlign: 'center', borderTop: '1px solid black' }}>
                      {userData &&
                         <Link to="/auth/profile">
-                           <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
+                           <Button variant="outlined" onClick={toggleMenu} sx={{color: theme === "bright" ? "black" : "#E9E9E9", border: 'none', '&:hover': {backgroundColor: 'transparent', border: theme === "bright" ? "1px solid black" : "1px solid #E9E9E9" }}}>
                               Profile
                            </Button>
                         </Link>
                      }
                      <Link to="/products">
-                        <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
+                        <Button variant="outlined" onClick={toggleMenu} sx={{color: theme === "bright" ? "black" : "#E9E9E9", border: 'none', '&:hover': {backgroundColor: 'transparent', border: theme === "bright" ? "1px solid black" : "1px solid #E9E9E9" }}}>
                            Products
                         </Button>
                      </Link>
                      {userData &&
                         <Link to="/cart">
-                           <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>
+                           <Button variant="outlined" onClick={toggleMenu} sx={{color: theme === "bright" ? "black" : "#E9E9E9", border: 'none', '&:hover': {backgroundColor: 'transparent', border: theme === "bright" ? "1px solid black" : "1px solid #E9E9E9" }}}>
                               Cart
                            </Button>
                         </Link>
                      }
                      {isAdmin &&
                         <Link to="auth/admin">
-                           <Button variant="outlined" onClick={toggleMenu} style={{ color: theme === "bright" ? "black" : "white" }}>Admin</Button>
+                           <Button variant="outlined" onClick={toggleMenu} sx={{color: theme === "bright" ? "black" : "#E9E9E9", border: 'none', '&:hover': {backgroundColor: 'transparent', border: theme === "bright" ? "1px solid black" : "1px solid #E9E9E9" }}}>Admin</Button>
                         </Link>
                      }
                      {userData ? (
                         <Link to="/auth/login">
-                           <Button variant="outlined" onClick={handleLogout} style={{ color: theme === "bright" ? "black" : "white" }}>
+                           <Button variant="outlined" onClick={handleLogout} sx={{color: theme === "bright" ? "black" : "#E9E9E9", border: 'none', '&:hover': {backgroundColor: 'transparent', border: theme === "bright" ? "1px solid black" : "1px solid #E9E9E9" }}}>
                               Log out
                            </Button>
                         </Link>
                      ) : (
                         <Link to="/auth/login">
-                           <Button variant="outlined" style={{ color: theme === "bright" ? "black" : "white" }}>
+                           <Button variant="outlined" sx={{color: theme === "bright" ? "black" : "#E9E9E9", border: 'none', '&:hover': {backgroundColor: 'transparent', border: theme === "bright" ? "1px solid black" : "1px solid #E9E9E9" }}}>
                               Log in
                            </Button>
                         </Link>

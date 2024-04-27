@@ -18,7 +18,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import parseJwt from "../../helpers/decode";
 
 
@@ -82,7 +82,7 @@ export default function ProductsPage() {
   return (
     <Box sx={{
       background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
-      color: theme === "bright" ? "black" : "white",
+      color: theme === "bright" ? "black" : "#E9E9E9",
       height: '250vh',
       paddingTop: '20vh',
       padding:'25px',
@@ -94,15 +94,17 @@ export default function ProductsPage() {
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
         <Link style={{marginTop:"10vh", display: userData && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
-          <Button>Create new</Button>
+          <Button sx={{color: theme === "bright" ? "black" : "#E9E9E9"}}>Create new</Button>
         </Link>
 
         <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme}/>
 
-        <Button style={{transform: 'translate(0,-10vh)'}} onClick={() => setDialog(true)}>Filters</Button>
+        <Button style={{transform: 'translate(0,-10vh)', color: theme === "bright" ? "black" : "#E9E9E9"}} onClick={() => setDialog(true)}>Filters</Button>
         <Dialog open={dialog} onClose={() => setDialog(false)}>
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '55vh', borderRadius: '5px', background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)', border: theme === "bright" ? "1px solid black" : "1px solid white", '@media (max-width: 900px)': { width: '45vw', height: '60vh' } }}>
-            <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(14vw, -2vh)', color: theme === 'bright' ? 'black' : 'white' }}><CloseIcon /></Button>
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{overflow: 'hidden', height: '55vh', borderRadius: '5px',
+            background: theme === 'bright' ? 'linear-gradient(to top, #66605B 11%, #B8B8B8 85%)' : 'linear-gradient(to bottom, #9C9C9C 11%, #353535 98%)',
+            '@media (max-width: 900px)': { width: '45vw', height: '60vh' } }}>
+            <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(14vw, -2vh)', color: theme === 'bright' ? 'black' : '#E9E9E9' }}><CloseIcon /></Button>
             <div style={{ height: '40vh', width:'35vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
               <Box sx={{ margin: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -111,14 +113,14 @@ export default function ProductsPage() {
                   value={minPrice || ''}
                   onChange={(e) => setMinPrice(e.target.value ? parseInt(e.target.value) : undefined)}
                   placeholder="Min Price"
-                  style={{ padding: '10px', marginRight: '5px', width:'40%', marginBottom: '10px' }}
+                  style={{ padding: '10px', marginRight: '5px', width:'40%', marginBottom: '10px', backgroundColor: 'transparent', border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9' }}
                 />
                 <input
                   type="number"
                   value={maxPrice || ''}
                   onChange={(e) => setMaxPrice(e.target.value ? parseInt(e.target.value) : undefined)}
                   placeholder="Max Price"
-                  style={{ padding: '10px', marginRight: '5px', width:'40%' }}
+                  style={{ padding: '10px', marginRight: '5px', width:'40%', backgroundColor: 'transparent', border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9' }}
                 />
               </Box>
               <Box display="flex" alignItems="center" sx={{marginLeft: '10vw', flexDirection: 'column'}}>
@@ -130,7 +132,7 @@ export default function ProductsPage() {
                     value={size}
                     label="Size"
                     onChange={(e) => setSize(e.target.value)}
-                    style={{ marginBottom: '20px', width: '60%', alignItems: 'center' }}
+                    sx={{ marginBottom: '20px', width: '60%', alignItems: 'center' }}
                   >
                     <MenuItem value=""><em>All</em></MenuItem>
                     <MenuItem value="Small">Small</MenuItem>

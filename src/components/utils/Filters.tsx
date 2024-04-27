@@ -27,8 +27,8 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
   return (
     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
         <FormControl style={{ margin: "1vh" }}>
-          <InputLabel sx={{ color: theme === 'bright' ? 'black' : 'white' }} id="demo-simple-select-label">Category</InputLabel>
-          <Select
+        <InputLabel sx={{ color: theme === 'bright' ? 'black' : '#E9E9E9', '&.Mui-focused': { color: theme === 'bright' ? 'black' : '#E9E9E9' } }} id="demo-simple-select-label">Category</InputLabel>
+        <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={selectedCategory}
@@ -38,8 +38,8 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
               margin: "2vh",
               'div': {
                 minWidth: "100px",
-                color: theme === 'bright' ? 'black' : 'white',
-                border: theme === 'bright' ? '1px solid white' : '1px solid white',
+                color: theme === 'bright' ? 'black' : '#E9E9E9',
+                border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
               },
               '& .MuiOutlinedInput-notchedOutline': {
                 border: 'none',

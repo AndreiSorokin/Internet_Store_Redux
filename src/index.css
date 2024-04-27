@@ -13,7 +13,7 @@ code {
 }
 
 input::placeholder {
-  color: white;
+  color: #E9E9E9;
   opacity: .5;
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { Gender, NewProduct, Size } from '../../misc/type';
 import { createProduct, fetchAllProducts } from '../../redux/slices/productSlice';
@@ -10,7 +10,7 @@ import useInput from '../../hooks/UseInput';
 import { Box, Button, Grid, IconButton, MenuItem, TextField } from '@mui/material';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from 'react-router-dom';
-import { createCategory, fetchCategories } from '../../redux/slices/categorySlice';
+import { fetchCategories } from '../../redux/slices/categorySlice';
 import { uploadImage } from '../../redux/slices/uploadSlice';
 import CreateCategory from '../../components/categories/CreateCategory';
 
@@ -41,51 +41,6 @@ const productList = useAppSelector(state => state.products.products);
   const [selectedSize, setSelectedSize] = React.useState<Size | "">("");
   const [gender, setGender] = React.useState<Gender | "">("");
   const [category, setCategory] = React.useState("");
-  const [newCategoryName, setNewCategoryName] = useState('');
-  const [newCategoryImage, setNewCategoryImage] = useState<File | null>(null);
-
-  const handleNewCategoryNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  setNewCategoryName(event.target.value);
-};
-
-const handleNewCategoryImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  if (event.target.files && event.target.files[0]) {
-    setNewCategoryImage(event.target.files[0]);
-  }
-};
-
-
-const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  if (!newCategoryName || !newCategoryImage) {
-    showError('Please make sure to add both a name and an image for the new category');
-    return;
-  }
-
-  const existingCategory = categories.find(c => c.name.toLowerCase() === newCategoryName.toLowerCase());
-
-  if(existingCategory) {
-    showError('A category with that name already exists');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('name', newCategoryName);
-  formData.append('image', newCategoryImage);
-
-  try {
-    await dispatch(createCategory(formData)).unwrap();
-
-    showSuccessMessage('Category created successfully');
-    setNewCategoryName('');
-    setNewCategoryImage(null);
-    dispatch(fetchCategories());
-  } catch (error) {
-    showError('Something went wrong while creating the category');
-  }
-};
-
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedSize(event.target.value as Size);
@@ -110,7 +65,8 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       const { value: description } = descriptionInput;
 
       if (!name || !price || !description || !selectedSize || !selectedSize || !gender ||images.length === 0) {
-      return showError('Please make sure that you have added name, price, description, category ID, and images');
+        window.scrollTo(0, 0);
+        return showError('Please make sure that you filled out all fields');
       }
 
       console.log(images.length)
@@ -163,8 +119,6 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
             categoryId: selectedCategory.id
         };
 
-        console.log("selectedCategory",selectedCategory);
-
         await dispatch(createProduct(newProduct)).unwrap();
         showSuccessMessage('Product added successfully');
         nameInput.onChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
@@ -173,25 +127,27 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
         setImages([]);
         setSelectedSize("");
         setGender("");
+        window.scrollTo(0, 0);
       } catch (error) {
+        window.scrollTo(0, 0);
         return showError('Somethins went wrong');
       }
   };
 
 
   return (
-      <Grid sx={{
-      backgroundColor: theme === "bright" ? "white" : "black",
-      color: theme === "bright" ? "black" : "white",
-      paddingTop: '20vh',
-      transition: '0.5s ease',
-      height: '150vh',
-      overflow: 'hidden',
+  <Grid sx={{
+        background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+        color: theme === "bright" ? "black" : "#E9E9E9",
+        paddingTop: '20vh',
+        transition: '0.5s ease',
+        height: '150vh',
+        overflow: 'hidden',
       }} container direction="column" alignItems="center" spacing={3}>
-        <h2>Create a new product!</h2>
+      <h2>Create a new product!</h2>
       <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
           <Link to="/products" style={{ textDecoration: "none" }}>
-            <IconButton sx={{ color: theme === 'bright' ? 'black' : 'white' }}>
+            <IconButton sx={{ color: theme === 'bright' ? 'black' : '#E9E9E9' }}>
                 <ArrowBackIcon />
                 Back
             </IconButton>
@@ -200,8 +156,10 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
       <Grid item>
         <form onSubmit={handleSubmit}>
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
-          {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
-          {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
+            <div style={{position: "absolute", top: "5vh", left: "34vw"}}>
+              {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
+              {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
+            </div>
             <TextField
                 label="Name"
                 value={nameInput.value}
@@ -211,13 +169,27 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
                 variant="outlined"
                 InputProps={{
                   sx: {
-                    color: theme === 'bright' ? 'black' : 'white',
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
                     '@media (max-width: 768px)': {
                       maxWidth: '90%',
                     },
                   },
-                  }}
-                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                }}
+                InputLabelProps={{
+                  sx: {
+                    color: theme === 'bright' ? 'black' : 'white',
+                    '&.Mui-focused': {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  },
+                }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  },
+                  'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
               />
@@ -237,7 +209,20 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
                   },
                 },
                 }}
-                sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                InputLabelProps={{
+                  sx: {
+                    color: theme === 'bright' ? 'black' : 'white',
+                    '&.Mui-focused': {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  },
+                }}
+                sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused fieldset': {
+                      borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                }, 'label': {
                 color: theme === 'bright' ? 'black' : 'white',
                 } }}
               />
@@ -256,7 +241,20 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
                     },
                   },
                   }}
-                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  }, 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
               >
@@ -279,7 +277,20 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
                     },
                   },
                   }}
-                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  }, 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
               >
@@ -303,7 +314,20 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
                     },
                   },
                   }}
-                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  }, 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
                   } }}
                 >               
@@ -330,12 +354,61 @@ const handleCreateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
                   },
                 },
                 }}
-                sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
+                InputLabelProps={{
+                  sx: {
+                    color: theme === 'bright' ? 'black' : 'white',
+                    '&.Mui-focused': {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  },
+                }}
+                sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused fieldset': {
+                      borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                }, 'label': {
                 color: theme === 'bright' ? 'black' : 'white',
                 } }}
               />
-              <input type="file" onChange={handleNewProductImageChange} accept="image/*" multiple />
-              <Button sx={{ marginTop: '15px' }} type="submit" variant="outlined" color="primary">
+              <Box sx={{ margin: "2vh" }}>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  sx={{
+                    color: theme === 'bright'? 'black' : '#E9E9E9', 
+                    border: theme === 'bright'? '2px solid black' : '2px solid #E9E9E9', 
+                    fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                    padding: { xs: '5px 10px', sm: '8px 15px' },
+                    backgroundColor: 'transparent',
+                    '&:hover': {
+                        borderColor: theme === 'bright'? 'black' : '#E9E9E9'
+                    }
+                  }}
+                >
+                  Upload File
+                  <input
+                    type="file"
+                    hidden
+                    onChange={handleNewProductImageChange}
+                    accept="image/*"
+                    multiple
+                  />
+                </Button>
+              </Box>
+              <Button
+                variant="outlined"
+                type="submit"
+                sx={{ 
+                  color: '#E9E9E9', border: '2px solid #5F2E2E', 
+                  fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                  padding: { xs: '5px 10px', sm: '8px 15px' },
+                  backgroundColor: '#5F2E2E',
+                  '&:hover': {
+                      borderColor: '#5F2E2E'
+                  }
+                }}
+              >
                 Create Product
               </Button>
             </Box>

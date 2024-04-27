@@ -76,17 +76,28 @@ export default function CreateCategory() {
          {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
          {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
          <h2>Category doesn't exist?</h2>
-         <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+         <Button 
+            variant="outlined" sx={{ 
+               color: '#E9E9E9', border: '2px solid #5F2E2E', 
+               fontSize: { xs: '0.8rem', sm: '1rem' }, 
+               padding: { xs: '5px 10px', sm: '8px 15px' },
+               backgroundColor: '#5F2E2E',
+               '&:hover': {
+                     borderColor: '#5F2E2E'
+               }
+            }}
+            onClick={handleClickOpen}
+         >
             Create New Category
          </Button>
          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title" sx={{
-               backgroundColor: theme === 'dark' ? 'black' : 'bright',
-               border: theme === 'dark' ? '1px solid white' : '1px solid black',
-               color: theme === 'dark' ? 'white' : 'black',
+               backgroundColor: theme === 'bright' ? '#B8B8B8' : '#444444',
+               border: theme === 'bright' ? '1px solid #B8B8B8' : '1px solid #7B7B7B',
+               color: theme === 'bright' ? 'black' : '#E9E9E9',
                }}>Create New Category</DialogTitle>
             <DialogContent sx={{
-               backgroundColor: theme === 'dark' ? 'black' : 'bright',
+               background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
                border: theme === 'dark' ? '1px solid white' : '1px solid black',
                borderRadius: '5px',
                overflow: 'hidden',
@@ -110,20 +121,60 @@ export default function CreateCategory() {
                         },
                      },
                   }}
-                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                     color: theme === 'bright' ? 'black' : 'white',
+                  InputLabelProps={{
+                     sx: {
+                       color: theme === 'bright' ? 'black' : 'white',
+                       '&.Mui-focused': {
+                         color: theme === 'bright' ? 'black' : '#E9E9E9',
+                       },
+                     },
+                   }}
+                  sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+                  '& .MuiOutlinedInput-root': {
+                     '&.Mui-focused fieldset': {
+                         borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                     },
+                   }, 'label': {
+                     color: theme === 'bright' ? 'black' : '#E9E9E9',
                   } }}
                />
-               <input
-                  type="file"
-                  onChange={handleNewCategoryImageChange}
-                  accept="image/*"
+               <Button
+                  variant="outlined"
+                  component="label"
+                  sx={{
+                     color: theme === 'bright'? 'black' : '#E9E9E9', 
+                     border: theme === 'bright'? '2px solid black' : '2px solid #E9E9E9', 
+                     fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                     padding: { xs: '5px 10px', sm: '8px 15px' },
+                     backgroundColor: 'transparent',
+                     '&:hover': {
+                        borderColor: theme === 'bright'? 'black' : '#E9E9E9'
+                     }
+                  }}
+                  >
+                  Upload Image
+                  <input
+                     type="file"
+                     hidden
+                     onChange={handleNewCategoryImageChange}
+                     accept="image/*"
                />
+               </Button>
                <DialogActions >
-                  <Button onClick={handleClose} color="primary">
+                  <Button onClick={handleClose} sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>
                      Cancel
                   </Button>
-                  <Button type="submit" variant="outlined" color="primary">
+                  <Button type="submit" variant="outlined"
+                     sx={{ 
+                        color: 'white', border: '2px solid #5F2E2E', 
+                        fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                        padding: { xs: '5px 10px', sm: '8px 15px' },
+                        backgroundColor: '#5F2E2E',
+                        '&:hover': {
+                           borderColor: '#5F2E2E'
+                        }
+                     }}
+                  >
                      Create Category
                   </Button>
                </DialogActions>

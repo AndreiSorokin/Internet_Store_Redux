@@ -11,14 +11,13 @@ import Search from "../../components/utils/Search";
 import Pagination from "../../components/utils/Pagination";
 import ProductItem from "../../components/products/ProductItem";
 import ScrollToTopButton from "../../components/utils/ScrollToTop";
-import { LoggedInUser } from "../../misc/type";
 import useDebounce from "../../hooks/UseDebounce"
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import parseJwt from "../../helpers/decode";
 
 
@@ -83,12 +82,15 @@ export default function ProductsPage() {
     <Box sx={{
       background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
       color: theme === "bright" ? "black" : "#E9E9E9",
-      height: '250vh',
+      height: '300vh',
       paddingTop: '20vh',
       padding:'25px',
       transition: '0.5s ease',
+      '@media (max-width: 900px)': {
+        height: '400vh', 
+      },
       '@media (max-width: 600px)': {
-        height: '550vh', 
+        height: '720vh', 
       },
     }}>
       
@@ -125,14 +127,23 @@ export default function ProductsPage() {
               </Box>
               <Box display="flex" alignItems="center" sx={{marginLeft: '10vw', flexDirection: 'column'}}>
                 <FormControl sx={{width: '110%'}}>
-                  <InputLabel id="size-select-label">Size</InputLabel>
+                <InputLabel sx={{ color: theme === 'bright' ? 'black' : 'white', '&.Mui-focused': { color: theme === 'bright' ? 'black' : 'white' } }} id="demo-simple-select-label">Size</InputLabel>
                   <Select
                     labelId="size-select-label"
                     id="size-select"
                     value={size}
                     label="Size"
                     onChange={(e) => setSize(e.target.value)}
-                    sx={{ marginBottom: '20px', width: '60%', alignItems: 'center' }}
+                    sx={{ marginBottom: '20px', width: '60%', alignItems: 'center',
+                    'div': {
+                      minWidth: "100px",
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'inherit',
+                      }
+                    }}
                   >
                     <MenuItem value=""><em>All</em></MenuItem>
                     <MenuItem value="Small">Small</MenuItem>
@@ -141,14 +152,23 @@ export default function ProductsPage() {
                   </Select>
                 </FormControl>
                 <FormControl sx={{width: '110%'}}>
-                  <InputLabel id="gender-select-label">Gender</InputLabel>
+                <InputLabel sx={{ color: theme === 'bright' ? 'black' : 'white', '&.Mui-focused': { color: theme === 'bright' ? 'black' : 'white' } }} id="demo-simple-select-label">Gender</InputLabel>
                   <Select
                     labelId="gender-select-label"
                     id="gender-select"
                     value={gender}
                     label="Gender"
                     onChange={(e) => setGender(e.target.value)}
-                    style={{ marginBottom: '20px', width:'60%' }}
+                    sx={{ marginBottom: '20px', width:'60%',
+                    'div': {
+                      minWidth: "100px",
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'inherit',
+                      }
+                    }}
                   >
                     <MenuItem value=""><em>All</em></MenuItem>
                     <MenuItem value="Male">Male</MenuItem>

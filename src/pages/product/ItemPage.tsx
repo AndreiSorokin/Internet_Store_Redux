@@ -147,8 +147,8 @@ const ItemPage: React.FC = () => {
     <Grid
       container
       style={{
-        backgroundColor: theme === "bright" ? "white" : "black",
-        color: theme === "bright" ? "black" : "white",
+        background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+        color: theme === "bright" ? "black" : "#E9E9E9",
         minHeight: '100vh',
         transition: '0.5s ease',
         paddingTop: '20vh'
@@ -259,6 +259,9 @@ const ItemPage: React.FC = () => {
                 <Typography gutterBottom variant="h6" component="p" align="center">
                   Price: ${productItem.price}
                 </Typography>
+                <Typography gutterBottom variant="h6" component="p" align="center">
+                  Category: {productItem.category.name}
+                </Typography>
                 <Typography variant="body1" color="textSecondary" component="p" align="center" sx={{ color: theme === 'bright' ? 'black' : 'white' }}>
                   {productItem.description}
                 </Typography>
@@ -267,7 +270,19 @@ const ItemPage: React.FC = () => {
           )}
           <Grid item>
             {userData
-              ? <Button onClick={handleAddToCart} variant="outlined" color="primary">
+              ? <Button onClick={handleAddToCart} variant="outlined"
+              sx={{ 
+                color: 'white', border: '2px solid #5F2E2E', 
+                fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                padding: { xs: '5px 10px', sm: '8px 15px' },
+                margin: '20px 0 40px 0',
+                '&:hover': {
+                  borderColor: '#5F2E2E',
+                  backgroundColor: '#5F2E2E',
+                  transition: '0.5s ease'
+                }
+              }}
+              >
                   Add to Cart
                 </Button>
               : <Link style={{color: theme === 'bright' ? 'black' : 'white'}} to="/auth/login">Want to add this item? Sign in first!</Link>
@@ -275,20 +290,46 @@ const ItemPage: React.FC = () => {
           </Grid>
           <Dialog open={openDialog} onClose={handleCloseDialog}>
               <Box sx={{backgroundColor: theme === 'bright' ? 'white' : 'black'}}>
-              <DialogTitle sx={{color: theme === 'bright' ? 'black' : 'white',}}>Select Quantity</DialogTitle>
-                <DialogContent>
+              <DialogTitle sx={{
+                backgroundColor: theme === 'bright' ? '#B8B8B8' : '#444444',
+                color: theme === 'bright' ? 'black' : '#E9E9E9',
+              }}>Select Quantity</DialogTitle>
+                <DialogContent sx={{
+               backgroundColor: theme === 'bright' ? '#B8B8B8' : '#444444',
+               overflow: 'hidden',
+               }}>
                   <TextField
                     label="Quantity"
                     type="string"
                     value={quantity ?? ''}
                     onChange={(e) => setQuantity(Number(e.target.value))}
-                    sx={{backgroundColor: theme === 'bright' ? 'white' : 'black', borderRadius: '5px', border: theme === 'bright' ? '1px solid black' : '1px solid white'}}
-                    InputProps={{ inputProps: { min: 1 }, style: {
-                      color: theme === 'bright' ? 'black' : 'white',
-                    } }}
+                    InputProps={{
+                      sx: {
+                         color: theme === 'bright' ? 'black' : 'white',
+                         '@media (max-width: 768px)': {
+                            maxWidth: '60%',
+                         },
+                      },
+                   }}
+                   InputLabelProps={{
+                      sx: {
+                        color: theme === 'bright' ? 'black' : 'white',
+                        '&.Mui-focused': {
+                          color: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      },
+                    }}
+                   sx={{ margin: "2vh", width: "200px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+                   '& .MuiOutlinedInput-root': {
+                      '&.Mui-focused fieldset': {
+                          borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    }, 'label': {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                   } }}
                   />
                 </DialogContent>
-              <DialogActions>
+              <DialogActions style={{backgroundColor: theme === 'bright' ? '#B8B8B8' : '#444444'}}>
                 <Button sx={{color: theme === 'bright' ? 'black' : 'white'}} onClick={handleCloseDialog}>Cancel</Button>
                 <Button sx={{color: theme === 'bright' ? 'black' : 'white'}} onClick={handleConfirmAddToCart} color="primary">Add to Cart</Button>
               </DialogActions>
@@ -296,12 +337,33 @@ const ItemPage: React.FC = () => {
             </Dialog>
           {isAdmin && (
             <Grid item>
-              <Button onClick={() => setOpenUserInputs(true)} variant="outlined" color="primary">
+              <Button onClick={() => setOpenUserInputs(true)} variant="outlined"
+                sx={{ 
+                  color: 'white', border: '2px solid #5F2E2E', 
+                  fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                  padding: { xs: '5px 10px', sm: '8px 15px' },
+                  margin: '20px 0 40px 0',
+                  backgroundColor: '#5F2E2E',
+                  '&:hover': {
+                    borderColor: '#5F2E2E',
+                    transition: '0.5s ease'
+                  }
+                }}
+              >
                 Update Product
               </Button>
                 <Dialog open={openUserInputs} onClose={() => setOpenUserInputs(false)}>
-                <DialogTitle sx={{ border: theme === 'bright' ? '1px solid black' : '1px solid white', backgroundColor: theme === 'bright' ? 'white' : 'black', color: theme === 'bright' ? 'black' : 'white' }}>Update Product</DialogTitle>
-                <DialogContent sx={{ border: theme === 'bright' ? '1px solid black' : '1px solid white', backgroundColor: theme === 'bright' ? 'white' : 'black'}}>
+                <DialogTitle sx={{
+               backgroundColor: theme === 'bright' ? '#B8B8B8' : '#444444',
+               border: theme === 'bright' ? '1px solid #B8B8B8' : '1px solid #7B7B7B',
+               color: theme === 'bright' ? 'black' : '#E9E9E9',
+               }}>Update Product</DialogTitle>
+                <DialogContent sx={{
+               background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+               border: theme === 'dark' ? '1px solid white' : '1px solid black',
+               borderRadius: '5px',
+               overflow: 'hidden',
+               }}>
                 <form onSubmit={(e) => { handleUpdate(e); setOpenUserInputs(false); }}>
                   <Box sx={{
                     flexDirection: "column",
@@ -317,15 +379,29 @@ const ItemPage: React.FC = () => {
                       label="New Title"
                       type="text"
                       InputProps={{
-                        style: {
+                        sx: {
+                           color: theme === 'bright' ? 'black' : 'white',
+                           '@media (max-width: 768px)': {
+                              maxWidth: '60%',
+                           },
+                        },
+                     }}
+                     InputLabelProps={{
+                        sx: {
                           color: theme === 'bright' ? 'black' : 'white',
+                          '&.Mui-focused': {
+                            color: theme === 'bright' ? 'black' : '#E9E9E9',
+                          },
                         },
                       }}
-                      sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
-                      '@media (max-width: 900px)': { width: '250px' },
-                      'label': {
-                        color: theme === 'bright' ? 'black' : 'white'
-                      } }}
+                     sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+                     '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      }, 'label': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                     } }}
                     />
                     <TextField
                       value={updatedPriceInput.value}
@@ -333,20 +409,51 @@ const ItemPage: React.FC = () => {
                       label="New Price"
                       type="text"
                       InputProps={{
-                        style: {
+                        sx: {
+                           color: theme === 'bright' ? 'black' : 'white',
+                           '@media (max-width: 768px)': {
+                              maxWidth: '60%',
+                           },
+                        },
+                     }}
+                     InputLabelProps={{
+                        sx: {
                           color: theme === 'bright' ? 'black' : 'white',
+                          '&.Mui-focused': {
+                            color: theme === 'bright' ? 'black' : '#E9E9E9',
+                          },
                         },
                       }}
-                      sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
-                      '@media (max-width: 900px)': { width: '250px' },
-                      'label': {
-                        color: theme === 'bright' ? 'black' : 'white',
-                      } }}
+                     sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+                     '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      }, 'label': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                     } }}
                     />
                     <Grid container justifyContent="center">
                       <Grid item>
-                        <Button type="submit" variant="outlined" sx={{color: theme === 'bright' ? 'black' : 'white'}} onClick={handleCloseUserInputs}>Cancel</Button>
-                        <Button type="submit" variant="outlined" color="primary">Update</Button>
+                        <Button type="submit" onClick={handleCloseUserInputs}
+                        sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', 
+                        '&:hover': {
+                           backgroundColor: 'rgba(95, 46, 46, 0.1)',
+                           borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        }
+                     }}
+                        >Cancel</Button>
+                        <Button type="submit" 
+                        sx={{
+                          color: 'white', border: '2px solid #5F2E2E', 
+                          fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                          padding: { xs: '5px 10px', sm: '8px 15px' },
+                          backgroundColor: '#5F2E2E',
+                          '&:hover': {
+                             borderColor: '#5F2E2E'
+                          }
+                       }}
+                        >Update</Button>
                       </Grid>
                     </Grid>
                   </Box>

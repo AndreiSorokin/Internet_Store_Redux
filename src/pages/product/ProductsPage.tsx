@@ -82,26 +82,35 @@ export default function ProductsPage() {
     <Box sx={{
       background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
       color: theme === "bright" ? "black" : "#E9E9E9",
-      height: '300vh',
+      height: '230vh',
       paddingTop: '20vh',
       padding:'25px',
       transition: '0.5s ease',
       '@media (max-width: 900px)': {
-        height: '400vh', 
+        height: '350vh', 
       },
       '@media (max-width: 600px)': {
-        height: '720vh', 
+        height: '560vh', 
       },
     }}>
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
         <Link style={{marginTop:"10vh", display: userData && isAdmin ? 'block' : 'none'}} to={'/createNew'}>
-          <Button sx={{color: theme === "bright" ? "black" : "#E9E9E9"}}>Create new</Button>
+          <Button sx={{color: theme === "bright" ? "black" : "#E9E9E9", 
+          '&:hover': {
+              backgroundColor: 'rgba(95, 46, 46, 0.1)',
+              borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+          }}}>Create new</Button>
         </Link>
 
         <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme}/>
 
-        <Button style={{transform: 'translate(0,-10vh)', color: theme === "bright" ? "black" : "#E9E9E9"}} onClick={() => setDialog(true)}>Filters</Button>
+        <Button sx={{transform: 'translate(0,-10vh)', color: theme === "bright" ? "black" : "#E9E9E9",
+          '&:hover': {
+            backgroundColor: 'rgba(95, 46, 46, 0.1)',
+            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+         }
+        }} onClick={() => setDialog(true)}>Filters</Button>
         <Dialog open={dialog} onClose={() => setDialog(false)}>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{overflow: 'hidden', height: '55vh', borderRadius: '5px',
             background: theme === 'bright' ? 'linear-gradient(to top, #66605B 11%, #B8B8B8 85%)' : 'linear-gradient(to bottom, #9C9C9C 11%, #353535 98%)',
@@ -115,18 +124,23 @@ export default function ProductsPage() {
                   value={minPrice || ''}
                   onChange={(e) => setMinPrice(e.target.value ? parseInt(e.target.value) : undefined)}
                   placeholder="Min Price"
-                  style={{ padding: '10px', marginRight: '5px', width:'40%', marginBottom: '10px', backgroundColor: 'transparent', border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9' }}
+                  style={{ padding: '10px', marginRight: '5px', width:'150px', marginBottom: '10px', backgroundColor: 'transparent', border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9' }}
                 />
                 <input
                   type="number"
                   value={maxPrice || ''}
                   onChange={(e) => setMaxPrice(e.target.value ? parseInt(e.target.value) : undefined)}
                   placeholder="Max Price"
-                  style={{ padding: '10px', marginRight: '5px', width:'40%', backgroundColor: 'transparent', border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9' }}
+                  style={{ padding: '10px', marginRight: '5px', width:'150px', backgroundColor: 'transparent', border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9' }}
                 />
               </Box>
-              <Box display="flex" alignItems="center" sx={{marginLeft: '10vw', flexDirection: 'column'}}>
-                <FormControl sx={{width: '110%'}}>
+              <Box display="flex" alignItems="center" sx={{flexDirection: 'column'}}>
+                <FormControl sx={{
+                  width: '150px',
+                  '@media (max-width: 600px)': {
+                    width: '110%',
+                  }
+                }}>
                 <InputLabel sx={{ color: theme === 'bright' ? 'black' : 'white', '&.Mui-focused': { color: theme === 'bright' ? 'black' : 'white' } }} id="demo-simple-select-label">Size</InputLabel>
                   <Select
                     labelId="size-select-label"
@@ -134,9 +148,9 @@ export default function ProductsPage() {
                     value={size}
                     label="Size"
                     onChange={(e) => setSize(e.target.value)}
-                    sx={{ marginBottom: '20px', width: '60%', alignItems: 'center',
+                    sx={{ marginBottom: '20px',
                     'div': {
-                      minWidth: "100px",
+                      minWidth: "90px",
                       color: theme === 'bright' ? 'black' : '#E9E9E9',
                       border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
                     },
@@ -151,7 +165,12 @@ export default function ProductsPage() {
                     <MenuItem value="Large">Large</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl sx={{width: '110%'}}>
+                <FormControl sx={{
+                  width: '150px',
+                  '@media (max-width: 600px)': {
+                    width: '110%',
+                  }
+                }}>
                 <InputLabel sx={{ color: theme === 'bright' ? 'black' : 'white', '&.Mui-focused': { color: theme === 'bright' ? 'black' : 'white' } }} id="demo-simple-select-label">Gender</InputLabel>
                   <Select
                     labelId="gender-select-label"
@@ -159,9 +178,9 @@ export default function ProductsPage() {
                     value={gender}
                     label="Gender"
                     onChange={(e) => setGender(e.target.value)}
-                    sx={{ marginBottom: '20px', width:'60%',
+                    sx={{ marginBottom: '20px',
                     'div': {
-                      minWidth: "100px",
+                      minWidth: "90px",
                       color: theme === 'bright' ? 'black' : '#E9E9E9',
                       border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
                     },

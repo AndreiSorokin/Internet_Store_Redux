@@ -17,7 +17,7 @@ const ProductItem: React.FC<ProductItemProps> = ({filteredProducts}) => {
                <Grid item key={product.id} xs={12} sm={6} md={4}>
                   <div>
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                     <img style={{ width: '250px', height: '300px' }} src={product.category.image} alt={`a picture of ${product.name} not available`} />
+                     <img style={{ width: '200px', height: '220px' }} src={product.category.image} alt={`a picture of ${product.name} not available`} />
                      <div style={{marginTop: '10px', fontSize: '20px'}}>{product.name}</div>
                      <div style={{fontSize: '17px'}}>Price: ${product.price}</div>
                         <Link to={`/products/${product.id}`}>

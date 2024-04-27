@@ -125,8 +125,8 @@ export default function ProfilePage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)',
-        color: theme === 'bright' ? 'black' : 'white',
+        background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+        color: theme === "bright" ? "black" : "#E9E9E9",
         minHeight: '120vh',
         transition: '0.5s ease',
         overflow: 'hidden',
@@ -140,7 +140,6 @@ export default function ProfilePage() {
           <img style={{ borderRadius: '5px', width: '150px' }} src={user.avatar || defaultPicture} alt="" />
           {user.status === 'INACTIVE' && <div>Your account is inactive, please contact administrator</div>}
           <h1>Hello, {user.firstName || "User"}</h1>
-          <p>On this page you can modify your information</p>
           <form onSubmit={handleUpdateUser} style={{ width: '100%', maxWidth: '400px' }}>
           <TextField
               placeholder={user.username}
@@ -152,13 +151,29 @@ export default function ProfilePage() {
               margin="normal"
               fullWidth
               InputProps={{
-                style: {
-                  color: theme === 'bright' ? 'black' : 'white',
+                sx: {
+                   color: theme === 'bright' ? 'black' : '#E9E9E9',
+                   '@media (max-width: 768px)': {
+                      maxWidth: '40%',
+                   },
                 },
-                }}
-                sx={{ margin: "2vh", width: "90%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                color: theme === 'bright' ? 'black' : 'white'
-                } }}
+             }}
+             InputLabelProps={{
+                sx: {
+                  color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  '&.Mui-focused': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                },
+              }}
+             sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+             '& .MuiOutlinedInput-root': {
+                '&.Mui-focused fieldset': {
+                    borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                },
+              }, 'label': {
+                color: theme === 'bright' ? 'black' : '#E9E9E9',
+             } }}
             />
             <TextField
               placeholder={user.firstName}
@@ -170,15 +185,29 @@ export default function ProfilePage() {
               margin="normal"
               fullWidth
               InputProps={{
-                style: {
-                  color: theme === 'bright' ? 'black' : 'white',
-                  background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)',
-
+                sx: {
+                   color: theme === 'bright' ? 'black' : '#E9E9E9',
+                   '@media (max-width: 768px)': {
+                      maxWidth: '40%',
+                   },
                 },
-                }}
-                sx={{ margin: "2vh", width: "90%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                color: theme === 'bright' ? 'black' : 'white'
-                } }}
+             }}
+             InputLabelProps={{
+                sx: {
+                  color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  '&.Mui-focused': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                },
+              }}
+             sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+             '& .MuiOutlinedInput-root': {
+                '&.Mui-focused fieldset': {
+                    borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                },
+              }, 'label': {
+                color: theme === 'bright' ? 'black' : '#E9E9E9',
+             } }}
             />
             <TextField
               placeholder={user.lastName}
@@ -190,13 +219,29 @@ export default function ProfilePage() {
               margin="normal"
               fullWidth
               InputProps={{
-                style: {
-                  color: theme === 'bright' ? 'black' : 'white',
+                sx: {
+                   color: theme === 'bright' ? 'black' : '#E9E9E9',
+                   '@media (max-width: 768px)': {
+                      maxWidth: '40%',
+                   },
                 },
-                }}
-                sx={{ margin: "2vh", width: "90%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                color: theme === 'bright' ? 'black' : 'white'
-                } }}
+             }}
+             InputLabelProps={{
+                sx: {
+                  color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  '&.Mui-focused': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                },
+              }}
+             sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+             '& .MuiOutlinedInput-root': {
+                '&.Mui-focused fieldset': {
+                    borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                },
+              }, 'label': {
+                color: theme === 'bright' ? 'black' : '#E9E9E9',
+             } }}
             />
             <TextField
               placeholder={user.email}
@@ -208,24 +253,75 @@ export default function ProfilePage() {
               margin="normal"
               fullWidth
               InputProps={{
-                style: {
-                  color: theme === 'bright' ? 'black' : 'white',
+                sx: {
+                   color: theme === 'bright' ? 'black' : '#E9E9E9',
+                   '@media (max-width: 768px)': {
+                      maxWidth: '40%',
+                   },
                 },
-                }}
-                sx={{ margin: "2vh", width: "90%", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                color: theme === 'bright' ? 'black' : 'white',
-                } }}
+             }}
+             InputLabelProps={{
+                sx: {
+                  color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  '&.Mui-focused': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                },
+              }}
+             sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+             '& .MuiOutlinedInput-root': {
+                '&.Mui-focused fieldset': {
+                    borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                },
+              }, 'label': {
+                color: theme === 'bright' ? 'black' : '#E9E9E9',
+             } }}
             />
-            <Button type="submit" variant="outlined" color="primary">
+            <Button type="submit"
+            sx={{ 
+              color: 'white', border: '2px solid #5F2E2E', 
+              fontSize: { xs: '0.8rem', sm: '1rem' }, 
+              padding: { xs: '5px 10px', sm: '8px 15px' },
+              marginBottom: '20px',
+              '&:hover': {
+                 borderColor: '#5F2E2E',
+                 backgroundColor: '#5F2E2E',
+              }
+           }}
+            >
               Apply Changes
             </Button>
           </form>
-          <Button variant="outlined" color="primary" onClick={handleClickOpenUpdatePasswordDialog}>
+          <Button variant="outlined" onClick={handleClickOpenUpdatePasswordDialog}
+          sx={{ 
+            color: 'white', border: '2px solid #5F2E2E', 
+            fontSize: { xs: '0.8rem', sm: '1rem' }, 
+            padding: { xs: '5px 10px', sm: '8px 15px' },
+            marginBottom: '20px',
+            backgroundColor: '#5F2E2E',
+            '&:hover': {
+               borderColor: '#5F2E2E',
+            }
+         }}
+          >
             Update Password
           </Button>
           <Dialog open={openUpdatePasswordDialog} onClose={handleCloseUpdatePasswordDialog} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title" sx={{background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)',}}>Update Password</DialogTitle>
-            <DialogContent sx={{background: theme === 'bright' ? 'linear-gradient(135deg, #F7C585, #F76B19)' : 'linear-gradient(135deg, #431C01, #72571D)',}}>
+            <DialogTitle id="form-dialog-title"
+            sx={{
+              backgroundColor: theme === 'bright' ? '#B8B8B8' : '#444444',
+              border: theme === 'bright' ? '1px solid #B8B8B8' : '1px solid #7B7B7B',
+              color: theme === 'bright' ? 'black' : '#E9E9E9',
+            }}
+            >Update Password</DialogTitle>
+            <DialogContent
+            sx={{
+              background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+              border: theme === 'dark' ? '1px solid white' : '1px solid black',
+              borderRadius: '5px',
+              overflow: 'hidden',
+              }}
+            >
               <form onSubmit={handleUpdatePassword}>
                 <TextField
                   autoFocus
@@ -236,7 +332,30 @@ export default function ProfilePage() {
                   fullWidth
                   value={currentPasswordInput.value}
                   onChange={currentPasswordInput.onChange}
-                  // sx={{backgroundColor: "black"}}
+                  InputProps={{
+                    sx: {
+                       color: theme === 'bright' ? 'black' : '#E9E9E9',
+                       '@media (max-width: 768px)': {
+                          maxWidth: '50%',
+                       },
+                    },
+                 }}
+                 InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                 sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+                 '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  }, 'label': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                 } }}
                 />
                 <TextField
                   margin="dense"
@@ -246,12 +365,53 @@ export default function ProfilePage() {
                   fullWidth
                   value={newPasswordInput.value}
                   onChange={newPasswordInput.onChange}
+                  InputProps={{
+                    sx: {
+                       color: theme === 'bright' ? 'black' : '#E9E9E9',
+                       '@media (max-width: 768px)': {
+                          maxWidth: '50%',
+                       },
+                    },
+                 }}
+                 InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                 sx={{ margin: "2vh", width: "350px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+                 '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  }, 'label': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                 } }}
                 />
                 <DialogActions>
-                  <Button onClick={handleCloseUpdatePasswordDialog} color="primary">
+                  <Button onClick={handleCloseUpdatePasswordDialog}
+                  sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', 
+                  '&:hover': {
+                     backgroundColor: 'rgba(95, 46, 46, 0.1)',
+                     borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                  }
+               }}
+                  >
                     Cancel
                   </Button>
-                  <Button type="submit" color="primary">
+                  <Button type="submit"
+                  sx={{ 
+                    color: 'white', border: '2px solid #5F2E2E', 
+                    fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                    padding: { xs: '5px 10px', sm: '8px 15px' },
+                    backgroundColor: '#5F2E2E',
+                    '&:hover': {
+                       borderColor: '#5F2E2E'
+                    }
+                 }}
+                  >
                     Update
                   </Button>
                 </DialogActions>

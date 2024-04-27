@@ -115,7 +115,7 @@ export default function CreateCategory() {
                   variant="outlined"
                   InputProps={{
                      sx: {
-                        color: theme === 'bright' ? 'black' : 'white',
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
                         '@media (max-width: 768px)': {
                            maxWidth: '60%',
                         },
@@ -123,7 +123,7 @@ export default function CreateCategory() {
                   }}
                   InputLabelProps={{
                      sx: {
-                       color: theme === 'bright' ? 'black' : 'white',
+                       color: theme === 'bright' ? 'black' : '#E9E9E9',
                        '&.Mui-focused': {
                          color: theme === 'bright' ? 'black' : '#E9E9E9',
                        },
@@ -161,7 +161,12 @@ export default function CreateCategory() {
                />
                </Button>
                <DialogActions >
-                  <Button onClick={handleClose} sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>
+                  <Button onClick={handleClose} sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', 
+                     '&:hover': {
+                        backgroundColor: 'rgba(95, 46, 46, 0.1)',
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                     }
+                  }}>
                      Cancel
                   </Button>
                   <Button type="submit" variant="outlined"

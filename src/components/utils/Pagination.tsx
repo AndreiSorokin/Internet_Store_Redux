@@ -46,8 +46,8 @@ const Pagination = ({ searchQuery, minPrice, maxPrice, size, gender }: Paginatio
       shape="rounded"
       sx={{
          'button': {
-            color: theme === 'bright' ? 'black' : 'white',
-            border: theme === 'bright' ? '1px solid white' : '1px solid white',
+            color: theme === 'bright' ? 'black' : '#E9E9E9',
+            border: '1px solid #8F5E4E',
          },
          'div': {
             color: theme === 'bright' ? 'black' : 'white',

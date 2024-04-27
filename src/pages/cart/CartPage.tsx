@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
-import { CardElement, Elements } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
-import { CartItem, LoggedInUser } from '../../misc/type';
-import { updateCartItemQuantity, removeFromCart, clearCart } from '../../redux/slices/cartSlice';
+import { CartItem } from '../../misc/type';
+import { updateCartItemQuantity, removeFromCart } from '../../redux/slices/cartSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext'
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import ScrollToTopButton from '../../components/utils/ScrollToTop';
 import { createOrder, fetchOrdersByUserId } from '../../redux/slices/orderSlice';
-import { getSingleUser } from '../../redux/slices/userSlice';
 import CheckoutForm from '../../components/utils/CheckoutForm';
 import useErrorMessage from '../../hooks/ErrorMessage';
 
-import { Button, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import parseJwt from '../../helpers/decode';
 
 const CartPage: React.FC = () => {
@@ -25,7 +24,6 @@ const CartPage: React.FC = () => {
 
   const cartItems = useAppSelector((state: AppState) => state.cart.items);
   const dispatch = useAppDispatch();
-  // const user = useAppSelector((state: AppState) => state.userRegister.user) as LoggedInUser;
   const userData = parseJwt(localStorage.getItem('token'));
   const userId =userData?.id
 
@@ -73,8 +71,9 @@ const CartPage: React.FC = () => {
   }, 0);
 
   return (
-    <div style={{ backgroundColor: theme === "bright" ? "white" : "black",
-        color: theme === "bright" ? "black" : "white",
+    <div style={{
+        background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+        color: theme === "bright" ? "black" : "#E9E9E9",
         paddingTop: '5vh',
         transition: '0.5s ease'
       }}>
@@ -95,10 +94,20 @@ const CartPage: React.FC = () => {
       >
       {cartItems.length === 0 ? (
         <Grid item xs={12} textAlign="center">
-          <h2>Cart</h2>
-          <p>Your cart is empty.</p>
+          <h2 style={{fontSize: '36px'}}>Cart</h2>
+          <p style={{fontSize: '24px'}}>Your cart is empty.</p>
           <Link to="/products">
-            <Button variant="outlined">Shop now</Button>
+            <Button
+            sx={{ 
+              color: 'white', border: '2px solid #5F2E2E', 
+              fontSize: { xs: '0.8rem', sm: '1rem' }, 
+              padding: { xs: '5px 10px', sm: '8px 15px' },
+              backgroundColor: '#5F2E2E',
+              '&:hover': {
+                 borderColor: '#5F2E2E'
+              }
+           }}
+            >Shop now</Button>
           </Link>
         </Grid>
       ) : (
@@ -109,42 +118,66 @@ const CartPage: React.FC = () => {
           <Grid item xs={12}>
             <Grid container spacing={2}>
               {cartItems.map((cartItem: CartItem, index: number) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <div>
-                    <img
-                      src={cartItem.productId.category.image}
-                      alt={cartItem.productId.name}
-                      style={{ width: "100%", height: "auto" }}
-                    />
-                    <h3>{cartItem.productId.name}</h3>
-                    <p>Price: ${cartItem.productId.price}</p>
-                    <p>Quantity: {cartItem.quantity}</p>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      style={{ fontSize: "15px", marginBottom: "15px", marginRight: '15px' }}
-                      onClick={() => handleIncrementQuantity(cartItem.productId.id)}
-                    >
-                      +
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      style={{ fontSize: "15px", marginBottom: "15px" }}
-                      onClick={() => handleDecrementQuantity(cartItem.productId.id)}
-                    >
-                      -
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      style={{ marginBottom: "15px" }}
-                      onClick={() => handleRemoveItem(cartItem.productId.id, cartItem.productId.name)}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                </Grid>
+                <Box key={index} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10vh' }}>
+                  <img
+                    src={cartItem.productId.category.image}
+                    alt={cartItem.productId.name}
+                    style={{ width: "180px", height: "200px" }}
+                  />
+                  <h3>{cartItem.productId.name}</h3>
+                  <div>Price: ${cartItem.productId.price}</div>
+                  <div>Quantity: {cartItem.quantity}</div>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: '10px', margin: '2vh 0' }}>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleIncrementQuantity(cartItem.productId.id)}
+                        sx={{ 
+                          color: 'white', border: '2px solid #5F2E2E', 
+                          fontSize: '15px', 
+                          padding: { xs: '5px 10px', sm: '8px 15px' },
+                          '&:hover': {
+                            borderColor: '#5F2E2E',
+                            backgroundColor: '#5F2E2E',
+                            transition: '0.5s ease'
+                          }
+                        }}
+                      >
+                        +
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleDecrementQuantity(cartItem.productId.id)}
+                        sx={{ 
+                          color: 'white', border: '2px solid #5F2E2E', 
+                          fontSize: '15px', 
+                          padding: { xs: '5px 10px', sm: '8px 15px' },
+                          '&:hover': {
+                            borderColor: '#5F2E2E',
+                            backgroundColor: '#5F2E2E',
+                            transition: '0.5s ease'
+                          }
+                        }}
+                      >
+                        -
+                      </Button>
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleRemoveItem(cartItem.productId.id, cartItem.productId.name)}
+                    sx={{ 
+                      color: 'white', border: '2px solid #5F2E2E', 
+                      fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                      padding: { xs: '5px 10px', sm: '8px 15px' },
+                      margin: '20px 0 40px 0',
+                      backgroundColor: '#5F2E2E',
+                      '&:hover': {
+                          borderColor: '#5F2E2E'
+                      }
+                    }}
+                  >
+                    Remove
+                  </Button>
+              </Box>
               ))}
               <Grid item xs={12}>
             <Grid container spacing={2}>
@@ -177,10 +210,11 @@ const CartPage: React.FC = () => {
                 
                   try {
                     await dispatch(createOrder(orderData)).unwrap();
-                    // await dispatch(clearCart());
                     showSuccessMessage('Order placed successfully!');
+                    window.scrollTo(0, 0);
                   } catch (error) {
                     console.error('Failed to place order:', error);
+                    window.scrollTo(0, 0);
                   }
                 }}
                 onError={(errorMessage) => {

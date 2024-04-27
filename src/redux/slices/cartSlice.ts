@@ -21,7 +21,7 @@ export const getCart = createAsyncThunk(
    'getCart',
    async (userId: number, { rejectWithValue }) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/users/${userId}/cart`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/${userId}/cart`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -34,7 +34,7 @@ export const addProductToCart = createAsyncThunk(
    'addProductToCart',
    async ({ userId, productId, quantity }: addProduct, { rejectWithValue }) => {
       try {
-         const response = await axios.post(`http://localhost:8080/api/v1/${userId}/cart`, {
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/${userId}/cart`, {
             productId,
             quantity
          });

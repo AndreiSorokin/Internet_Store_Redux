@@ -1,17 +1,15 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api/v1/',
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
   withCredentials: true,
 });
 
 const refreshAccessToken = async () => {
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/users/refreshToken', {}, { withCredentials: true });
-    console.log('response',response)
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/refreshToken`, {}, { withCredentials: true });
     return response.data.accessToken;
   } catch (error) {
-    console.error('Error refreshing access token:', error);// from here
     throw new Error('Failed to refresh access token');
   }
 };

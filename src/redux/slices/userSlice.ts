@@ -144,7 +144,7 @@ export const handleGoogleLogin = createAsyncThunk(
       return rejectWithValue('No credential token received from Google login');
     }
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/auth/google', { id_token: token });
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/auth/google`, { id_token: token });
       localStorage.setItem('token', response.data.token);
       dispatch(setUser(response.data));
       return response.data;

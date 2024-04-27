@@ -44,8 +44,7 @@ const loggedInUser: LoggedInUser = {
    status: UserStatus.ACTIVE,
    cart: { items: [] },
    orders: { orders: [] }
-};
-const BASE_URL = 'http://localhost:8080/api/v1'
+}
 
 describe("user reducer", () => {
 

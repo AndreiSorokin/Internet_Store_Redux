@@ -21,7 +21,7 @@ export const fetchAllProducts = createAsyncThunk(
    "fetchAllProducts",
    async () => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/products`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -36,7 +36,7 @@ export const fetchProducts = createAsyncThunk(
    { limit: number; offset: number; searchQuery?: string; minPrice?: number; maxPrice?: number, size: string, gender: string },
       { rejectWithValue }) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products?limit=${limit}&offset=${offset}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}&size=${size}&gender=${gender}`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/products?limit=${limit}&offset=${offset}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}&size=${size}&gender=${gender}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -49,7 +49,7 @@ export const fetchSingleProduct = createAsyncThunk(
    "fetchSingleProduct",
    async (id: string) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/products/${id}`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/products/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -84,7 +84,7 @@ export const createProduct = createAsyncThunk(
             }
          }
 
-         const response = await axios.post(`http://localhost:8080/api/v1/products`, {
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/products`, {
             name,
             price,
             description,
@@ -121,7 +121,7 @@ export const deleteProduct = createAsyncThunk(
    'deleteProduct',
    async (productId: string, { rejectWithValue }) => {
       try {
-         await axios.delete(`http://localhost:8080/api/v1/products/${productId}`, {
+         await axios.delete(`${process.env.REACT_APP_BASE_URL}/products/${productId}`, {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -137,7 +137,7 @@ export const updateProduct = createAsyncThunk(
    'updateProduct',
    async ({ id, name, price }: { id: string, name: string, price: number }, { rejectWithValue }) => {
       try {
-         const response = await axios.put(`http://localhost:8080/api/v1/products/${id}`, {
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/products/${id}`, {
             name,
             price
          }, {

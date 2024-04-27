@@ -14,7 +14,7 @@ export const fetchCategories = createAsyncThunk(
    "fetchCategories",
    async () => {
       try {
-         const response = await axios.get("http://localhost:8080/api/v1/categories");
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/categories`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -27,7 +27,7 @@ export const fetchSingleCategory = createAsyncThunk(
    "fetchSingleCategory",
    async (id: string) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/categories/${id}`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/categories/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -40,7 +40,7 @@ export const updateCategory = createAsyncThunk(
    "updateCategory",
    async ({ id, category }: { id: string, category: Category }, { rejectWithValue }) => {
       try {
-         const response = await axios.put(`http://localhost:8080/api/v1/categories/${id}`, JSON.stringify(category), {
+         const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/categories/${id}`, JSON.stringify(category), {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`,
                "Content-Type": "application/json"
@@ -58,7 +58,7 @@ export const deleteCategory = createAsyncThunk(
    "deleteCategory",
    async (id: string, { rejectWithValue }) => {
       try {
-         const response = await axios.delete(`http://localhost:8080/api/v1/categories/${id}`, {
+         const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/categories/${id}`, {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`,
                "Content-Type": "application/json"

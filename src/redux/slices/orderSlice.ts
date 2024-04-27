@@ -14,7 +14,7 @@ export const fetchOrdersByUserId = createAsyncThunk(
    "fetchOrdersByUserId",
    async (userId: number, { rejectWithValue }) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/orders/${userId}/get-orders`, {
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/orders/${userId}/get-orders`, {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`,
             }
@@ -30,7 +30,7 @@ export const fetchOrders = createAsyncThunk(
    "fetchOrders",
    async () => {
       try {
-         const response = await axios.get("http://localhost:8080/api/v1/orders");
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/orders`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -43,7 +43,7 @@ export const fetchSingleOrder = createAsyncThunk(
    "fetchSingleOrder",
    async (id: string) => {
       try {
-         const response = await axios.get(`http://localhost:8080/api/v1/orders/admin/${id}`);
+         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/orders/admin/${id}`);
          const data = response.data;
          return data;
       } catch (error) {
@@ -56,7 +56,7 @@ export const createOrder = createAsyncThunk(
    "createOrder",
    async ({ userId, order }: { userId: number, order: CartState }, { rejectWithValue }) => {
       try {
-         const response = await axios.post(`http://localhost:8080/api/v1/orders/${userId}`, JSON.stringify(order), {
+         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/orders/${userId}`, JSON.stringify(order), {
             headers: {
                Authorization: `Bearer ${localStorage.getItem('token')}`,
                "Content-Type": "application/json"
@@ -74,7 +74,7 @@ export const deleteOrder = createAsyncThunk(
    "deleteOrder",
    async (id: string, { rejectWithValue }) => {
       try {
-         const response = await axios.delete(`http://localhost:8080/api/v1/orders/${id}`, {
+         const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/orders/${id}`, {
             headers: {
                "Content-Type": "application/json"
             }

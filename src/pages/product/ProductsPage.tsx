@@ -82,16 +82,11 @@ export default function ProductsPage() {
     <Box sx={{
       background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
       color: theme === "bright" ? "black" : "#E9E9E9",
-      height: '230vh',
+      minHeight: '100vh',
       paddingTop: '20vh',
       padding:'25px',
       transition: '0.5s ease',
-      '@media (max-width: 900px)': {
-        height: '350vh', 
-      },
-      '@media (max-width: 600px)': {
-        height: '560vh', 
-      },
+
     }}>
       
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">

@@ -72,8 +72,9 @@ const CartPage: React.FC = () => {
 
   return (
     <div style={{
-        background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
-        color: theme === "bright" ? "black" : "#E9E9E9",
+      background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+      color: theme === "bright" ? "black" : "#E9E9E9",
+      minHeight: '100vh',
         paddingTop: '5vh',
         transition: '0.5s ease'
       }}>

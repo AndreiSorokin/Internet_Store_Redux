@@ -108,6 +108,11 @@ const Navbar = () => {
                            </Button>
                         </Link>
                      }
+                     {userData &&
+                        <Link to="/orders">
+                           <Button sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>Orders</Button>
+                        </Link>
+                     }
                      {isAdmin &&
                         <Link to="auth/admin">
                            <Button variant="outlined" onClick={toggleMenu} sx={{color: theme === "bright" ? "black" : "#E9E9E9", border: 'none', '&:hover': {backgroundColor: 'transparent', border: theme === "bright" ? "1px solid black" : "1px solid #E9E9E9" }}}>Admin</Button>

@@ -71,14 +71,15 @@ export default function LoginPage() {
   return (
     <div
       style={{
-        backgroundColor: theme === 'bright' ? 'white' : 'black',
-        color: theme === 'bright' ? 'black' : 'white',
-        height: '120vh',
+        background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+        color: theme === "bright" ? "black" : "#E9E9E9",
+        minHeight: '100vh',
         paddingTop: '20vh',
         transition: '0.5s ease'
       }}
     >
       <GoogleOAuthProvider clientId="856209738432-ct140b6kuui6cov1cg2c2g8na5fpi3r4.apps.googleusercontent.com">
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
         <GoogleLogin
           onSuccess={credentialResponse => {
           if (credentialResponse.credential) {
@@ -92,6 +93,7 @@ export default function LoginPage() {
             console.log('Login Failed');
           }}
         />
+        </div>
       </GoogleOAuthProvider>
       {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
@@ -122,17 +124,30 @@ export default function LoginPage() {
               onChange={emailInput.onChange}
               autoFocus
               InputProps={{
-                style: {
-                  color: theme === 'bright' ? 'black' : 'white',
+                sx: {
+                  color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  '@media (max-width: 768px)': {
+                    maxWidth: '90%',
+                  },
                 },
               }}
-              sx={{
-                borderRadius: '5px',
-                border: theme === 'bright' ? 'none' : '1px solid white',
-                'label': {
+              InputLabelProps={{
+                sx: {
                   color: theme === 'bright' ? 'black' : 'white',
+                  '&.Mui-focused': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
                 },
               }}
+              sx={{borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  },
+                  'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+                  } }}
             />
             <TextField
               margin="normal"
@@ -146,32 +161,60 @@ export default function LoginPage() {
               onChange={passwordInput.onChange}
               autoComplete="current-password"
               InputProps={{
-                style: {
-                  color: theme === 'bright' ? 'black' : 'white',
+                sx: {
+                  color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  '@media (max-width: 768px)': {
+                    maxWidth: '90%',
+                  },
                 },
               }}
-              sx={{
-                borderRadius: '5px',
-                border: theme === 'bright' ? 'none' : '1px solid white',
-                'label': {
+              InputLabelProps={{
+                sx: {
                   color: theme === 'bright' ? 'black' : 'white',
+                  '&.Mui-focused': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
                 },
               }}
+              sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  },
+                  'label': {
+                  color: theme === 'bright' ? 'black' : 'white',
+                  } }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-              sx={{ 'svg': { color: theme === 'bright' ? 'black' : 'white' } }}
+              sx={{ 'svg': { color: theme === 'bright' ? 'black' : '#E9E9E9' } }}
             />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" fullWidth variant="contained"
+            sx={{ 
+              color: '#E9E9E9', border: '2px solid #5F2E2E', 
+              fontSize: '15px', 
+              padding: { xs: '5px 10px', sm: '8px 15px',
+              '@media (max-width: 768px)': {
+                maxWidth: '90%',
+              },
+              },
+              backgroundColor: '#5F2E2E',
+              '&:hover': {
+                borderColor: '#5F2E2E',
+                transition: '0.5s ease'
+              }
+            }}
+            >
               Sign In
             </Button>
-            <Button onClick={() => setOpenForgotPassword(true)} color="primary">
+            <Button onClick={() => setOpenForgotPassword(true)} sx={{color: "#E9E9E9", textDecoration: "underline"}}>
               Forgot Password?
             </Button>
               <Dialog open={openForgotPassword} onClose={() => setOpenForgotPassword(false)}>
-              <DialogTitle  sx={{backgroundColor: theme === 'bright' ? 'white' : 'black', color: theme === 'bright' ? 'black' : 'white'}}>Forgot Password</DialogTitle>
-              <DialogContent sx={{backgroundColor: theme === 'bright' ? 'white' : 'black'}}>
+              <DialogTitle  sx={{backgroundColor: theme === 'bright' ? '#9C9C9C' : '#353535', color: theme === 'bright' ? 'black' : '#E9E9E9'}}>Forgot Password</DialogTitle>
+              <DialogContent sx={{backgroundColor: theme === 'bright' ? '#9C9C9C' : '#353535'}}>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -181,26 +224,56 @@ export default function LoginPage() {
                   fullWidth
                   value={forgotEmailInput.value}
                   onChange={forgotEmailInput.onChange}
-                  sx={{border: '1px solid white'}}
                   InputProps={{
-                    style: {
-                        color: theme === 'bright' ? 'black' : 'white',
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '@media (max-width: 768px)': {
+                        maxWidth: '90%',
+                      },
                     },
                   }}
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                    sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                    '& .MuiOutlinedInput-root': {
+                      '&.Mui-focused fieldset': {
+                          borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                    'label': {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                    } }}
                 />
               </DialogContent>
-              <DialogActions sx={{backgroundColor: theme === 'bright' ? 'white' : 'black'}}>
-                <Button onClick={() => setOpenForgotPassword(false)} color="primary">
+              <DialogActions sx={{backgroundColor: theme === 'bright' ? '#9C9C9C' : '#353535'}}>
+                <Button onClick={() => setOpenForgotPassword(false)} sx={{color: theme === 'bright' ? 'black' : '#E9E9E9'}}>
                   Cancel
                 </Button>
-                <Button onClick={handleForgotPassword} color="primary">
+                <Button onClick={handleForgotPassword}
+                sx={{
+                  color: theme === 'bright'? 'black' : '#E9E9E9', 
+                  border: theme === 'bright'? '2px solid black' : '2px solid #E9E9E9', 
+                  fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                  padding: { xs: '5px 10px', sm: '8px 15px' },
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                      borderColor: theme === 'bright'? 'black' : '#E9E9E9'
+                  }
+                }}
+                >
                   Send Email
                 </Button>
               </DialogActions>
             </Dialog>
             <Grid container>
               <Grid item>
-                <Link to="/registration">Don't have an account? Sign Up</Link>
+                <Link to="/registration" style={{color: "#E9E9E9", textDecoration: "underline", fontSize: '18px'}}>Don't have an account? Sign Up</Link>
               </Grid>
             </Grid>
           </Box>

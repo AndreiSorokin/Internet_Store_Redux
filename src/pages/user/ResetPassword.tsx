@@ -49,9 +49,9 @@ const ResetPassword = () => {
 
    return (
       <div style={{
-         backgroundColor: theme === 'bright' ? 'white' : 'black',
-         color: theme === 'bright' ? 'black' : 'white',
-         height: '80vh',
+         background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+         color: theme === "bright" ? "black" : "#E9E9E9",
+         minHeight: '100vh',
          paddingTop: '20vh',
          transition: '0.5s ease'
          }}>
@@ -89,18 +89,46 @@ const ResetPassword = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   autoFocus
-                  sx={{border: '1px solid white'}}
-                        InputProps={{
-                        style: {
-                           color: theme === 'bright' ? 'black' : 'white',
-                        },
-                     }}
+                  InputProps={{
+                     sx: {
+                       color: theme === 'bright' ? 'black' : '#E9E9E9',
+                       '@media (max-width: 768px)': {
+                         maxWidth: '90%',
+                       },
+                     },
+                   }}
+                   InputLabelProps={{
+                     sx: {
+                       color: theme === 'bright' ? 'black' : 'white',
+                       '&.Mui-focused': {
+                         color: theme === 'bright' ? 'black' : '#E9E9E9',
+                       },
+                     },
+                   }}
+                   sx={{borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                       '& .MuiOutlinedInput-root': {
+                         '&.Mui-focused fieldset': {
+                             borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                         },
+                       },
+                       'label': {
+                       color: theme === 'bright' ? 'black' : 'white',
+                       } }}
                />
                <Button
                   type="submit"
                   fullWidth
                   variant="outlined"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{
+                     color: theme === 'bright'? 'black' : '#E9E9E9', 
+                     border: theme === 'bright'? '2px solid black' : '2px solid #E9E9E9', 
+                     fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                     padding: { xs: '5px 10px', sm: '8px 15px' },
+                     backgroundColor: 'transparent',
+                     '&:hover': {
+                         borderColor: theme === 'bright'? 'black' : '#E9E9E9'
+                     }
+                   }}
                >
                   Reset Password
                </Button>

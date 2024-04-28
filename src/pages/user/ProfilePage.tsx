@@ -153,9 +153,6 @@ export default function ProfilePage() {
               InputProps={{
                 sx: {
                    color: theme === 'bright' ? 'black' : '#E9E9E9',
-                   '@media (max-width: 768px)': {
-                      maxWidth: '40%',
-                   },
                 },
              }}
              InputLabelProps={{
@@ -187,9 +184,6 @@ export default function ProfilePage() {
               InputProps={{
                 sx: {
                    color: theme === 'bright' ? 'black' : '#E9E9E9',
-                   '@media (max-width: 768px)': {
-                      maxWidth: '40%',
-                   },
                 },
              }}
              InputLabelProps={{
@@ -221,9 +215,6 @@ export default function ProfilePage() {
               InputProps={{
                 sx: {
                    color: theme === 'bright' ? 'black' : '#E9E9E9',
-                   '@media (max-width: 768px)': {
-                      maxWidth: '40%',
-                   },
                 },
              }}
              InputLabelProps={{
@@ -255,9 +246,6 @@ export default function ProfilePage() {
               InputProps={{
                 sx: {
                    color: theme === 'bright' ? 'black' : '#E9E9E9',
-                   '@media (max-width: 768px)': {
-                      maxWidth: '40%',
-                   },
                 },
              }}
              InputLabelProps={{

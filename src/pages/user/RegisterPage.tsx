@@ -88,10 +88,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   return (
     <div style={{
-      backgroundColor: theme === "bright" ? "white" : "black",
-      color: theme === "bright" ? "black" : "white",
-      height: '120vh',
-      paddingTop: '20vh',
+      background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+      color: theme === "bright" ? "black" : "#E9E9E9",
+      minHeight: '100vh',
+      paddingTop: '5vh',
       transition: '0.5s ease'
     }} >
       {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
@@ -123,13 +123,30 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   label="First Name"
                   autoFocus
                   InputProps={{
-                    style: {
-                      color: theme === 'bright' ? 'black' : 'white',
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '@media (max-width: 768px)': {
+                        maxWidth: '90%',
+                      },
                     },
                   }}
-                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                    color: theme === 'bright' ? 'black' : 'white',
-                  } }}
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                      '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      },
+                      'label': {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -144,13 +161,30 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   label="Last Name"
                   autoFocus
                   InputProps={{
-                    style: {
-                      color: theme === 'bright' ? 'black' : 'white',
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '@media (max-width: 768px)': {
+                        maxWidth: '90%',
+                      },
                     },
                   }}
-                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                    color: theme === 'bright' ? 'black' : 'white',
-                  } }}
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                      '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      },
+                      'label': {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -165,13 +199,30 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   label="Username"
                   autoFocus
                   InputProps={{
-                    style: {
-                      color: theme === 'bright' ? 'black' : 'white',
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '@media (max-width: 768px)': {
+                        maxWidth: '90%',
+                      },
                     },
                   }}
-                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                    color: theme === 'bright' ? 'black' : 'white',
-                  } }}
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                      '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      },
+                      'label': {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -185,13 +236,30 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   name="email"
                   autoComplete="email"
                   InputProps={{
-                    style: {
-                      color: theme === 'bright' ? 'black' : 'white',
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '@media (max-width: 768px)': {
+                        maxWidth: '90%',
+                      },
                     },
                   }}
-                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                    color: theme === 'bright' ? 'black' : 'white',
-                  } }}
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                      '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      },
+                      'label': {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -206,21 +274,58 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   id="password"
                   autoComplete="new-password"
                   InputProps={{
-                    style: {
-                      color: theme === 'bright' ? 'black' : 'white',
+                    sx: {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      '@media (max-width: 768px)': {
+                        maxWidth: '90%',
+                      },
                     },
                   }}
-                  sx={{ borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 'label': {
-                    color: theme === 'bright' ? 'black' : 'white',
-                  } }}
+                  InputLabelProps={{
+                    sx: {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      '&.Mui-focused': {
+                        color: theme === 'bright' ? 'black' : '#E9E9E9',
+                      },
+                    },
+                  }}
+                  sx={{borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white', 
+                      '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                        },
+                      },
+                      'label': {
+                      color: theme === 'bright' ? 'black' : 'white',
+                      } }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                />
+              <Box sx={{ margin: "2vh" }}>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  sx={{
+                    color: theme === 'bright'? 'black' : '#E9E9E9', 
+                    border: theme === 'bright'? '2px solid black' : '2px solid #E9E9E9', 
+                    fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                    padding: { xs: '5px 10px', sm: '8px 15px' },
+                    backgroundColor: 'transparent',
+                    '&:hover': {
+                        borderColor: theme === 'bright'? 'black' : '#E9E9E9'
+                    }
+                  }}
+                >
+                  Upload File
+                  <input
+                    type="file"
+                    hidden
+                    onChange={handleAvatarChange}
+                    accept="image/*"
+                    multiple
+                  />
+                </Button>
+              </Box>
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
@@ -235,14 +340,26 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             <Button
               type="submit"
               fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ 
+                color: '#E9E9E9', border: '2px solid #5F2E2E', 
+                fontSize: '15px', 
+                padding: { xs: '5px 10px', sm: '8px 15px', marginTop: '2vh',
+                '@media (max-width: 768px)': {
+                  maxWidth: '90%',
+                },
+                },
+                backgroundColor: '#5F2E2E',
+                '&:hover': {
+                  borderColor: '#5F2E2E',
+                  transition: '0.5s ease'
+                }
+              }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to="/auth/login">
+                <Link to="/auth/login" style={{color: "#E9E9E9", textDecoration: "underline", fontSize: '18px'}}>
                   Already have an account? Sign in
                 </Link>
               </Grid>

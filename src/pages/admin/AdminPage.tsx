@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
-import { LoggedInUser } from '../../misc/type';
+import { useAppDispatch } from '../../redux/store';
 import { fetchAllUsers } from '../../redux/slices/userSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import UserList from '../../components/adminComponents/UserList';
@@ -36,26 +35,33 @@ const AdminPage = () => {
     <Grid 
   container
   style={{
-    backgroundColor: theme === "bright" ? "white" : "black",
-    color: theme === "bright" ? "black" : "white",
+    background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
+    color: theme === "bright" ? "black" : "#E9E9E9",
     minHeight: '100vh',
     transition: '0.5s ease',
     paddingTop: '20vh',
     display: 'flex',
-    flexDirection: 'column', // Set the direction of items to column
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   }}
 >
-  <Grid item xs={12} style={{ textAlign: 'center' }}> {/* Ensure content is centered and responsive */}
-    <h2>Admin page</h2>
-    <p>Here you can access information of all of the users and created categories</p>
-  </Grid>
+    <h2 style={{fontSize: '36px'}}>Admin page</h2>
   <Grid item xs={12} style={{ textAlign: 'center' }}>
     <Typography id="user-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px' }}>
-      List of users
+      Manage users
     </Typography>
-    <Button variant="outlined" onClick={handleOpen} style={{ marginBottom: '20px' }}>Show list of users</Button>
+    <Button variant="outlined" onClick={handleOpen}
+    sx={{ 
+      color: 'white', border: '2px solid #5F2E2E', 
+      fontSize: { xs: '0.8rem', sm: '1rem' }, 
+      padding: { xs: '5px 10px', sm: '8px 15px' },
+      margin: '20px 0 40px 0',
+      backgroundColor: '#5F2E2E',
+      '&:hover': {
+         borderColor: '#5F2E2E'
+      }
+   }}>Show list of users</Button>
   </Grid>
   <Modal
     open={open}
@@ -72,14 +78,14 @@ const AdminPage = () => {
         width: 450,
         maxHeight: '80vh',
         overflowY: 'auto',
-        bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: theme === "bright" ? "white" : "black",
-        border: theme === 'bright' ? '1px solid white' : '1px solid white',
+        color: theme === 'bright' ? 'black' : '#E9E9E9',
+        border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
+        backgroundColor: theme === "bright" ? "#9C9C9C" : "#353535"
       }}
     >
       <Typography id="user-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>
@@ -91,9 +97,19 @@ const AdminPage = () => {
   </Modal>
   <Grid item xs={12} style={{ textAlign: 'center' }}>
     <Typography id="category-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px' }}>
-      List of categories
+      Modify categories
     </Typography>
-    <Button variant="outlined" onClick={handleOpenCategoryList} style={{ marginBottom: '20px' }}>Show Category List</Button>
+    <Button variant="outlined" onClick={handleOpenCategoryList}
+    sx={{ 
+      color: 'white', border: '2px solid #5F2E2E', 
+      fontSize: { xs: '0.8rem', sm: '1rem' }, 
+      padding: { xs: '5px 10px', sm: '8px 15px' },
+      margin: '20px 0 40px 0',
+      backgroundColor: '#5F2E2E',
+      '&:hover': {
+         borderColor: '#5F2E2E'
+      }
+   }}>Show Category List</Button>
   </Grid>
   <Modal
     open={openCategoryList}
@@ -110,14 +126,14 @@ const AdminPage = () => {
         width: 450,
         maxHeight: '80vh',
         overflowY: 'auto',
-        bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: theme === "bright" ? "white" : "black",
-        border: theme === 'bright' ? '1px solid white' : '1px solid white',
+        color: theme === 'bright' ? 'black' : '#E9E9E9',
+        border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
+        backgroundColor: theme === "bright" ? "#9C9C9C" : "#353535"
       }}
     >
       <Typography id="category-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>

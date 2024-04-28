@@ -57,7 +57,7 @@ export default function CategoryList() {
     <div>
       {categories.map(category => (
         <div key={category.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <img src={category.image} alt={category.name} style={{ marginRight: '20px', width: '150px', height: '150px' }} />
+          <img src={category.image} alt={category.name} style={{ marginRight: '20px', width: '120px', height: '140px' }} />
           <div style={{ flex: 1 }}>
           {editId !== null && editId === category.id.toString() ? (
             <>
@@ -65,16 +65,57 @@ export default function CategoryList() {
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
                 size="small"
-                style={{ marginBottom: '10px' }}
+                InputProps={{
+                  sx: {
+                     color: theme === 'bright' ? 'black' : '#E9E9E9',
+                     '@media (max-width: 768px)': {
+                        maxWidth: '60%',
+                     },
+                  },
+               }}
+               InputLabelProps={{
+                  sx: {
+                    color: theme === 'bright' ? 'black' : '#E9E9E9',
+                    '&.Mui-focused': {
+                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                    },
+                  },
+                }}
+               sx={{ marginBottom: "2vh", width: "200px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
+               '& .MuiOutlinedInput-root': {
+                  '&.Mui-focused fieldset': {
+                      borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                }, 'label': {
+                  color: theme === 'bright' ? 'black' : '#E9E9E9',
+               } }}
               />
-              <Button variant="outlined" onClick={() => handleUpdate(category.id.toString())} style={{ marginRight: '10px' }}>
+              <Button onClick={() => handleUpdate(category.id.toString())}
+              sx={{ 
+                color: '#E9E9E9', border: '2px solid #5F2E2E', 
+                marginRight: '1vw',
+                backgroundColor: '#5F2E2E',
+                '&:hover': {
+                      borderColor: '#5F2E2E'
+                }
+             }}
+              >
                 Save
               </Button>
             </>
           ) : (
             <>
               <div style={{ marginBottom: '10px', color: theme === "bright" ? "black" : "white" }}>{category.name}</div>
-              <Button variant="outlined" onClick={() => startEdit(category.id.toString(), category.name)} style={{ marginRight: '10px' }}>
+              <Button onClick={() => startEdit(category.id.toString(), category.name)}
+              sx={{ 
+                color: '#E9E9E9', border: '2px solid #5F2E2E', 
+                marginRight: "1vw",
+                backgroundColor: '#5F2E2E',
+                '&:hover': {
+                      borderColor: '#5F2E2E'
+                }
+             }}
+              >
                 Edit
               </Button>
             </>

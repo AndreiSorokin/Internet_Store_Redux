@@ -63,6 +63,8 @@ export type InitialState = {
 export type CartItem = {
    productId: Products;
    quantity: number;
+   createdAt?: any;
+   id?: any;
 }
 
 export type CartState = {

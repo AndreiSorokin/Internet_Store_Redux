@@ -60,29 +60,57 @@ After that components handle functionalities dispatching async thunks.
 
 ### This project has 8 pages:
    1. Landing page where you can find featured products from all available categories
+![Screenshot 2024-04-29 011235](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/8a157a87-f9d4-4a3c-ac3c-ffe4ad03aed2)
+![Landing1](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/b7d23c13-90c9-4bee-b5ee-78dd57fdce24)
+
+
 
    2. Products page to find all the products and fitler them by price, size, gender and category, also on this page you can find a button to create a new product if you are an admin
+![Products](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/e046b540-da35-4ed3-bbc4-852d0fdcf001)
+
 
    3. Item page shows an item's information, you can choose quantity and add the item to your cart and if you are an admin you can also modify the item as well as delete it.
-   Also you can create a new category in case if there is no suitable one
+   Also you can create a new category in case if there is no suitable one.
+![Item](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/9b1cc468-8c3c-450c-9369-085ad6986352)
+
 
    4. Create product page allows admins to create new products
+![create1](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/98ea9a56-75d5-44ad-a1c6-0f0e9104b16b)
+![crete2](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/6108ae35-089f-484e-b818-40004d367a54)
+
+
 
    5. Login page is used to log in and also gives you a link to sign up and reset a password
+![Login](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/eba313f5-034e-42c2-aaa7-bea1a08981a5)
+
 
    6. Registration page allows you to creat an account
+![reg](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/519b88ca-0c8b-4d2d-a3e6-74cb120a9a20)
+
 
    7. Profile page shows a user's information and allows users to change it as well as change their passwords.
+![prof1](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/fa283375-8bd9-4a61-8346-e606a226708b)
+![prof2](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/6668d954-6d57-40ba-ab3b-052e3fce8b69)
+
+
 
    8. Cart page show items in your cart, you can also change quantity and remove them if needed. Also it is possible to pay for orders
+![cart1](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/253166c5-ff66-4390-9e99-96a97ed3e252)
+![cart2](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d843d88e-1e25-4d86-8830-5b8825d1606b)
+
+
 
    9. Order page shows all created orders
+![orders](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/44210339-9e6b-44ce-a1be-e62d23fed674)
+
 
    10. Admin page allows admins to manage users and modify categories
+![admin](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/85118c2c-74aa-4978-86bd-396a7bce08d0)
 
 
 ### Component structure:
-![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)
+![Diagram](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/e4bdda27-82df-48da-b2a5-ac4049e2f80f)
+
 
 ### Relationship between components:
 

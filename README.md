@@ -84,24 +84,42 @@ After that components handle functionalities dispatching async thunks.
 
 ```
 src/
+┣ api/
+┃ ┗ axiosConfig.ts
 ┣ components/
+┃ ┣ adminComponents/
+┃ ┃ ┣ CategoryList.tsx
+┃ ┃ ┗ UserList.tsx
+┃ ┣ categories/
+┃ ┃ ┗ CreateCategory.tsx
 ┃ ┣ contextAPI/
+┃ ┃ ┣ PriceContext.tsx
 ┃ ┃ ┗ ThemeContext.tsx
 ┃ ┣ products/
 ┃ ┃ ┗ ProductItem.tsx
 ┃ ┣ utils/
+┃ ┃ ┣ CheckoutForm.tsx
 ┃ ┃ ┣ Filters.tsx
 ┃ ┃ ┣ Pagination.tsx
+┃ ┃ ┣ ScrollToTop.tsx
 ┃ ┃ ┗ Search.tsx
-┃ ┣ NavBar.tsx
-┃ ┗ ScrollToTop.tsx
+┃ ┗ NavBar.tsx
+┣ helpers/
+┃ ┗ decode.ts
 ┣ hooks/
 ┃ ┣ ErrorMessage.tsx
 ┃ ┣ SuccsessMessage.tsx
+┃ ┣ UseDebounce.tsx
 ┃ ┗ UseInput.tsx
+┣ img/
+┃ ┣ defaultPicture.png
+┃ ┣ flame.gif
+┃ ┗ landingPageImage.jpg
 ┣ misc/
 ┃ ┗ type.ts
 ┣ pages/
+┃ ┣ admin/
+┃ ┃ ┗ AdminPage.tsx
 ┃ ┣ cart/
 ┃ ┃ ┗ CartPage.tsx
 ┃ ┣ product/
@@ -111,17 +129,26 @@ src/
 ┃ ┣ user/
 ┃ ┃ ┣ LoginPage.tsx
 ┃ ┃ ┣ ProfilePage.tsx
-┃ ┃ ┗ RegisterPage.tsx
-┃ ┗ LandingPage.tsx
+┃ ┃ ┣ RegisterPage.tsx
+┃ ┃ ┣ ResetPassword.tsx
+┃ ┃ ┗ SingleUserPage.tsx
+┃ ┣ LandingPage.tsx
+┃ ┗ Orders.tsx
 ┣ redux/
 ┃ ┣ slices/
 ┃ ┃ ┣ cartSlice.ts
+┃ ┃ ┣ categorySlice.ts
+┃ ┃ ┣ orderSlice.ts
 ┃ ┃ ┣ productSlice.ts
+┃ ┃ ┣ uploadSlice.ts
 ┃ ┃ ┗ userSlice.ts
 ┃ ┗ store.ts
 ┣ test/
 ┃ ┣ cartSlice.test.ts
+┃ ┣ categorySlice.test.ts
+┃ ┣ orderSlice.test.ts
 ┃ ┣ productsSlice.test.ts
+┃ ┣ uploadSlice.test.ts
 ┃ ┗ userSlice.test.ts
 ┣ App.css
 ┣ App.tsx

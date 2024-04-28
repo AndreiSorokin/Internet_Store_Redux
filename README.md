@@ -105,7 +105,8 @@ After that components handle functionalities dispatching async thunks.
 
 
 ### Component structure:
-![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)
+![Diagram](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/e4bdda27-82df-48da-b2a5-ac4049e2f80f)
+
 
 ### Relationship between components:
 

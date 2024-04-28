@@ -26,7 +26,7 @@ const ScrollToTopButton = () => {
                justifyContent: 'center',
             },
             '& .MuiSvgIcon-root': {
-               color: 'black', // Set the color of the arrow icon
+               color: 'black',
             }
          }} 
          onClick={scrollToTop} 

@@ -63,8 +63,6 @@ export default function ProfilePage() {
     if (Object.keys(changes).length === 0) {
       return showError('No changes detected');
     }
-
-    console.log(user)
   
     const updatedUser: UserData = {
       ...user,
@@ -84,7 +82,6 @@ export default function ProfilePage() {
     }
   
     showSuccessMessage('Your information has been updated successfully');
-    console.log('user', user)
   };
 
   const handleUpdatePassword = (e: React.FormEvent<HTMLFormElement>) => {

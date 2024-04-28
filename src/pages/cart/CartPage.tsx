@@ -64,8 +64,6 @@ const CartPage: React.FC = () => {
     }
   };
 
-  console.log(cartItems)
-
   const totalPrice = cartItems.reduce((total, cartItem) => {
     return total + cartItem.productId.price * cartItem.quantity;
   }, 0);
@@ -195,7 +193,6 @@ const CartPage: React.FC = () => {
               <CheckoutForm
                 totalPrice={totalPrice}
                 onSuccess={async (paymentMethodId) => {
-                  console.log('Payment successful with PaymentMethod ID:', paymentMethodId);
                   const orderItems = cartItems.map(item => ({
                     productId: item.productId,
                     quantity: item.quantity
@@ -207,14 +204,13 @@ const CartPage: React.FC = () => {
                       items: orderItems
                     }
                   };
-                  console.log(orderData)
                 
                   try {
                     await dispatch(createOrder(orderData)).unwrap();
                     showSuccessMessage('Order placed successfully!');
                     window.scrollTo(0, 0);
                   } catch (error) {
-                    console.error('Failed to place order:', error);
+                    showError('Failed to place order')
                     window.scrollTo(0, 0);
                   }
                 }}

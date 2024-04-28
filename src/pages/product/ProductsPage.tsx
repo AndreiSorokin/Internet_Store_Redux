@@ -106,11 +106,28 @@ export default function ProductsPage() {
             borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
          }
         }} onClick={() => setDialog(true)}>Filters</Button>
-        <Dialog open={dialog} onClose={() => setDialog(false)}>
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{overflow: 'hidden', height: '55vh', borderRadius: '5px',
+        <Dialog open={dialog} onClose={() => setDialog(false)}  fullWidth={true} maxWidth="sm">
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+          sx={{
+            overflow: 'hidden',
+            width:'auto',
+            height: 'auto',
+            borderRadius: '5px',
             background: theme === 'bright' ? 'linear-gradient(to top, #66605B 11%, #B8B8B8 85%)' : 'linear-gradient(to bottom, #9C9C9C 11%, #353535 98%)',
-            '@media (max-width: 900px)': { width: '45vw', height: '60vh' } }}>
-            <Button onClick={() => setDialog(false)} style={{ display: 'block', transform: 'translate(14vw, -2vh)', color: theme === 'bright' ? 'black' : '#E9E9E9' }}><CloseIcon /></Button>
+            '@media (max-width: 900px)': { 
+              width: 'auto',
+              height: 'auto',
+            },
+            p: 7,
+          }}
+            >
+            <Button onClick={() => setDialog(false)}
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              color: theme === 'bright' ? 'black' : '#E9E9E9',
+            }}><CloseIcon /></Button>
             <div style={{ height: '40vh', width:'35vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <Filters selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} productList={productList}/>
               <Box sx={{ margin: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

@@ -85,14 +85,24 @@ const AdminPage = () => {
         alignItems: 'center',
         color: theme === 'bright' ? 'black' : '#E9E9E9',
         border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
-        backgroundColor: theme === "bright" ? "#9C9C9C" : "#353535"
+        backgroundColor: theme === "bright" ? "#9C9C9C" : "#353535",
+        '@media (max-width: 768px)': {
+          maxWidth: '75%',
+        }
       }}
     >
       <Typography id="user-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>
         List of users
       </Typography>
       <UserList />
-      <Button onClick={handleClose} style={{ marginTop: '20px', position: 'absolute', right: '20px' }}>Close</Button>
+      <Button onClick={handleClose} 
+      sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',
+      '&:hover': {
+         backgroundColor: 'rgba(95, 46, 46, 0.1)',
+         borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+      }
+   }}
+      >Close</Button>
     </Box>
   </Modal>
   <Grid item xs={12} style={{ textAlign: 'center' }}>
@@ -133,14 +143,24 @@ const AdminPage = () => {
         alignItems: 'center',
         color: theme === 'bright' ? 'black' : '#E9E9E9',
         border: theme === 'bright' ? '1px solid black' : '1px solid #E9E9E9',
-        backgroundColor: theme === "bright" ? "#9C9C9C" : "#353535"
+        backgroundColor: theme === "bright" ? "#9C9C9C" : "#353535",
+        '@media (max-width: 768px)': {
+          maxWidth: '75%',
+        }
       }}
     >
       <Typography id="category-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>
         List of categories
       </Typography>
       <CategoryList />
-      <Button onClick={handleCloseCategoryList} style={{ marginTop: '20px', position: 'absolute', right: '20px' }}>Close</Button>
+      <Button onClick={handleCloseCategoryList}
+      sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',
+      '&:hover': {
+         backgroundColor: 'rgba(95, 46, 46, 0.1)',
+         borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+      }
+   }}
+      >Close</Button>
     </Box>
   </Modal>
 </Grid>

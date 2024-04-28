@@ -7,7 +7,7 @@ import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
 import useInput from '../../hooks/UseInput';
 
-import { Box, Button, Grid, IconButton, MenuItem, TextField } from '@mui/material';
+import { Box, Button, Grid, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from 'react-router-dom';
 import { fetchCategories } from '../../redux/slices/categorySlice';
@@ -69,7 +69,6 @@ const productList = useAppSelector(state => state.products.products);
         return showError('Please make sure that you filled out all fields');
       }
 
-      console.log(images.length)
       const existingProduct = productList.find(product =>
         product.name === name &&
         product.price === parseFloat(price) &&
@@ -141,10 +140,12 @@ const productList = useAppSelector(state => state.products.products);
         color: theme === "bright" ? "black" : "#E9E9E9",
         paddingTop: '20vh',
         transition: '0.5s ease',
-        height: '150vh',
+        minHeight: '100vh',
         overflow: 'hidden',
       }} container direction="column" alignItems="center" spacing={3}>
-      <h2>Create a new product!</h2>
+      <Typography sx={{'@media (max-width: 768px)': {
+            transform: 'translate(-10vw, 0)',
+          }}}>Create a new product!</Typography>
       <Grid item sx={{ alignSelf: 'flex-start', position: 'absolute', top: '10vh', left: '2vw' }}>
           <Link to="/products" style={{ textDecoration: "none" }}>
             <IconButton sx={{ color: theme === 'bright' ? 'black' : '#E9E9E9' }}>
@@ -155,7 +156,11 @@ const productList = useAppSelector(state => state.products.products);
       </Grid>
       <Grid item>
         <form onSubmit={handleSubmit}>
-          <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", marginLeft: "1vh" }}>
+          <Box 
+          sx={{ display: 'flex', flexDirection: "column", alignItems: "center", maxWidth: '500px',
+          '@media (max-width: 768px)': {
+            maxWidth: '70%',
+          } }}>
             <div style={{position: "absolute", top: "5vh", left: "34vw"}}>
               {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
               {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
@@ -171,7 +176,7 @@ const productList = useAppSelector(state => state.products.products);
                   sx: {
                     color: theme === 'bright' ? 'black' : '#E9E9E9',
                     '@media (max-width: 768px)': {
-                      maxWidth: '90%',
+                      maxWidth: '100%',
                     },
                   },
                 }}
@@ -191,6 +196,9 @@ const productList = useAppSelector(state => state.products.products);
                   },
                   'label': {
                   color: theme === 'bright' ? 'black' : 'white',
+                  },
+                  '@media (max-width: 768px)': {
+                    maxWidth: '90%',
                   } }}
               />
               <TextField
@@ -205,7 +213,7 @@ const productList = useAppSelector(state => state.products.products);
                 sx: {
                   color: theme === 'bright' ? 'black' : 'white',
                   '@media (max-width: 768px)': {
-                    maxWidth: '90%',
+                    maxWidth: '100%',
                   },
                 },
                 }}
@@ -224,6 +232,9 @@ const productList = useAppSelector(state => state.products.products);
                   },
                 }, 'label': {
                 color: theme === 'bright' ? 'black' : 'white',
+                },
+                '@media (max-width: 768px)': {
+                  maxWidth: '90%',
                 } }}
               />
               <TextField
@@ -237,7 +248,7 @@ const productList = useAppSelector(state => state.products.products);
                   sx: {
                     color: theme === 'bright' ? 'black' : 'white',
                     '@media (max-width: 768px)': {
-                      maxWidth: '90%',
+                      maxWidth: '100%',
                     },
                   },
                   }}
@@ -256,6 +267,9 @@ const productList = useAppSelector(state => state.products.products);
                     },
                   }, 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
+                  },
+                  '@media (max-width: 768px)': {
+                    maxWidth: '90%',
                   } }}
               >
                 {Object.values(Size).map(size => (
@@ -273,7 +287,7 @@ const productList = useAppSelector(state => state.products.products);
                   sx: {
                     color: theme === 'bright' ? 'black' : 'white',
                     '@media (max-width: 768px)': {
-                      maxWidth: '90%',
+                      maxWidth: '100%',
                     },
                   },
                   }}
@@ -292,6 +306,9 @@ const productList = useAppSelector(state => state.products.products);
                     },
                   }, 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
+                  },
+                  '@media (max-width: 768px)': {
+                    maxWidth: '90%',
                   } }}
               >
                 {Object.values(Gender).map(gender => (
@@ -310,7 +327,7 @@ const productList = useAppSelector(state => state.products.products);
                   sx: {
                     color: theme === 'bright' ? 'black' : 'white',
                     '@media (max-width: 768px)': {
-                      maxWidth: '90%',
+                      maxWidth: '100%',
                     },
                   },
                   }}
@@ -329,6 +346,9 @@ const productList = useAppSelector(state => state.products.products);
                     },
                   }, 'label': {
                   color: theme === 'bright' ? 'black' : 'white',
+                  },
+                  '@media (max-width: 768px)': {
+                    maxWidth: '90%',
                   } }}
                 >               
                 {categories.map((category) => (
@@ -350,7 +370,7 @@ const productList = useAppSelector(state => state.products.products);
                 sx: {
                   color: theme === 'bright' ? 'black' : 'white',
                   '@media (max-width: 768px)': {
-                    maxWidth: '90%',
+                    maxWidth: '100%',
                   },
                 },
                 }}
@@ -369,6 +389,9 @@ const productList = useAppSelector(state => state.products.products);
                   },
                 }, 'label': {
                 color: theme === 'bright' ? 'black' : 'white',
+                },
+                '@media (max-width: 768px)': {
+                  maxWidth: '90%',
                 } }}
               />
               <Box sx={{ margin: "2vh" }}>
@@ -400,19 +423,25 @@ const productList = useAppSelector(state => state.products.products);
                 variant="outlined"
                 type="submit"
                 sx={{ 
-                  color: '#E9E9E9', border: '2px solid #5F2E2E', 
+                  color: '#E9E9E9', 
+                  border: '2px solid #5F2E2E', 
                   fontSize: { xs: '0.8rem', sm: '1rem' }, 
                   padding: { xs: '5px 10px', sm: '8px 15px' },
                   backgroundColor: '#5F2E2E',
                   '&:hover': {
                       borderColor: '#5F2E2E'
-                  }
+                  },
+                  marginTop: '2vh',
+                  width: '60%',
+                  '@media (max-width: 768px)': {
+                    maxWidth: '90%',
+                  },
                 }}
               >
                 Create Product
               </Button>
             </Box>
-          </form>
+        </form>
           <CreateCategory/>
       </Grid>
   </Grid>

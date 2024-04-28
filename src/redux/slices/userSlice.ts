@@ -44,7 +44,6 @@ export const userRegistration = createAsyncThunk(
    async(user: User, {dispatch, rejectWithValue}) => {
       try {
          const response = await axiosInstance.post(`${process.env.REACT_APP_BASE_URL}/users/registration`, user)
-         console.log(response.data)
          return response.data
       } catch (error) {
          return rejectWithValue(error)
@@ -110,7 +109,6 @@ export const updateUserProfile = createAsyncThunk(
          localStorage.setItem('refreshToken', refreshToken);
        }
  
-       console.log('updateUserProfile', response.data);
        return response.data;
      } catch (error) {
        if (axios.isAxiosError(error) && error.response) {
@@ -140,7 +138,6 @@ export const handleGoogleLogin = createAsyncThunk(
   async (credentialResponse: { credential: string }, { dispatch, rejectWithValue }) => {
     const token = credentialResponse.credential;
     if (!token) {
-      console.error('No credential token received from Google login');
       return rejectWithValue('No credential token received from Google login');
     }
     try {
@@ -149,7 +146,6 @@ export const handleGoogleLogin = createAsyncThunk(
       dispatch(setUser(response.data));
       return response.data;
     } catch (error) {
-      console.error('Error processing Google login', error);
       return rejectWithValue('Error processing Google login');
     }
   }

@@ -1,6 +1,6 @@
 https://fs17-frontend-project-iota.vercel.app/
 
-This is the online store with Platzi Fake StoreAPI where people can buy different stuff. The target audience are young generation interested is new clothes, electronics atc. On this website people can but different categories of prudects.
+This is an online store built on self made API (https://github.com/AndreiSorokin/TheStore_backend) where people can buy different category clothes.
 
 ### Deployment:
    Hoisting: Vercel
@@ -8,18 +8,22 @@ This is the online store with Platzi Fake StoreAPI where people can buy differen
 ### Getting Started:
    1. To run the code u need Node.js to execute JavaScript code outside of a web browser, "react": "^18.2.0",
 "react-dom": "^18.2.0"
-   2. ENV variables HERE
-   3. Then you need to clone the repo: REPO
-   4. After cloning write npm install (or yarn install on MAC)
+   2. Then you need to clone the repo
+   3. After cloning write npm install (or yarn install on MAC)
 
 Usage:
    1. In order to start the project write npm start (yarn start on MAC)
    2. In order to test the application write npm test (yarn test on MAC)
 
-After users sign up they can see "profile" and "cart" pages in addition to "products" that can be seen by anyone visiting the web site.
-Unauthorizrd users can only access the "products" page, in order to add products to the cart you need to log in first. In you don't have an account, you can sign up and you will automatically be redirected to "profile" page. Then you need to go to the "products" page, click on a product you would like to add to the cart and cllick "add" button.
-As a logged in user you can also add new products.
-On your "profile" page you can change your information as well as switch role to "admin". Afer you have got "admin" you can modify and delete products. To do so you need to go to a product page and choose the needed option.
+A user has two options to log in: with credentials and by using Google.
+Also they can use "forgot password" with the aim of reseting their passwords.
+
+After users sign up they can see "profile", "cart" and "orders" pages in addition to "products" that can be seen by anyone visiting the web site.
+Unauthorizrd users can only access the "products" page, in order to add products to the cart you need to log in first. In you don't have an account, you can sign up and you will automatically be redirected to "profile" page. Then you need to go to the "products" page, click on a product you would like to add to the cart and cllick "add" button and select amount.
+Admins have access to admin page in addinion to other ones.
+Admins can create products and categories (the button will appear on the products page), modify them (on an item's and admin pages respectively).
+Also Admins can assign users to be admins and vice versa as well as ban/unban users.
+On "profile" page users can change their information and change passwprds.
 
 ### Folders:
    1. All the types - src/misc/type.ts
@@ -28,9 +32,10 @@ On your "profile" page you can change your information as well as switch role to
    4. Pages related to user - src/pages/user
    5. Pages related to products - src/pages/product
    6. Pages related to cart - src/pages/cart
-   7. All of the components - src/components
-   8. Custom hooks - src/hooks
-   9. Tests - src/test
+   7. The page related to admin -src/pages/admin
+   8. All of the components - src/components
+   9. Custom hooks - src/hooks
+   10. Tests - src/test
 
 ### Data Flow:
    1. The ThemeContext.tsx holds two values: theme and toggleTheme. Also we have App component wrappe dwith ThemeProvider in index.tsx.
@@ -51,29 +56,26 @@ After that components handle functionalities dispatching async thunks.
 
 ### This project has 8 pages:
    1. Landing page where you can find featured products from all available categories
-![Screenshot 2024-03-06 211632](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/5c2c638a-4729-46e6-ad06-ebe9e86cd0f8)
 
-   2. Products page to find all the products and fitler them by price and category, also on this page you can find a button to create a new product if you are an admin
-![Screenshot 2024-03-06 211918](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/1d77208d-9d8f-44ce-909a-988b35cd80b7)
-![Screenshot 2024-03-06 214054](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/b1b9553c-8835-453d-b62c-525a3fca01b9)
+   2. Products page to find all the products and fitler them by price, size, gender and category, also on this page you can find a button to create a new product if you are an admin
 
-   3. Item page shows an item's information, you can choose quantity and add the item to your cart and if you are an admin you can also modify the item and delete as well as delete it
-![Screenshot 2024-03-06 214216](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/db511679-5466-4d6b-80c8-2a3c30f9be03)
+   3. Item page shows an item's information, you can choose quantity and add the item to your cart and if you are an admin you can also modify the item as well as delete it.
+   Also you can create a new category in case if there is no suitable one
 
-   4. Create product page allows logged in users to create new products
-![Screenshot 2024-03-06 214132](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/5d3a26b3-e5c4-472b-a539-f98c1ce36f24)
+   4. Create product page allows admins to create new products
 
-   5. Login page is used to log in and also gives you a link to sign up
-![Screenshot 2024-03-06 214353](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/ab5b1fa8-57fb-414d-b092-34bddbfd2cf3)
+   5. Login page is used to log in and also gives you a link to sign up and reset a password
 
    6. Registration page allows you to creat an account
-![Screenshot 2024-03-06 214412](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/36d9bcb5-9d25-4b18-a3c8-fd07c417e771)
 
-   7. Profile page shows a user's information and also you cat cwith your role to admin
-![Screenshot 2024-03-06 211810](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/f267bfa4-76ff-4309-8d59-7a05703b22b1)
+   7. Profile page shows a user's information and allows users to change it as well as change their passwords.
 
-   8. Cart page show items in your cart, you can also change quantity and remove them
-![Screenshot 2024-03-06 214326](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/48188414-84ac-4175-b608-78229b0d32c4)
+   8. Cart page show items in your cart, you can also change quantity and remove them if needed. Also it is possible to pay for orders
+
+   9. Order page shows all created orders
+
+   10. Admin page allows admins to manage users and modify categories
+
 
 ### Component structure:
 ![Screenshot 2024-03-06 235402](https://github.com/AndreiSorokin/fs17-Frontend-project/assets/72672144/d1da4e3b-bf58-4823-895a-1943309c6d98)

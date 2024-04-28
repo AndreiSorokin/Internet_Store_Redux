@@ -13,13 +13,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useEffect, useState } from 'react'
-import { Credentials, User } from '../../misc/type';
+import { User } from '../../misc/type';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { userRegistration, setUser, fetchAllUsers } from '../../redux/slices/userSlice'
+import { userRegistration, fetchAllUsers } from '../../redux/slices/userSlice'
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import useErrorMessage from '../../hooks/ErrorMessage';
-import axios from 'axios';
 import { uploadImage } from '../../redux/slices/uploadSlice';
 
 export default function RegisterPage() {
@@ -72,7 +71,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     let avatarUrl = '';
     if (avatar) {
       const uploadedFileResponse = await dispatch(uploadImage(avatar)).unwrap();
-      console.log("uploadedFileResponse:", uploadedFileResponse);
       avatarUrl = uploadedFileResponse;
     }
 

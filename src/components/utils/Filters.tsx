@@ -26,7 +26,7 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
-        <FormControl style={{ margin: "1vh" }}>
+        <FormControl>
         <InputLabel sx={{ color: theme === 'bright' ? 'black' : '#E9E9E9', '&.Mui-focused': { color: theme === 'bright' ? 'black' : '#E9E9E9' } }} id="demo-simple-select-label">Category</InputLabel>
         <Select
             labelId="demo-simple-select-label"
@@ -35,7 +35,6 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
             label="Category"
             onChange={handleCategoryChange}
             sx={{
-              margin: "2vh",
               'div': {
                 minWidth: "100px",
                 color: theme === 'bright' ? 'black' : '#E9E9E9',
@@ -54,7 +53,7 @@ const Filters: React.FC<FiltersProps> = ({ selectedCategory, setSelectedCategory
             ))}
           </Select>
         </FormControl>
-      </Box>
+    </Box>
   );
 };
 

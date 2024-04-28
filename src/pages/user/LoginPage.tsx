@@ -89,9 +89,7 @@ export default function LoginPage() {
             showError('Credential is undefined');
           }
           }}
-          onError={() => {
-            console.log('Login Failed');
-          }}
+          onError={() => {}}
         />
         </div>
       </GoogleOAuthProvider>

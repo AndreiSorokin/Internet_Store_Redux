@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { createCategory, fetchCategories } from '../../redux/slices/categorySlice';
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useErrorMessage from '../../hooks/ErrorMessage';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useTheme } from '../contextAPI/ThemeContext';
 
 export default function CreateCategory() {
@@ -72,7 +72,10 @@ export default function CreateCategory() {
    };
 
    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      '@media (max-width: 768px)': {
+        maxWidth: '75%',
+      }}}>
          {errorMessage && <p style={errorMessageStyle}>{errorMessage}</p>}
          {succsessMessage && <p style={succsessMessageStyle}>{succsessMessage}</p>}
          <h2>Category doesn't exist?</h2>
@@ -83,7 +86,7 @@ export default function CreateCategory() {
                padding: { xs: '5px 10px', sm: '8px 15px' },
                backgroundColor: '#5F2E2E',
                '&:hover': {
-                     borderColor: '#5F2E2E'
+                  borderColor: '#5F2E2E'
                }
             }}
             onClick={handleClickOpen}
@@ -93,13 +96,10 @@ export default function CreateCategory() {
          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title" sx={{
                backgroundColor: theme === 'bright' ? '#B8B8B8' : '#444444',
-               border: theme === 'bright' ? '1px solid #B8B8B8' : '1px solid #7B7B7B',
                color: theme === 'bright' ? 'black' : '#E9E9E9',
                }}>Create New Category</DialogTitle>
             <DialogContent sx={{
                background: theme === 'bright' ? 'linear-gradient(to bottom, #B8B8B8  0%, #9C9C9C 25%, #7B7B7B 50%, #353535 100%)' : 'linear-gradient(to bottom, #444444 18%, #414141 38%, #3C3C3C 56%, #212121 97%)',
-               border: theme === 'dark' ? '1px solid white' : '1px solid black',
-               borderRadius: '5px',
                overflow: 'hidden',
                }}>
                <form onSubmit={(e) => {
@@ -136,6 +136,9 @@ export default function CreateCategory() {
                      },
                    }, 'label': {
                      color: theme === 'bright' ? 'black' : '#E9E9E9',
+                  },
+                  '@media (max-width: 768px)': {
+                    maxWidth: '250px',
                   } }}
                />
                <Button
@@ -186,6 +189,6 @@ export default function CreateCategory() {
                </form>
             </DialogContent>
          </Dialog>
-      </div>
+      </Box>
    )
 }

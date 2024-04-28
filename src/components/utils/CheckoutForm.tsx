@@ -23,7 +23,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ totalPrice, onSuccess, onEr
   const cardElement = elements.getElement(CardElement);
   
   if (!cardElement) {
-    console.log('CardElement not found');
     return;
   }
     
@@ -33,7 +32,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ totalPrice, onSuccess, onEr
   });
 
   if (error) {
-    console.error(error);
     onError(error.message || 'Error');
   } else {
     onSuccess(paymentMethod.id);

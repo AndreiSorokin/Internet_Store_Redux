@@ -34,7 +34,6 @@ export default function CategoryList() {
   const handleUpdate = (id: string) => {
   const currentCategory = categories.find(category => category.id.toString() === id);
   if (!currentCategory) {
-    console.error('Category not found');
     return;
   }
 
@@ -96,7 +95,7 @@ export default function CategoryList() {
                 marginRight: '1vw',
                 backgroundColor: '#5F2E2E',
                 '&:hover': {
-                      borderColor: '#5F2E2E'
+                  borderColor: '#5F2E2E'
                 }
              }}
               >

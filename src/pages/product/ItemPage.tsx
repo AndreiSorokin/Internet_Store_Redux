@@ -7,7 +7,7 @@ import { useTheme } from "../../components/contextAPI/ThemeContext";
 import useSuccsessMessage from '../../hooks/SuccsessMessage';
 import useInput from '../../hooks/UseInput';
 import { LoggedInUser } from "../../misc/type";
-import { addProductToCart, addToCart } from "../../redux/slices/cartSlice";
+import { addToCart } from "../../redux/slices/cartSlice";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -38,7 +38,6 @@ const ItemPage: React.FC = () => {
   const [openUserInputs, setOpenUserInputs] = useState<boolean>(false);
 
   const userData = parseJwt(localStorage.getItem('token'));
-  console.log(userData)
   const isAdmin = userData && userData?.role === 'ADMIN'
   
   const handleAddToCart = () => {
@@ -368,8 +367,6 @@ const ItemPage: React.FC = () => {
                   <Box sx={{
                     flexDirection: "column",
                     alignItems: "center",
-                    marginLeft: "auto",
-                    marginRight: "auto",
                     width: "fit-content",
                     marginTop: '5vh'
                   }}>
@@ -380,13 +377,13 @@ const ItemPage: React.FC = () => {
                       type="text"
                       InputProps={{
                         sx: {
-                           color: theme === 'bright' ? 'black' : 'white',
-                           '@media (max-width: 768px)': {
-                              maxWidth: '60%',
-                           },
+                          color: theme === 'bright' ? 'black' : 'white',
+                          '@media (max-width: 768px)': {
+                            maxWidth: '100%',
+                          },
                         },
-                     }}
-                     InputLabelProps={{
+                      }}
+                      InputLabelProps={{
                         sx: {
                           color: theme === 'bright' ? 'black' : 'white',
                           '&.Mui-focused': {
@@ -394,14 +391,24 @@ const ItemPage: React.FC = () => {
                           },
                         },
                       }}
-                     sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
-                     '& .MuiOutlinedInput-root': {
-                        '&.Mui-focused fieldset': {
+                      sx={{ 
+                        margin: "2vh",
+                        width: "100%",
+                        maxWidth: "480px",
+                        borderRadius: '5px', 
+                        border: theme === 'bright' ? 'none' : '1px solid white',
+                        '& .MuiOutlinedInput-root': {
+                          '&.Mui-focused fieldset': {
                             borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                          },
+                        }, 
+                        'label': {
+                          color: theme === 'bright' ? 'black' : '#E9E9E9',
                         },
-                      }, 'label': {
-                        color: theme === 'bright' ? 'black' : '#E9E9E9',
-                     } }}
+                        '@media (max-width: 768px)': {
+                          maxWidth: '250px',
+                        }
+                      }}
                     />
                     <TextField
                       value={updatedPriceInput.value}
@@ -410,13 +417,13 @@ const ItemPage: React.FC = () => {
                       type="text"
                       InputProps={{
                         sx: {
-                           color: theme === 'bright' ? 'black' : 'white',
-                           '@media (max-width: 768px)': {
-                              maxWidth: '60%',
-                           },
+                          color: theme === 'bright' ? 'black' : 'white',
+                          '@media (max-width: 768px)': {
+                            maxWidth: '100%',
+                          },
                         },
-                     }}
-                     InputLabelProps={{
+                      }}
+                      InputLabelProps={{
                         sx: {
                           color: theme === 'bright' ? 'black' : 'white',
                           '&.Mui-focused': {
@@ -424,40 +431,60 @@ const ItemPage: React.FC = () => {
                           },
                         },
                       }}
-                     sx={{ margin: "2vh", width: "500px", borderRadius: '5px', border: theme === 'bright' ? 'none' : '1px solid white',
-                     '& .MuiOutlinedInput-root': {
-                        '&.Mui-focused fieldset': {
+                      sx={{ 
+                        margin: "2vh", 
+                        width: "100%",
+                        maxWidth: "480px",
+                        borderRadius: '5px', 
+                        border: theme === 'bright' ? 'none' : '1px solid white',
+                        '& .MuiOutlinedInput-root': {
+                          '&.Mui-focused fieldset': {
                             borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                          },
+                        }, 
+                        'label': {
+                          color: theme === 'bright' ? 'black' : '#E9E9E9',
                         },
-                      }, 'label': {
-                        color: theme === 'bright' ? 'black' : '#E9E9E9',
-                     } }}
+                        '@media (max-width: 768px)': {
+                          maxWidth: '250px',
+                        }
+                      }}
                     />
                     <Grid container justifyContent="center">
                       <Grid item>
                         <Button type="submit" onClick={handleCloseUserInputs}
-                        sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', 
-                        '&:hover': {
-                           backgroundColor: 'rgba(95, 46, 46, 0.1)',
-                           borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
-                        }
-                     }}
+                          sx={{
+                            color: theme === 'bright' ? 'black' : '#E9E9E9', 
+                            '&:hover': {
+                              backgroundColor: 'rgba(95, 46, 46, 0.1)',
+                              borderColor: theme === 'bright' ? 'black' : '#E9E9E9',
+                            },
+                            '@media (max-width: 768px)': {
+                              fontSize: '0.7rem',
+                              padding: '5px 10px',
+                            },
+                          }}
                         >Cancel</Button>
                         <Button type="submit" 
-                        sx={{
-                          color: 'white', border: '2px solid #5F2E2E', 
-                          fontSize: { xs: '0.8rem', sm: '1rem' }, 
-                          padding: { xs: '5px 10px', sm: '8px 15px' },
-                          backgroundColor: '#5F2E2E',
-                          '&:hover': {
-                             borderColor: '#5F2E2E'
-                          }
-                       }}
+                          sx={{
+                            color: 'white', 
+                            border: '2px solid #5F2E2E', 
+                            fontSize: { xs: '0.8rem', sm: '1rem' }, 
+                            padding: { xs: '5px 10px', sm: '8px 15px' },
+                            backgroundColor: '#5F2E2E',
+                            '&:hover': {
+                              borderColor: '#5F2E2E'
+                            },
+                            '@media (max-width: 768px)': {
+                              fontSize: '0.7rem',
+                              padding: '5px 10px',
+                            },
+                          }}
                         >Update</Button>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </Box>
-                </form>
+                    </Box>
+                  </form>
               </DialogContent>
             </Dialog>
 

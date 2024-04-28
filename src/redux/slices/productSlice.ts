@@ -78,7 +78,6 @@ export const createProduct = createAsyncThunk(
                } else if (typeof image === 'string') {
                   uploadedImageUrls.push(image);
                } else {
-                  console.error("One of the provided images is neither a File object nor a string URL.");
                   return rejectWithValue("Invalid image format.");
                }
             }
@@ -251,7 +250,6 @@ const productsSlice = createSlice({
          };
       });
       builder.addCase(createProduct.rejected, (state, action) => {
-         console.log(action.payload);
          return {
             ...state,
             loading: false,

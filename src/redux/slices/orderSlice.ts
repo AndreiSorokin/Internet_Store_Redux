@@ -63,7 +63,6 @@ export const createOrder = createAsyncThunk(
             },
          })
          const data = await response.data;
-         console.log('createOrder', response.data)
          return data;
       } catch (error) {
          return rejectWithValue(error)
@@ -113,7 +112,6 @@ const orderSlice = createSlice({
          }
       })
       builder.addCase(deleteOrder.fulfilled, (state, action) => {
-         // const orderId = Number(action.payload);
          return {
             ...state,
             loading: false,

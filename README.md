@@ -5,6 +5,8 @@ This is an online store built on self made API (https://github.com/AndreiSorokin
 ### Deployment:
    Hoisting: Vercel
 
+#### <span style="color:red">&#9888;</span> Since the project is uploaded to a free version hosting it might take some time to load information, thus if you are logged in you may not have immediate access to some pages where user information is required
+
 ### Getting Started:
    1. To run the code u need Node.js to execute JavaScript code outside of a web browser, "react": "^18.2.0",
 "react-dom": "^18.2.0"

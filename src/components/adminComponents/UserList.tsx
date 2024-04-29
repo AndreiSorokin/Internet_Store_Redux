@@ -7,8 +7,11 @@ import { Button } from '@mui/material';
 
 import defaultPicture from "../../img/defaultPicture.png"
 
+interface UserListProps {
+  searchQuery: string;
+}
 
-export default function UserList() {
+const UserList: React.FC<UserListProps> = ({ searchQuery }) => {
     const { theme } = useTheme();
     const dispatch = useAppDispatch();
     const users = useAppSelector((state: AppState) => state.userRegister.users);
@@ -16,10 +19,14 @@ export default function UserList() {
     useEffect(() => {
       dispatch(fetchAllUsers());
     }, [dispatch]);
+
+    const filteredUsers = users.filter(user => 
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
     
 return (
   <div>
-    {users.map(user => (
+    {filteredUsers.map(user => (
       <div key={user.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
         <img src={user.avatar || defaultPicture} alt="User's avatar" style={{ marginRight: '20px', width: '150px', height: '150px' }} />
         <div style={{ flex: 1 }}>
@@ -44,3 +51,5 @@ return (
   </div>
 )
 }
+
+export default UserList

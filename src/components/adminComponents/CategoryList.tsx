@@ -4,7 +4,10 @@ import { Button, TextField } from '@mui/material';
 import { fetchCategories, deleteCategory, updateCategory } from '../../redux/slices/categorySlice';
 import { useTheme } from '../contextAPI/ThemeContext';
 
-export default function CategoryList() {
+interface CategoryListProps {
+  searchQuery: string;
+}
+const CategoryList: React.FC<CategoryListProps> = ({ searchQuery }) =>{
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state: AppState) => state.categories.categories);
@@ -52,9 +55,13 @@ export default function CategoryList() {
     });
 };
 
+const filteredCategories = categories.filter(cat => 
+  cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
+
   return (
     <div>
-      {categories.map(category => (
+      {filteredCategories.map(category => (
         <div key={category.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <img src={category.image} alt={category.name} style={{ marginRight: '20px', width: '120px', height: '140px' }} />
           <div style={{ flex: 1 }}>
@@ -119,7 +126,7 @@ export default function CategoryList() {
               </Button>
             </>
           )}
-            <Button variant="outlined" color="error" onClick={() => handleDelete(category.id.toString())} style={{ marginRight: '10px' }}>
+            <Button variant="outlined" color="error" onClick={() => handleDelete(category.id.toString())} sx={{ margin: '10px 10px 0 0' }}>
               Delete
             </Button>
           </div>
@@ -128,3 +135,5 @@ export default function CategoryList() {
     </div>
   )
 }
+
+export default CategoryList;

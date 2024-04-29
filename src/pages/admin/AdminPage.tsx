@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
-import { useAppDispatch } from '../../redux/store';
+import React, { useEffect, useState } from 'react';
+import { AppState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchAllUsers } from '../../redux/slices/userSlice';
 import { useTheme } from '../../components/contextAPI/ThemeContext';
 import UserList from '../../components/adminComponents/UserList';
 import { Box, Button, Grid, Modal, Typography } from '@mui/material';
 import CategoryList from '../../components/adminComponents/CategoryList';
+import Search from '../../components/utils/Search';
+import useDebounce from '../../hooks/UseDebounce';
 
 const AdminPage = () => {
     const { theme } = useTheme();
@@ -12,6 +14,8 @@ const AdminPage = () => {
 
     const [open, setOpen] = React.useState(false);
     const [openCategoryList, setOpenCategoryList] = React.useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [categorySearchQuery, setCategorySearchQuery] = useState("");
 
     const handleOpen = () => {
       setOpen(true);
@@ -68,7 +72,7 @@ const AdminPage = () => {
     onClose={handleClose}
     aria-labelledby="user-list-modal-title"
     aria-describedby="user-list-modal-description"
-  >
+>
     <Box
       sx={{
         position: 'absolute',
@@ -94,7 +98,8 @@ const AdminPage = () => {
       <Typography id="user-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>
         List of users
       </Typography>
-      <UserList />
+      <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme} />
+      <UserList searchQuery={searchQuery}/>
       <Button onClick={handleClose} 
       sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',
       '&:hover': {
@@ -104,7 +109,7 @@ const AdminPage = () => {
    }}
       >Close</Button>
     </Box>
-  </Modal>
+</Modal>
   <Grid item xs={12} style={{ textAlign: 'center' }}>
     <Typography id="category-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px' }}>
       Modify categories
@@ -152,7 +157,8 @@ const AdminPage = () => {
       <Typography id="category-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>
         List of categories
       </Typography>
-      <CategoryList />
+      <Search searchQuery={categorySearchQuery} setSearchQuery={setCategorySearchQuery} theme={theme} />
+      <CategoryList searchQuery={categorySearchQuery}/>
       <Button onClick={handleCloseCategoryList}
       sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',
       '&:hover': {

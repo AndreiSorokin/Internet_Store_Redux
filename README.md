@@ -16,8 +16,8 @@ Usage:
    2. In order to test the application write npm test (yarn test on MAC)
 
 ### Login
-   1. To login as an admin: admin@gmail.com
-   2. To login as a customer: customer@gmail.com
+   1. To login as an admin: email: admin@gmail.com password: 123456
+   2. To login as a customer: email: customer@gmail.com password: 123456
 
 A user has two options to log in: with credentials and by using Google.
 Also they can use "forgot password" with the aim of reseting their passwords.

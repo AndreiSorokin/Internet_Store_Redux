@@ -17,6 +17,9 @@ const AdminPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [categorySearchQuery, setCategorySearchQuery] = useState("");
 
+    const debouncedUsersSearch = useDebounce(searchQuery, 500);
+    const debouncedCategorySearch = useDebounce(categorySearchQuery, 500);
+
     const handleOpen = () => {
       setOpen(true);
     };
@@ -99,7 +102,7 @@ const AdminPage = () => {
         List of users
       </Typography>
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme} />
-      <UserList searchQuery={searchQuery}/>
+      <UserList searchQuery={debouncedUsersSearch}/>
       <Button onClick={handleClose} 
       sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',
       '&:hover': {
@@ -158,7 +161,7 @@ const AdminPage = () => {
         List of categories
       </Typography>
       <Search searchQuery={categorySearchQuery} setSearchQuery={setCategorySearchQuery} theme={theme} />
-      <CategoryList searchQuery={categorySearchQuery}/>
+      <CategoryList searchQuery={debouncedCategorySearch}/>
       <Button onClick={handleCloseCategoryList}
       sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',
       '&:hover': {

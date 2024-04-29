@@ -101,7 +101,15 @@ const AdminPage = () => {
       <Typography id="user-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>
         List of users
       </Typography>
-      <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme} />
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        margin: '-15vh',
+      }}>
+        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme} />
+      </Box>
       <UserList searchQuery={debouncedUsersSearch}/>
       <Button onClick={handleClose} 
       sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',
@@ -112,7 +120,7 @@ const AdminPage = () => {
    }}
       >Close</Button>
     </Box>
-</Modal>
+  </Modal>
   <Grid item xs={12} style={{ textAlign: 'center' }}>
     <Typography id="category-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px' }}>
       Modify categories
@@ -160,7 +168,15 @@ const AdminPage = () => {
       <Typography id="category-list-modal-title" variant="h6" component="h2" style={{ marginBottom: '20px', color: theme === "bright" ? "black" : "white" }}>
         List of categories
       </Typography>
-      <Search searchQuery={categorySearchQuery} setSearchQuery={setCategorySearchQuery} theme={theme} />
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        margin: '-15vh',
+      }}>
+        <Search searchQuery={categorySearchQuery} setSearchQuery={setCategorySearchQuery} theme={theme} />
+      </Box>
       <CategoryList searchQuery={debouncedCategorySearch}/>
       <Button onClick={handleCloseCategoryList}
       sx={{color: theme === 'bright' ? 'black' : '#E9E9E9', position: 'absolute', top: '5vh', right: '2vw',

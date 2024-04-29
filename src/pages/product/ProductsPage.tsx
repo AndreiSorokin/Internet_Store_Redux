@@ -98,8 +98,7 @@ export default function ProductsPage() {
           }}}>Create new</Button>
         </Link>
 
-        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme}/>
-
+        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} theme={theme} />
         <Button sx={{transform: 'translate(0,-10vh)', color: theme === "bright" ? "black" : "#E9E9E9",
           '&:hover': {
             backgroundColor: 'rgba(95, 46, 46, 0.1)',
